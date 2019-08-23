@@ -1,28 +1,46 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <section id="shade">
+      <title>音乐的力量</title>
+      <footer>
+        <i class="iconfont icon-wangyiyunyinle"></i>
+        网易云音乐</footer>
+    </section>
+    <router-view />
   </div>
 </template>
-
-<script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
-}
-</script>
-
 <style>
+html,
+body {
+  height: 100%;
+}
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  height: 100%;
+}
+#shade {
+  position: absolute;
+  height: 100%;
+  box-sizing: border-box;
+  width: 100%;
+  color: #ffffff;
+  background: #db2c1f;
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+  justify-content: space-between;
+}
+title {
+  display: block;
+  font-size: 2rem;
+  margin-top: 40%;
+  letter-spacing: 8px;
+}
+footer {
+  font-size: 0.5rem;
 }
 </style>

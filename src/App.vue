@@ -1,15 +1,53 @@
 <template>
   <div id="app">
-    <section id="shade">
-      <title>音乐的力量</title>
-      <footer>
-        <i class="iconfont icon-wangyiyunyinle"></i>
-        网易云音乐</footer>
-    </section>
-    <router-view />
+    <transition name="shade-hide">
+      <section id="shade" v-if="showShade">
+        <title class="title">音乐的力量</title>
+        <footer class="footer">
+          <i class="iconfont icon-wangyiyunyinle"></i>
+          网易云音乐
+        </footer>
+      </section>
+    </transition>
+    <transition name="transitionName">
+      <router-view />
+    </transition>
   </div>
 </template>
+<script>
+import { setTimeout } from "timers";
+import storage from "./assets/common";
+export default {
+  data() {
+    return {
+      showShade: true,
+      transitionName:'hideDown'
+    };
+  },
+  mounted() {
+    setTimeout(() => {
+      this.showShade = false;
+    }, 1000);
+    if (storage.get("userId")) {
+      console.log('44')
+    }
+  },
+  watch: {
+    $route(to, from) {
+      const toDepth = to.path.split("/").length;
+      const fromDepth = from.path.split("/").length;
+      this.transitionName = toDepth < fromDepth ? "slide-right" : "slide-left";
+    }
+  }
+};
+</script>
 <style>
+.shade-hide-leave-active {
+  transition: 0.8s ease;
+}
+.shade-hide-leave-to {
+  opacity: 0;
+}
 html,
 body {
   height: 100%;
@@ -33,14 +71,15 @@ body {
   padding: 1rem;
   flex-direction: column;
   justify-content: space-between;
+  z-index: 3000;
 }
-title {
+.title {
   display: block;
   font-size: 2rem;
-  margin-top: 40%;
+  margin-top: 10rem;
   letter-spacing: 8px;
 }
-footer {
-  font-size: 0.5rem;
+.footer {
+  font-size: 1rem;
 }
 </style>

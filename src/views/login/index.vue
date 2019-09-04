@@ -7,10 +7,16 @@
     </div>
     <article>
       <div id="content">
-        <van-button plain type="danger" size="large" round class="btn" @click="loginIn">手机号登陆</van-button>
         <van-button
           plain
-          hairline
+          type="danger"
+          size="large"
+          round
+          class="btn"
+          @click="loginIn"
+        >手机号登陆</van-button>
+        <van-button
+          plain
           type="danger"
           size="large"
           round
@@ -42,7 +48,7 @@
           </li>
         </ul>
         <footer>
-          <van-checkbox v-model="agree" icon-size="15px" checked-color="#f56d5f">
+          <van-checkbox v-model="agree" checked-color="#f56d5f">
             <span>
               同意
               <span class="whiteSpan">《用户协议》</span>和
@@ -56,13 +62,12 @@
 </template>
 <script>
 import { Button, Checkbox, CheckboxGroup, Toast } from "vant";
-import btnRound from "../components/btnRound";
-import storage from "../assets/common";
-
+import btnRound from "../../components/btnRound";
 export default {
   data() {
     return {
-      agree: false
+      agree: false,
+      type: true
     };
   },
   components: {
@@ -94,23 +99,20 @@ export default {
       if (!this.checkedAgree()) {
         return;
       }
-      storage.set("userId", "experience");
-      this.$router.push('home');
+      this.storage.set("userData", "experience");
+      this.$router.push("home");
     },
     loginIn() {
-      console.log('asdw');
       if (!this.checkedAgree()) {
         return;
       }
-      Toast({
-        position: "bottom",
-        message: `请先使用《立即体验》`,
-        duration: 2000
-      });
+      this.$router.push("userName");
     }
   },
   mounted() {
-    console.log('8995');
+    if (this.$route.query.type) {
+      this.type = false;
+    }
   }
 };
 </script>
@@ -129,7 +131,7 @@ export default {
   align-content: center;
 }
 article {
-  height: 30%;
+  height: 35%;
   display: flex;
   width: 100%;
   justify-content: center;
@@ -141,8 +143,6 @@ article {
   justify-content: space-around;
 }
 .btn {
-  height: 2rem;
-  font-size: 0.8rem;
 }
 ul {
   float: left;
@@ -150,14 +150,15 @@ ul {
   justify-content: inherit;
 }
 li {
-  width: 2rem;
-  height: 2rem;
+  width: 1rem;
+  height: 1rem;
   margin: 0 0.26667rem;
 }
 footer {
-  height: 2rem;
+  height: 1rem;
   display: flex;
   justify-content: center;
+  font-size: 0.35rem;
 }
 footer span {
   color: #f56d5f;
@@ -166,13 +167,13 @@ footer span {
   color: #fff;
 }
 .logoIcon {
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   color: #fff;
 }
 #logoArea {
-  margin-top: 5rem;
-  width: 4rem;
-  height: 4rem;
+  margin-top: 3rem;
+  width: 2rem;
+  height: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -188,7 +189,9 @@ footer span {
   -webkit-animation: extendRound 5s ease infinite; /* Safari and Chrome */
   -o-animation: extendRound 5s ease infinite; /* Opera */
 }
-
+.hidden {
+  visibility: hidden;
+}
 @keyframes extendRound {
   0% {
     width: 0vw;
@@ -233,10 +236,10 @@ footer span {
 .van-checkbox__label {
   line-height: inherit;
 }
-.van-toast--bottom {
+/* .van-toast--bottom {
   line-height: normal;
-  font-size: 0.8rem;
-  padding: 30px !important;
-  border-radius: 0.5rem;
-}
+  font-size: 0.5rem;
+  padding: 0.3rem !important;
+  border-radius: 0.2rem;
+} */
 </style>

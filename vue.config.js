@@ -1,6 +1,9 @@
 const autoprefixer = require('autoprefixer');
 const pxtorem = require('postcss-pxtorem');
-
+const path = require('path');
+function resolve(dir) {
+  return path.join(__dirname, dir)
+}
 module.exports = {
   outputDir: 'docs',
   publicPath: process.env.NODE_ENV === 'production' ? '/vant-demo/' : '/',
@@ -19,5 +22,12 @@ module.exports = {
         ]
       }
     }
+  },
+  // 配置路径 调用时需要加~
+  lintOnSave: true,
+  chainWebpack: config => {
+    config.resolve.alias
+      .set('imgs', resolve('src/assets/images')).set('assets',resolve('src/assets')) // key,value自行定义，比如.set('@@', resolve('src/components'))
+      
   }
 };

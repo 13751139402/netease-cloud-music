@@ -20,8 +20,8 @@ export default {
 
 <style scoped>
 .round {
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 1rem;
+  height: 1rem;
   display: flex;
   justify-content: center;
   align-content: center;
@@ -30,7 +30,7 @@ export default {
   border: 1px solid #fff;
 }
 i {
-  font-size: 1rem;
+  font-size: .7rem;
   color: #fff;
 }
 </style>

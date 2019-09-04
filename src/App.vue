@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <transition name="shade-hide">
-      <section id="shade" v-if="showShade">
+    <transition name="shade-hide" v-if="showShade">
+      <section id="shade">
         <title class="title">音乐的力量</title>
         <footer class="footer">
           <i class="iconfont icon-wangyiyunyinle"></i>
@@ -9,34 +9,59 @@
         </footer>
       </section>
     </transition>
-    <transition name="transitionName">
-      <router-view />
+    <transition :name="transitionName">
+      <keep-alive>
+        <!--使用keep-alive会将页面缓存-->
+        <router-view v-if="$route.meta.keepAlive"></router-view>
+      </keep-alive>
     </transition>
+    <transition :name="transitionName">
+      <router-view v-if="!$route.meta.keepAlive"></router-view>
+    </transition>
+    <footer>
+      <player v-if="this.$store.state.playData"></player>
+    </footer>
+    <palyRecord></palyRecord>
   </div>
 </template>
 <script>
 import { setTimeout } from "timers";
-import storage from "./assets/common";
+import player from "./components/player";
+import palyRecord from "./components/playerRecord";
 export default {
   data() {
     return {
-      showShade: true,
-      transitionName:'hideDown'
+      showShade: false,
+      transitionName: ""
     };
+  },
+  components: {
+    player,
+    palyRecord
   },
   mounted() {
     setTimeout(() => {
-      this.showShade = false;
+      //this.showShade = false;
     }, 1000);
-    if (storage.get("userId")) {
-      console.log('44')
+    let userData = this.storage.get("userData");
+    //let cookie =this.storage.getCookie("MUSIC_U");
+    if (userData && userData !== "undefined") {
+      if (userData === "experience") {
+        this.$router.push("/home");
+      } else {
+        this.$store.commit("upDateUser", userData);
+        this.$router.push("/home");
+      }
     }
   },
   watch: {
-    $route(to, from) {
-      const toDepth = to.path.split("/").length;
-      const fromDepth = from.path.split("/").length;
-      this.transitionName = toDepth < fromDepth ? "slide-right" : "slide-left";
+    $route(to) {
+      if (!to.meta.transitionType) {
+        this.transitionName = "";
+        return;
+      }
+      let type = to.meta.transitionType == "hideDown";
+      this.transitionName = type && "hideDown";
     }
   }
 };
@@ -48,6 +73,26 @@ export default {
 .shade-hide-leave-to {
   opacity: 0;
 }
+.hideDown-enter-active {
+  animation: bounce-in 0.3s reverse;
+}
+.hideDown-leave-active {
+  animation: bounce-in 0.5s;
+}
+@keyframes bounce-in {
+  0% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  50% {
+    opacity: 0;
+    transform: translateY(80%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
 html,
 body {
   height: 100%;
@@ -56,7 +101,6 @@ body {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   height: 100%;
 }
@@ -75,11 +119,11 @@ body {
 }
 .title {
   display: block;
-  font-size: 2rem;
-  margin-top: 10rem;
+  font-size: 1rem;
+  margin-top: 3rem;
   letter-spacing: 8px;
 }
 .footer {
-  font-size: 1rem;
+  font-size: 0.5rem;
 }
 </style>

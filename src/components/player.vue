@@ -60,6 +60,9 @@ export default {
     },
     isRouteHome() {
       return this.$route.matched[0].path == "/home";
+    },
+    volume() {
+      return this.$store.state.audio.volume;
     }
   },
   components: {
@@ -69,8 +72,8 @@ export default {
     palyRecord
   },
   methods: {
-    changeRecord(){
-      this.$store.commit('showRecord');
+    changeRecord() {
+      this.$store.commit("showRecord");
     },
     control() {
       this.$store.commit("changePlayType", !this.palyBtn);
@@ -85,9 +88,11 @@ export default {
       this.$router.push("/music");
     },
     canplay() {
+      console.log("asddd");
+      this.$store.commit("volume", this.myAudio.volume);
       this.$store.commit("duration", this.myAudio.duration);
     },
-    ended(){
+    ended() {
       this.$store.commit("changePlayType", false);
     }
   },
@@ -102,10 +107,12 @@ export default {
     playSkip(to) {
       this.myAudio.currentTime = to;
       this.$store.commit("currentTime", to);
+    },
+    volume(to) {
+      this.myAudio.volume = to;
     }
   },
   mounted() {
-    //this.timeupData = referee.throttle(this.timeupData, 500);
     this.myAudio = this.$refs.audio;
   }
 };

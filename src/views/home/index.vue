@@ -1,31 +1,32 @@
 <template>
   <section id="home">
-    <header id="header">
-      <van-icon name="setting-o" @click="showPopup" />
-      <van-tabs swipeable v-model="active" @change="changeTabs">
-        <van-tab title="我的" name="me"></van-tab>
-        <van-tab title="发现" name="find"></van-tab>
-        <van-tab title="云村" name="burg"></van-tab>
-        <van-tab title="视频" name="video"></van-tab>
-      </van-tabs>
-      <van-icon name="search" />
-    </header>
+    <van-icon name="setting-o" @click="showPopup" class="left" />
+    <van-tabs swipeable v-model="active">
+      <van-tab title="我的" name="me">我的</van-tab>
+      <van-tab title="发现" name="find">
+        <find></find>
+      </van-tab>
+      <van-tab title="云村" name="burg">云村</van-tab>
+      <van-tab title="视频" name="video">视频</van-tab>
+    </van-tabs>
+    <van-icon name="search" class="rigth" />
     <nav>
       <navbar :isShowPopup="isShowPopup"></navbar>
     </nav>
-    <main style="padding: 7vh 0 10vh  0;">
+    <!-- <main style="padding: 7vh 0 10vh  0;">
       <router-view></router-view>
-    </main>
+    </main>-->
   </section>
 </template>
 <script>
 import { Icon, Tab, Tabs } from "vant";
 import navbar from "../../components/navBar";
+import find from "./children/find";
 export default {
   data() {
     return {
       isShowPopup: false,
-      showRecord:false,
+      showRecord: false,
       active: "find"
     };
   },
@@ -39,14 +40,18 @@ export default {
     [Tab.name]: Tab,
     [Tabs.name]: Tabs,
     navbar,
+    find
   },
   methods: {
     showPopup() {
       this.isShowPopup = true;
     },
     changeTabs(name) {
-      this.$router.push(name);
+      //this.$router.push(name);
     }
+  },
+  mounted(){
+    console.log("home");
   }
 };
 </script>
@@ -55,26 +60,23 @@ export default {
   width: 100%;
   height: 100%;
 }
-#header {
-  height: 7vh;
-  min-width: 0.93333rem;
-  background: #fff;
-  padding: 0 0.3rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 10;
+.left {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.3rem;
+  z-index: 99;
   font-size: 0.7rem;
-  box-sizing: border-box;
+}
+.rigth {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.3rem;
+  z-index: 99;
+  font-size: 0.7rem;
 }
 </style>
 <style>
-#header .van-tabs {
-  position: relative;
-  flex: 1;
-  padding: 0 0.5rem;
+#home .van-tabs--line > .van-tabs__wrap {
+  padding: 0rem 1rem;
 }
 </style>

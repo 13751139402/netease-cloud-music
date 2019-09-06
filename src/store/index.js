@@ -15,8 +15,10 @@ const state = {
 		skip: false,  // 音乐播放进度条 跳转
 		currentTime: 0, //当前播放时间
 		duration: 0, 	 // 音乐总时长
+		volume:0  // 音量
 	},
-	showRecord: false // 播放歌单是否显示
+	showRecord: false, // 播放歌单是否显示
+	scrollLyric: false //歌词页面的滚动条
 
 }
 

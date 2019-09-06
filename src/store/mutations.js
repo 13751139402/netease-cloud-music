@@ -23,4 +23,7 @@ export default {
     showRecord(state) {
         state.showRecord = !state.showRecord;
     },
+    volume(state, volume) {
+        state.audio.volume = volume;
+    }
 }

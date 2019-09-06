@@ -9,15 +9,11 @@
         </footer>
       </section>
     </transition>
-    <transition :name="transitionName">
       <keep-alive>
         <!--使用keep-alive会将页面缓存-->
         <router-view v-if="$route.meta.keepAlive"></router-view>
       </keep-alive>
-    </transition>
-    <transition :name="transitionName">
       <router-view v-if="!$route.meta.keepAlive"></router-view>
-    </transition>
     <footer>
       <player v-if="this.$store.state.playData"></player>
     </footer>

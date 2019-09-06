@@ -159,20 +159,20 @@ export default {
       this.$http.get("/personalized/newsong").then(response => {
         let temp = response.data.result.slice(0, 3);
         temp.reduce((target, item) => {
-          let {id,name,song}=item;
-          let artists=song.artists.reduce((target,item)=>{
+          let { id, name, song } = item;
+          let artists = song.artists.reduce((target, item) => {
             target.push({
-              id:item.id,
-              name:item.name
-            })
+              id: item.id,
+              name: item.name
+            });
             return target;
-          },[])
+          }, []);
           target.push({
-            id:id,
-            name:name,
-            pic:song.album.blurPicUrl,
-            artists:artists
-          })
+            id: id,
+            name: name,
+            pic: song.album.blurPicUrl,
+            artists: artists
+          });
           return target;
         }, this.newMusic);
       });
@@ -186,6 +186,9 @@ export default {
     this.selectRecommendMusicList();
     this.selectNewDisk();
     this.selectNewsong();
+  },
+  mounted() {
+    console.log("find");
   }
 };
 </script>
@@ -195,6 +198,7 @@ export default {
   width: 100%;
   height: 100%;
   background: #fff;
+  padding-bottom: 2rem;
 }
 #banner {
   padding: 0.3rem 0.3rem 0;

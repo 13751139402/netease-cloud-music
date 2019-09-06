@@ -12,7 +12,8 @@
     </van-nav-bar>
   </head>
   <main>
-    <router-view></router-view>
+    <cover v-show="open"></cover>
+    <lyric v-show="!open"></lyric>
   </main>
   <footer>
     <div id="progressNode">
@@ -23,6 +24,8 @@
           bar-height="2px"
           active-color="#f44"
           @change="progressChange"
+          @drag-start="isDrag=true"
+          @drag-end="isDrag=false"
         >
           <div slot="button" class="custom-button"></div>
         </van-slider>
@@ -43,10 +46,14 @@
 
 <script>
 import { NavBar, Icon, Slider } from "vant";
+import cover from './children/cover';
+import lyric from './children/lyric';
 export default {
   data() {
     return {
-      progress: 0
+      progress: 0,
+      isDrag: false,
+      open:true,
     };
   },
   computed: {
@@ -79,11 +86,13 @@ export default {
   components: {
     [NavBar.name]: NavBar,
     [Icon.name]: Icon,
-    [Slider.name]: Slider
+    [Slider.name]: Slider,
+    cover,
+    lyric,
   },
   methods: {
     back() {
-      this.$router.go(-1);
+      this.$router.push('/home');
     },
     control() {
       this.$store.commit("changePlayType", !this.play);
@@ -93,7 +102,6 @@ export default {
         "changePlaySkip",
         this.$store.state.audio.duration * value * 0.01
       );
-      console.log(this.$store.state.audio.duration * value * 0.01);
     },
     changeRecord() {
       this.$store.commit("showRecord");
@@ -101,6 +109,9 @@ export default {
   },
   watch: {
     playTime(to) {
+      if (this.isDrag) {
+        return;
+      }
       this.progress = to;
     }
   }
@@ -149,7 +160,7 @@ head {
   position: absolute;
   width: 100%;
   top: 0;
-  height: 8%;
+  height: 8vh;
 }
 main {
   position: absolute;
@@ -162,7 +173,7 @@ footer {
   position: absolute;
   width: 100%;
   bottom: 0;
-  height: 12%;
+  height: 12vh;
   box-sizing: border-box;
   padding: 0 0.5rem;
   display: flex;

@@ -1,5 +1,5 @@
 <template>
-  <section id="cover">
+  <section id="cover" @click="linkRouter">
     <figure id="stylus" :class="{ stylusOn: play}">
       <div id="stylus_1"></div>
       <div id="stylus_2"></div>
@@ -14,7 +14,7 @@
       <van-icon name="like-o" />
       <van-icon name="upgrade" />
       <van-icon name="close" />
-      <van-icon name="chat-o" />
+      <van-icon name="chat-o" @click="linkComment"/>
       <van-icon name="more-o" />
     </article>
   </section>
@@ -32,6 +32,14 @@ export default {
     },
     pic() {
       return this.$store.state.playData.pic;
+    }
+  },
+  methods: {
+    linkRouter() {
+     this.$parent.open=false;
+    },
+    linkComment(){
+      this.$router.push("/songComment")
     }
   },
   components: {
@@ -83,7 +91,7 @@ export default {
 }
 
 article {
-  height: 12%;
+  height: 10%;
   display: flex;
   margin: 0 1.5rem;
   justify-content: space-between;

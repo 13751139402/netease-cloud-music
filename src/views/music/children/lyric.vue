@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import { setTimeout } from "timers";
 import { Icon, Slider } from "vant";
 export default {
   data() {
@@ -46,7 +45,6 @@ export default {
   },
   computed: {
     muiscId() {
-      this.currLyric = 0;
       return this.$store.state.playData.id;
     },
     progress() {
@@ -119,19 +117,6 @@ export default {
         }
       }
     },
-    scroll(num) {
-      let scroll = this.$refs.lyric.scrollTop,
-        len = num - scroll;
-      if (len) {
-        for (let i = 0; len >= i; i++) {
-          this.$refs.lyric.scrollTop = scroll + i;
-        }
-      } else {
-        for (let i = 0; i <= len; i--) {
-          this.$refs.lyric.scrollTop = scroll - i;
-        }
-      }
-    },
     linkRouter() {
       this.$parent.open = true;
     },
@@ -141,6 +126,7 @@ export default {
   },
   watch: {
     muiscId(to) {
+      this.currLyric = 0;
       this.selectLyric(to);
     },
     progress(to) {

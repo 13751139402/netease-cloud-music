@@ -27,7 +27,8 @@ module.exports = {
   lintOnSave: true,
   chainWebpack: config => {
     config.resolve.alias
-      .set('imgs', resolve('src/assets/images')).set('assets',resolve('src/assets')) // key,value自行定义，比如.set('@@', resolve('src/components'))
-      
+      .set('imgs', resolve('src/assets/images'))
+      .set('src', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
+
   }
 };

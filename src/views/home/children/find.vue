@@ -186,9 +186,6 @@ export default {
     this.selectRecommendMusicList();
     this.selectNewDisk();
     this.selectNewsong();
-  },
-  mounted() {
-    console.log("find");
   }
 };
 </script>

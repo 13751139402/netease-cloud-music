@@ -46,14 +46,14 @@
 
 <script>
 import { NavBar, Icon, Slider } from "vant";
-import cover from './children/cover';
-import lyric from './children/lyric';
+import cover from "./children/cover";
+import lyric from "./children/lyric";
 export default {
   data() {
     return {
       progress: 0,
       isDrag: false,
-      open:true,
+      open: true
     };
   },
   computed: {
@@ -80,6 +80,8 @@ export default {
             return tag;
           }, [])
           .join("/");
+      } else {
+        return false;
       }
     }
   },
@@ -88,11 +90,11 @@ export default {
     [Icon.name]: Icon,
     [Slider.name]: Slider,
     cover,
-    lyric,
+    lyric
   },
   methods: {
     back() {
-      this.$router.push('/home');
+      this.$router.push("/home");
     },
     control() {
       this.$store.commit("changePlayType", !this.play);
@@ -252,5 +254,11 @@ head .van-icon {
 }
 #music [class*="van-hairline"]::after {
   border: 0;
+}
+.van-nav-bar__left {
+  left: 0.4rem;
+}
+.van-nav-bar__right{
+  right: .4rem;
 }
 </style>

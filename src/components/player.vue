@@ -38,8 +38,6 @@
 
 <script scoped>
 import { Icon, Image, Circle } from "vant";
-import palyRecord from "./playerRecord";
-import { referee } from "../assets/common";
 export default {
   data() {
     return {
@@ -69,7 +67,6 @@ export default {
     [Icon.name]: Icon,
     [Image.name]: Image,
     [Circle.name]: Circle,
-    palyRecord
   },
   methods: {
     changeRecord() {
@@ -88,7 +85,6 @@ export default {
       this.$router.push("/music");
     },
     canplay() {
-      console.log("asddd");
       this.$store.commit("volume", this.myAudio.volume);
       this.$store.commit("duration", this.myAudio.duration);
     },

@@ -45,13 +45,7 @@ export default {
   methods: {
     showPopup() {
       this.isShowPopup = true;
-    },
-    changeTabs(name) {
-      //this.$router.push(name);
     }
-  },
-  mounted(){
-    console.log("home");
   }
 };
 </script>

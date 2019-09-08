@@ -28,7 +28,6 @@
 
 <script>
 import { Popup, Icon, List, Cell } from "vant";
-import { setTimeout } from 'timers';
 export default {
   data() {
     return {
@@ -42,12 +41,9 @@ export default {
       return playData ? playData.id : false;
     },
     userData() {
-      if (this.$store.state.userData) {
-        this.selectList();
-      }
-      return false;
+      return this.$store.state.userData.userId;
     },
-    isShow(){
+    isShow() {
       return this.$store.state.showRecord;
     }
   },
@@ -60,7 +56,7 @@ export default {
   methods: {
     selectList() {
       this.$http
-        .get(`/user/record?uid=${this.$store.state.userData.userId}&type=1`)
+        .get(`/user/record?uid=${this.userData}&type=1`)
         .then(response => {
           let temp = response.data.weekData;
           this.list = temp.reduce((target, item) => {
@@ -68,7 +64,7 @@ export default {
             let artists = song.ar.reduce((target, item) => {
               target.push({
                 id: item.id,
-                name: item.name,
+                name: item.name
               });
               return target;
             }, []);
@@ -76,7 +72,7 @@ export default {
               id: song.id,
               name: song.name,
               pic: song.al.picUrl,
-              artists:artists,
+              artists: artists
             });
             return target;
           }, []);
@@ -86,22 +82,19 @@ export default {
         });
     },
     closePopup() {
-      this.$store.commit('showRecord');
+      this.$store.commit("showRecord");
     },
     playMusic(index) {
       this.$store.dispatch("selectPlayer", this.list[index]);
     }
   },
-  watch:{
-    isShow(to){
-      this.show=to;
-    }
-  },
-  mounted() {
-    setTimeout(()=>{
-    if (this.$store.state.userData) {
+  watch: {
+    isShow(to) {
+      this.show = to;
+    },
+    userData() {
       this.selectList();
-    }},0)
+    }
   }
 };
 </script>

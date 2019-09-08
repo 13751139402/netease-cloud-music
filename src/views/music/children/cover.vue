@@ -10,11 +10,11 @@
         <div id="CD"></div>
       </figure>
     </div>
-    <article>
+    <article @click.stop="">
       <van-icon name="like-o" />
       <van-icon name="upgrade" />
       <van-icon name="close" />
-      <van-icon name="chat-o" @click="linkComment"/>
+      <van-icon name="chat-o" @click="linkComment" :info="totalNum" />
       <van-icon name="more-o" />
     </article>
   </section>
@@ -24,7 +24,9 @@
 import { Icon } from "vant";
 export default {
   data() {
-    return {};
+    return {
+      total: 0
+    };
   },
   computed: {
     play() {
@@ -32,18 +34,48 @@ export default {
     },
     pic() {
       return this.$store.state.playData.pic;
+    },
+    pid() {
+      return this.$store.state.playData.id;
+    },
+    totalNum() {
+      let total = this.total;
+      if (total < 999) {
+        return total;
+      } else if (total > 999 && total < 10000) {
+        return `999+`;
+      } else if (total > 10000 && total < 100000) {
+        return "1w+";
+      } else {
+        return "10w+";
+      }
     }
   },
   methods: {
     linkRouter() {
-     this.$parent.open=false;
+      this.$parent.open = false;
     },
-    linkComment(){
-      this.$router.push("/songComment")
+    linkComment() {
+      this.$router.push("/songComment");
+    },
+    selectTotal() {
+      this.$http
+        .get(`/comment/music?id=${this.pid}&limit=0&before=0`)
+        .then(response => {
+          if (!this.total) {
+            this.total = response.data.total;
+          }
+        })
+        .catch(error => {
+          throw new Error(error);
+        });
     }
   },
   components: {
     [Icon.name]: Icon
+  },
+  created() {
+    this.selectTotal();
   }
 };
 </script>
@@ -149,5 +181,12 @@ article {
   position: absolute;
   margin-top: 26%;
   margin-left: 26%;
+}
+</style>
+<style>
+#cover .van-info {
+  background: transparent;
+  border: 0;
+  right: -6px;
 }
 </style>

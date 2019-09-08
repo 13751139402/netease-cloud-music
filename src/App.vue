@@ -2,7 +2,7 @@
   <div id="app">
     <transition name="shade-hide" v-if="showShade">
       <section id="shade">
-        <title class="title">音乐的力量</title>
+        <title class="titleD">音乐的力量</title>
         <footer class="footer">
           <i class="iconfont icon-wangyiyunyinle"></i>
           网易云音乐
@@ -113,7 +113,7 @@ body {
   justify-content: space-between;
   z-index: 3000;
 }
-.title {
+.titleD {
   display: block;
   font-size: 1rem;
   margin-top: 3rem;
@@ -121,5 +121,8 @@ body {
 }
 .footer {
   font-size: 0.5rem;
+}
+.figure{
+  margin: 0;
 }
 </style>

@@ -1,23 +1,14 @@
 <template>
-<section id="hotComm">
-  <head>
-    <van-nav-bar left-arrow>
-      <van-icon name="fail" slot="right" />
-      <van-icon name="arrow-left" slot="left" @click="back" />
-      <div class="musicTitle_1" slot="title">
-        <div>精彩评论({{total}})</div>
-      </div>
-    </van-nav-bar>
-  </head>
-  <main>
-    <comments :data="hotComments" @commLoad="selectHotComm" :total="total" ref="hotComm"></comments>
-  </main>
-</section>
+  <section id="hotComm">
+    <main>
+      <comments :data="hotComments" @commLoad="selectHotComm" :total="total" ref="hotComm"></comments>
+    </main>
+  </section>
 </template>
 
 <script>
 import { NavBar, Icon } from "vant";
-import comments from "../../components/comment";
+import comments from "../../../components/comment";
 export default {
   data() {
     return {
@@ -41,25 +32,45 @@ export default {
       this.$router.push("/songComment");
     },
     selectHotComm() {
-      this.$http
-        .get(`comment/hot?id=${this.playData.id}&type=0&limit=15&before=0&offset=${this.commPage * 15}`)
+      return this.$http
+        .get(
+          `comment/hot?id=${
+            this.playData.id
+          }&type=0&limit=15&before=0&offset=${this.commPage * 15}`
+        )
         .then(response => {
-          if (!this.total) {
-            this.total = response.data.total;
-          }
           this.hotComments.push(...response.data.hotComments);
           this.commPage++;
           this.$refs.hotComm.loading = false;
-          console.log(`总数:${this.total}  现有数:${this.hotComments.length}`);
           if (this.hotComments.length >= this.total) {
-            console.log("完成")
-              this.$refs.hotComm.finished = true;
+            this.$refs.hotComm.finished = true;
           }
         })
         .catch(error => {
           throw new Error(error);
         });
+    },
+    selectTotal() {
+      return this.$http
+        .get(`/comment/hot?id=${this.playData.id}&type=0&limit=0&before=0`)
+        .then(response => {
+          let total=response.data.total;
+          this.total=total;
+          this.$parent.title = `精彩评论(${total})`;
+        })
+        .catch(error => {
+          throw new Error(error);
+        });
     }
+  },
+  mounted(){
+    this.$parent.loadType=true;
+    const _this = this;
+    this.$http
+      .all([this.selectTotal(), this.selectHotComm()])
+      .then(() => {
+        _this.$parent.loadType = false;
+      });
   }
 };
 </script>

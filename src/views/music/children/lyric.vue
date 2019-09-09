@@ -99,16 +99,16 @@ export default {
               ? time < this.lyricData[index + 1].id
               : true; //获取下下一行歌词的开始时间
           // 判断在哪个时间区间
-          if (time > next && after) {
+          if (this.lyricData[index + 1] && time > next && after) {
             this.currLyric = index;
             return;
           }
         }
       } else {
-        // 跳转下一句歌词
+        // 跳转上一句歌词
         index--;
         for (; index >= 0; index--) {
-          let befor = this.lyricData[index] && this.lyricData[index].id; //获取下一行歌词的开始时间
+          let befor = this.lyricData[index] && this.lyricData[index].id; //获取上一行歌词的开始时间
           // 判断在哪个时间区间
           if (time > befor) {
             this.currLyric = index;
@@ -118,7 +118,7 @@ export default {
       }
     },
     linkRouter() {
-      this.$parent.open = true;
+      this.$parent.open=true;
     },
     onChange(value) {
       this.$store.commit("volume", value * 0.01);
@@ -137,6 +137,7 @@ export default {
     currLyric(index) {
       let distance = this.$refs[index][0].offsetTop - this.scrollDist;
       if (distance) {
+        this.$route.meta.scrollTop = distance;
         this.$refs.lyric.scrollTop = distance;
       }
     },
@@ -163,7 +164,7 @@ export default {
   position: relative;
 }
 #container {
-  padding: 40vh .5rem;
+  padding: 40vh 0.5rem;
   font-size: 0.4rem;
   text-align: center;
 }

@@ -85,7 +85,7 @@ export default {
       this.$store.commit("showRecord");
     },
     playMusic(index) {
-      this.$store.dispatch("selectPlayer", this.list[index]);
+      this.$store.dispatch("selectMusic", this.list[index]);
     }
   },
   watch: {

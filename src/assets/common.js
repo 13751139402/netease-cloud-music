@@ -79,14 +79,14 @@ let cookie = {
 let referee = {
     // 返回一个节流函数，此函数的调用将会被delay限制
     throttle: (fun, delay) => {
-        let last, defertimer
+        let last, defertimer;
         return function () {
             let that = this
             let _args = arguments
             let now = +new Date()
             if (last && now < last + delay) {
-                clearTimeout(deferTimer)
-                deferTimer = setTimeout(function () {
+                clearTimeout(defertimer)
+                defertimer = setTimeout(function () {
                     last = now
                     fun.apply(that, _args)
                 }, delay)
@@ -149,13 +149,13 @@ var Time = {
         var date = new Date(time);
         var month = date.getMonth() + 1;
         var day = date.getDate();
-        return `${month}月${month}日`;
+        return `${month}月${day}日`;
     },
     //转换时间
     getFormateTime: function (timestamp) {
         var now = this.getUnix();
         var today = this.getTodayUnix();
-        var year = this.getYearUnix();
+        //var year = this.getYearUnix();
         var timer = (now - timestamp) / 1000;
         var tip = '';
 

@@ -6,9 +6,15 @@
     </slot>
   </head>
   <main>
-    <van-list v-model="loading" :finished="finished" @load="onLoad" finished-text="没有更多了">
-      <figure class="commItem" v-for="item in data1" :key="item.commentId">
-        <head>
+    <van-list
+      v-model="loading"
+      :finished="finished"
+      @load="onLoad"
+      finished-text="没有更多了"
+      :immediate-check="false"
+    >
+      <figure class="commItem" v-for="(item,index) in data1" :key="item.commentId">
+        <head class="commImgContainer">
           <img :src="`${item.user.avatarUrl}?param=50y50`" class="commImg" />
         </head>
         <main class="commMain">
@@ -17,13 +23,13 @@
               <span class="commName">{{item.user.nickname}}</span>
               <span class="commTime" v-time="item.time"></span>
             </figcaption>
-            <div class="commLike">
-              <span class="commLikeNum" v-if="item.likedCount">{{item.likedCount}}</span>
-              <van-icon name="good-job" v-if="item.liked" style="color:red" />
+            <div class="commLike" @click="like(index)" :class="{color:item.liked}">
+              <span class="commLikeNum" v-if="item.likedCountMap">{{item.likedCountMap}}</span>
+              <van-icon name="good-job" v-if="item.liked" />
               <van-icon name="good-job-o" v-else />
             </div>
           </div>
-          <div class="text">{{item.content}}</div>
+          <div class="text" v-html="item.content"></div>
         </main>
       </figure>
       <slot name="foot" slot="loading"></slot>
@@ -35,11 +41,13 @@
 <script>
 import { Icon, List } from "vant";
 import mixins from "../assets/mixins";
+import { types } from 'util';
 export default {
+  //   0: 歌曲 1: mv 2: 歌单 3: 专辑 4: 电台 5: 视频 6: 动态
   props: {
     data: Array,
     title: String,
-    total: {type:Number,default:0}
+    total: { type: Number, default: 0 }
   },
   components: {
     [Icon.name]: Icon,
@@ -64,8 +72,11 @@ export default {
           if (count > 100000) {
             let num = Math.floor(count / 10000);
             let fixed = String(count % 10000).slice(0, 1);
-            item.likedCount = fixed === "0" ? `${num}万` : `${num}.${fixed}万`;
+            item.likedCountMap = fixed === "0" ? `${num}万` : `${num}.${fixed}万`;
+          }else{
+            item.likedCountMap=count;
           }
+          item.content = item.content.split("\n").join("<br />");
         });
       return this.data;
     }
@@ -74,6 +85,23 @@ export default {
   methods: {
     onLoad() {
       this.$emit("commLoad");
+    },
+    like(index) {
+      console.log("点赞");
+      let item = this.data[index];
+      let { commentId, liked } = item;
+      let { id, type } = this.playData;
+      this.$http
+        .get(
+          `/comment/like?id=${id}&cid=${commentId}&t=${liked ? 0 : 1}&type=${type}`
+        )
+        .then(response => {
+          item.liked = !liked;
+          this.likedCountMap=item.liked ? item.likedCount++ : item.likedCount--;
+        })
+        .catch(error => {
+          throw new Error(error);
+        });
     }
   }
 };
@@ -91,11 +119,17 @@ head {
   padding-right: 0.3rem;
   z-index: 99;
 }
+.color {
+  color: rgb(255, 68, 68);
+}
 .height {
   height: 1.2rem;
 }
 figure > head {
   height: 1.2rem;
+}
+.commImgContainer {
+  width: 1.2rem;
 }
 .commItem {
   display: flex;
@@ -112,7 +146,7 @@ figure > head {
   flex-direction: column;
 }
 .commName {
-  font-size: 0.4rem;
+  font-size: 0.35rem;
   color: #717171;
   padding-bottom: 0.1rem;
 }
@@ -128,15 +162,13 @@ figure > head {
   margin-bottom: 0.1rem;
 }
 .commLike {
-  /* display: flex; */
   align-items: center;
   justify-content: center;
-  font-size: 0.4rem;
-  color: #9c9c9c;
+  font-size: 0.3rem;
 }
 .text {
   color: #3b3b3b;
-  font-size: 0.42rem;
+  font-size: 0.4rem;
   line-height: 0.65rem;
 }
 .commLikeNum {

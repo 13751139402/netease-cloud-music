@@ -178,7 +178,7 @@ export default {
       });
     },
     playMusic(index) {
-      this.$store.dispatch("selectPlayer", this.newMusic[index]);
+      this.$store.dispatch("selectMusic", this.newMusic[index]);
     }
   },
   created() {

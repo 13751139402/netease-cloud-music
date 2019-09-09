@@ -25,7 +25,7 @@ import { Icon } from "vant";
 export default {
   data() {
     return {
-      total: 0
+      total: 999
     };
   },
   computed: {
@@ -53,10 +53,10 @@ export default {
   },
   methods: {
     linkRouter() {
-      this.$parent.open = false;
+      this.$parent.open=false;
     },
     linkComment() {
-      this.$router.push("/songComment");
+      this.$router.push("/musicComment/song");
     },
     selectTotal() {
       this.$http

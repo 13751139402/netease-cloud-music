@@ -32,37 +32,55 @@ let routes = [
   {
     path: '/music',
     name: 'music',
-    meta: { keepAlive: true },
-    component: () => import('../views/music/index'),
-  },
-  {
-    path: '/songComment',
-    name: 'songComment',
     meta: {
       keepAlive: true,
-      scrollEl: "scroll",
-      scrollTop: 0,
     },
-    component: () => import('../views/music/comment'),
+    component: () => import('../views/music/index')
   },
   {
-    path: '/hotComm',
-    name: 'hotComm',
-    component: () => import('../views/music/hotComm'),
+    path: '/musicComment',
+    name: 'musicComment',
+    component: () => import('../views/music/comm'),
+    children: [{
+      path: '/',
+      redirect: 'song',
+    },
+    {
+      path: 'song',
+      name: 'song',
+      meta: {
+        keepAlive: true,
+        scrollEl: "scroll",
+        scrollTop: 0,
+      },
+      component: () => import('../views/music/children/commSong'),
+      beforeEnter: (to, from, next) => {
+        if (from.path == "/music") {
+          to.meta.scrollTop = 0;
+        }
+        next();
+      },
+    }, {
+      path: 'hot',
+      name: 'hot',
+      component: () => import('../views/music/children/hotComm'),
+    }
+    ]
   }
 ]
+
+
+
 let router = new VueRouter({
   routes,
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior(to) {
     if (to.meta.keepAlive && to.meta.scrollEl) {
-      console.log("zzz");
       const $content = document.querySelector(`#${to.meta.scrollEl}`);
       $content.scrollTop = to.meta.scrollTop;
     }
   }
 })
 router.beforeEach((to, from, next) => {
-  console.log("before")
   if (from.meta.keepAlive && from.meta.scrollEl) {
     const $content = document.querySelector(`#${from.meta.scrollEl}`);
     const scrollTop = $content ? $content.scrollTop : 0;

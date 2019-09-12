@@ -1,16 +1,16 @@
 <template>
   <main id="scroll">
     <figure class="title" @click="back">
-      <img :src="`${playData.pic}?param=150y150`" class="titleImg" />
+      <img :src="`${commentData.pic}?param=150y150`" class="titleImg" />
       <p class="titileMain">
-        <span>{{playData.name}}</span>
+        <span>{{commentData.name}}</span>
         <router-link to>{{artists}}</router-link>
       </p>
       <div style="display: flex;align-items: center;">
         <van-icon name="arrow" />
       </div>
     </figure>
-    <comments :data="hotComments" title="精彩评论">
+    <comments :data="hotComments" title="精彩评论" v-if="hotComments.length">
       <span slot="foot" style="display: inline-block;">
         <div class="hotComm" @click="linkHotComm">
           <span>全部精彩评论</span>
@@ -25,7 +25,10 @@
 <script>
 import comments from "../../../components/comment";
 import { Icon } from "vant";
-import { Promise } from "q";
+let typeMap={
+  0:"music",
+  2:"playlist"
+}
 export default {
   data() {
     return {
@@ -40,12 +43,12 @@ export default {
     [Icon.name]: Icon
   },
   computed: {
-    playData() {
-      return this.$store.state.playData;
+    commentData() {
+      return this.$store.state.commentData;
     },
     artists() {
-      if (this.playData && this.playData.artists) {
-        return this.playData.artists
+      if (this.commentData && this.commentData.artists) {
+        return this.commentData.artists
           .reduce((tag, item) => {
             tag.push(item.name);
             return tag;
@@ -58,22 +61,24 @@ export default {
   },
   methods: {
     back() {
+      this.$parent.isError = false;
       this.$router.push("/music");
     },
     hotComment() {
       return this.$http
-        .get(`comment/hot?id=${this.playData.id}&type=0&limit=15`)
+        .get(`comment/hot?id=${this.commentData.id}&type=${this.commentData.type}&limit=15`)
         .then(response => {
           this.hotComments = response.data.hotComments;
         })
         .catch(error => {
-          throw new Error(error);
+          //this.$parent.isError = true;
+          //throw new Error(error);
         });
     },
     selectMusicComment() {
       return this.$http
         .get(
-          `/comment/music?id=${this.playData.id}&limit=15&offset=${this
+          `/comment/${typeMap[this.commentData.type]}?id=${this.commentData.id}&limit=15&offset=${this
             .commPage * 15}&before=0`
         )
         .then(response => {
@@ -85,12 +90,13 @@ export default {
           }
         })
         .catch(error => {
+          this.$parent.isError = true;
           throw new Error(error);
         });
     },
     selectTotal() {
       return this.$http
-        .get(`/comment/music?id=${this.playData.id}&limit=0&before=0`)
+        .get(`/comment/${typeMap[this.commentData.type]}?id=${this.commentData.id}&limit=0&before=0`)
         .then(response => {
           let total = response.data.total;
           this.total = total;
@@ -113,13 +119,14 @@ export default {
     }
   },
   watch: {
-    playData(to) {
+    commentData() {
       this.$parent.loadType = true;
       Object.assign(this.$data, this.$options.data());
       this.init();
     }
   },
   mounted() {
+    console.log("zz");
     this.init();
   }
 };
@@ -140,7 +147,6 @@ export default {
   font-size: 0.5rem;
 }
 #scroll {
-  padding-top: 8vh;
   height: 100%;
   box-sizing: border-box;
   overflow-y: auto;

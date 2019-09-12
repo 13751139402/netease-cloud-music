@@ -18,8 +18,8 @@ export default {
     };
   },
   computed: {
-    playData() {
-      return this.$store.state.playData;
+    commentData() {
+      return this.$store.state.commentData;
     }
   },
   components: {
@@ -29,33 +29,35 @@ export default {
   },
   methods: {
     back() {
+      this.$parent.isError=false;
       this.$router.push("/songComment");
     },
     selectHotComm() {
       return this.$http
         .get(
           `comment/hot?id=${
-            this.playData.id
-          }&type=0&limit=15&before=0&offset=${this.commPage * 15}`
+            this.commentData.id
+          }&type=${this.commentData.type}&limit=15&before=0&offset=${this.commPage * 15}`
         )
         .then(response => {
           this.hotComments.push(...response.data.hotComments);
           this.commPage++;
           this.$refs.hotComm.loading = false;
-          if (this.hotComments.length >= this.total) {
+          if (this.hotComments.length >= this.total-1) {
             this.$refs.hotComm.finished = true;
           }
         })
         .catch(error => {
+          this.$parent.isError=true;
           throw new Error(error);
         });
     },
     selectTotal() {
       return this.$http
-        .get(`/comment/hot?id=${this.playData.id}&type=0&limit=0&before=0`)
+        .get(`/comment/hot?id=${this.commentData.id}&type=${this.commentData.type}&limit=0&before=0`)
         .then(response => {
-          let total=response.data.total;
-          this.total=total;
+          let total = response.data.total;
+          this.total = total;
           this.$parent.title = `精彩评论(${total})`;
         })
         .catch(error => {
@@ -63,14 +65,12 @@ export default {
         });
     }
   },
-  mounted(){
-    this.$parent.loadType=true;
+  mounted() {
+    this.$parent.loadType = true;
     const _this = this;
-    this.$http
-      .all([this.selectTotal(), this.selectHotComm()])
-      .then(() => {
-        _this.$parent.loadType = false;
-      });
+    this.$http.all([this.selectTotal(), this.selectHotComm()]).then(() => {
+      _this.$parent.loadType = false;
+    });
   }
 };
 </script>
@@ -87,9 +87,9 @@ head {
   z-index: 199;
 }
 main {
-  padding-top: 8vh;
   height: 100%;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 head .van-icon {
   opacity: 0.9;
@@ -141,22 +141,5 @@ a {
 .hotComm:hover {
   background: #bbbbbb;
   color: #fff !important;
-}
-</style>
-<style>
-#hotComm .van-nav-bar__title {
-  margin: 0 1rem;
-  display: flex;
-  background: initial;
-}
-#hotComm .van-nav-bar {
-  background: transparent;
-}
-#hotComm .van-nav-bar__left,
-#hotComm .van-nav-bar__right {
-  font-size: 0.5rem;
-}
-#hotComm [class*="van-hairline"]::after {
-  border: 0;
 }
 </style>

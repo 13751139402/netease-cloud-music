@@ -1,53 +1,50 @@
 <template>
-<section id="music">
-  <img :src="`${playData.pic}?param=50y50`" id="background" />
-  <head>
-    <van-nav-bar left-arrow>
-      <van-icon name="fail" slot="right" />
-      <van-icon name="arrow-left" slot="left" @click="back" />
+  <section id="music">
+    <img :src="`${playData.pic}?param=50y50`" id="background" />
+    <modHead @left="back">
       <div class="musicTitle_1" slot="title">
-        <div>{{playData.name}}</div>
+        <div class="musicName">{{playData.name}}</div>
         <div class="author">{{artists}}</div>
       </div>
-    </van-nav-bar>
-  </head>
-  <main>
-    <cover v-show="open"></cover>
-    <lyric v-show="!open"></lyric>
-  </main>
-  <footer>
-    <div id="progressNode">
-      <span id="progressLeft">{{currentTime}}</span>
-      <figure id="progressContainer">
-        <van-slider
-          v-model="progress"
-          bar-height="2px"
-          active-color="#f44"
-          @change="progressChange"
-          @drag-start="isDrag=true"
-          @drag-end="isDrag=false"
-        >
-          <div slot="button" class="custom-button"></div>
-        </van-slider>
-      </figure>
-      <span id="progressRight">{{duration}}</span>
-    </div>
-    <div id="control">
-      <van-icon name="close" />
-      <van-icon name="arrow-left" />
-      <van-icon name="pause-circle-o" v-show="play" @click="control" class="palyer" />
-      <van-icon name="play-circle-o" v-show="!play" @click="control" class="palyer" />
-      <van-icon name="arrow" />
-      <van-icon name="todo-list-o" @click="changeRecord" />
-    </div>
-  </footer>
-</section>
+    </modHead>
+    <main>
+      <cover v-show="open"></cover>
+      <lyric v-show="!open"></lyric>
+    </main>
+    <footer>
+      <div id="progressNode">
+        <span id="progressLeft">{{currentTime}}</span>
+        <figure id="progressContainer">
+          <van-slider
+            v-model="progress"
+            bar-height="2px"
+            active-color="#f44"
+            @change="progressChange"
+            @drag-start="isDrag=true"
+            @drag-end="isDrag=false"
+          >
+            <div slot="button" class="custom-button"></div>
+          </van-slider>
+        </figure>
+        <span id="progressRight">{{duration}}</span>
+      </div>
+      <div id="control">
+        <van-icon name="close" />
+        <van-icon name="arrow-left" />
+        <van-icon name="pause-circle-o" v-show="play" @click="control" class="palyer" />
+        <van-icon name="play-circle-o" v-show="!play" @click="control" class="palyer" />
+        <van-icon name="arrow" />
+        <van-icon name="todo-list-o" @click="changeRecord" />
+      </div>
+    </footer>
+  </section>
 </template>
 
 <script>
 import { NavBar, Icon, Slider } from "vant";
 import cover from "./children/cover";
 import lyric from "./children/lyric";
+import modHead from "../../components/head";
 export default {
   data() {
     return {
@@ -90,7 +87,8 @@ export default {
     [Icon.name]: Icon,
     [Slider.name]: Slider,
     cover,
-    lyric
+    lyric,
+    modHead
   },
   methods: {
     back() {
@@ -149,7 +147,6 @@ export default {
 .musicTitle_1 {
   display: flex;
   flex-direction: column;
-  margin: 0.2rem 0 0 0.5rem;
   align-items: baseline;
   line-height: initial;
   color: #fff;
@@ -157,6 +154,10 @@ export default {
 .author {
   font-size: 0.3rem;
   opacity: 0.8;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 5rem;
 }
 head {
   position: absolute;
@@ -238,27 +239,33 @@ head .van-icon {
   background: #fff;
   border-radius: 50%;
 }
+.musicName {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 90%;
+}
 </style>
 <style>
-#music .van-nav-bar__title {
+.van-nav-bar__title {
   margin: 0 1rem;
   display: flex;
   background: initial;
 }
-#music .van-nav-bar {
+.van-nav-bar {
   background: transparent;
 }
-#music .van-nav-bar__left,
-#music .van-nav-bar__right {
+.van-nav-bar__left,
+.van-nav-bar__right {
   font-size: 0.5rem;
 }
-#music [class*="van-hairline"]::after {
+[class*="van-hairline"]::after {
   border: 0;
 }
 .van-nav-bar__left {
   left: 0.4rem;
 }
-.van-nav-bar__right{
-  right: .4rem;
+.van-nav-bar__right {
+  right: 0.4rem;
 }
 </style>

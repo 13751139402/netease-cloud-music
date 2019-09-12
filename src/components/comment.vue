@@ -12,6 +12,8 @@
       @load="onLoad"
       finished-text="没有更多了"
       :immediate-check="false"
+      :error.sync="error"
+      error-text="请求失败，点击重新加载"
     >
       <figure class="commItem" v-for="(item,index) in data1" :key="item.commentId">
         <head class="commImgContainer">
@@ -41,7 +43,6 @@
 <script>
 import { Icon, List } from "vant";
 import mixins from "../assets/mixins";
-import { types } from 'util';
 export default {
   //   0: 歌曲 1: mv 2: 歌单 3: 专辑 4: 电台 5: 视频 6: 动态
   props: {
@@ -58,6 +59,7 @@ export default {
       title1: this.title,
       loading: false, //是否正在加载
       finished: false, //是否加载完成
+      error: false,
       total1: this.total // 总数
     };
   },
@@ -72,9 +74,10 @@ export default {
           if (count > 100000) {
             let num = Math.floor(count / 10000);
             let fixed = String(count % 10000).slice(0, 1);
-            item.likedCountMap = fixed === "0" ? `${num}万` : `${num}.${fixed}万`;
-          }else{
-            item.likedCountMap=count;
+            item.likedCountMap =
+              fixed === "0" ? `${num}万` : `${num}.${fixed}万`;
+          } else {
+            item.likedCountMap = count;
           }
           item.content = item.content.split("\n").join("<br />");
         });
@@ -84,20 +87,24 @@ export default {
   mixins: [mixins],
   methods: {
     onLoad() {
+      this.error = false;
       this.$emit("commLoad");
     },
     like(index) {
-      console.log("点赞");
       let item = this.data[index];
       let { commentId, liked } = item;
       let { id, type } = this.playData;
       this.$http
         .get(
-          `/comment/like?id=${id}&cid=${commentId}&t=${liked ? 0 : 1}&type=${type}`
+          `/comment/like?id=${id}&cid=${commentId}&t=${
+            liked ? 0 : 1
+          }&type=${type}`
         )
-        .then(response => {
+        .then(() => {
           item.liked = !liked;
-          this.likedCountMap=item.liked ? item.likedCount++ : item.likedCount--;
+          this.likedCountMap = item.liked
+            ? item.likedCount++
+            : item.likedCount--;
         })
         .catch(error => {
           throw new Error(error);

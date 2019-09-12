@@ -6,7 +6,7 @@ Vue.use(Router)
 let routes = [
   {
     path: '/',
-    redirect: "login"
+    redirect: "playList"
   },
   {
     path: '/login',
@@ -38,8 +38,8 @@ let routes = [
     component: () => import('../views/music/index')
   },
   {
-    path: '/musicComment',
-    name: 'musicComment',
+    path: '/comment',
+    name: 'comment',
     component: () => import('../views/music/comm'),
     children: [{
       path: '/',
@@ -66,6 +66,11 @@ let routes = [
       component: () => import('../views/music/children/hotComm'),
     }
     ]
+  },
+  {
+    path: '/playList',
+    name: 'playList',
+    component: () => import('../views/playList/index')
   }
 ]
 

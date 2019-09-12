@@ -10,7 +10,7 @@
         <div id="CD"></div>
       </figure>
     </div>
-    <article @click.stop="">
+    <article @click.stop>
       <van-icon name="like-o" />
       <van-icon name="upgrade" />
       <van-icon name="close" />
@@ -35,6 +35,9 @@ export default {
     pic() {
       return this.$store.state.playData.pic;
     },
+    playData() {
+      return this.$store.state.playData;
+    },
     pid() {
       return this.$store.state.playData.id;
     },
@@ -53,18 +56,24 @@ export default {
   },
   methods: {
     linkRouter() {
-      this.$parent.open=false;
+      this.$parent.open = false;
     },
     linkComment() {
-      this.$router.push("/musicComment/song");
+      let data = {
+        id: this.pid, //评论id
+        name: this.playData.name, //评论名称
+        artists: this.playData.artists, //作者
+        type: 0, //类型 歌曲
+        pic: this.playData.pic,
+      };
+      this.$store.commit("commentData", data);
+      this.$router.push("/comment");
     },
     selectTotal() {
       this.$http
         .get(`/comment/music?id=${this.pid}&limit=0&before=0`)
         .then(response => {
-          if (!this.total) {
-            this.total = response.data.total;
-          }
+          this.total = response.data.total;
         })
         .catch(error => {
           throw new Error(error);
@@ -74,8 +83,10 @@ export default {
   components: {
     [Icon.name]: Icon
   },
-  created() {
-    this.selectTotal();
+  watch: {
+    pid() {
+      this.selectTotal();
+    }
   }
 };
 </script>

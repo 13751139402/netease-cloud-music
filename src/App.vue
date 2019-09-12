@@ -43,10 +43,10 @@ export default {
     //let cookie =this.storage.getCookie("MUSIC_U");
     if (userData && userData !== "undefined") {
       if (userData === "experience") {
-        this.$router.push("/home");
+        //this.$router.push("/home");
       } else {
         this.$store.commit("upDateUser", userData);
-        this.$router.push("/home");
+        //this.$router.push("/home");
       }
     }
   },
@@ -125,4 +125,5 @@ body {
 .figure{
   margin: 0;
 }
+
 </style>

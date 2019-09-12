@@ -25,5 +25,11 @@ export default {
     },
     volume(state, volume) {
         state.audio.volume = volume;
-    }
+    },
+    playListId(state, id) {
+        state.playListId = id;
+    },
+    commentData(state, data) {
+        state.commentData = data;
+    },
 }

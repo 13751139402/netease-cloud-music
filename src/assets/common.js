@@ -96,6 +96,7 @@ let referee = {
             }
         }
     },
+    // 防抖
     debounce: (fun, delay) => {
         return function (args) {
             let that = this

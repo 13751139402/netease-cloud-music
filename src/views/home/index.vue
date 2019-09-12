@@ -2,7 +2,9 @@
   <section id="home">
     <van-icon name="setting-o" @click="showPopup" class="left" />
     <van-tabs swipeable v-model="active">
-      <van-tab title="我的" name="me">我的</van-tab>
+      <van-tab title="我的" name="me">
+        <me></me>
+      </van-tab>
       <van-tab title="发现" name="find">
         <find></find>
       </van-tab>
@@ -22,6 +24,7 @@
 import { Icon, Tab, Tabs } from "vant";
 import navbar from "../../components/navBar";
 import find from "./children/find";
+import me from "./children/me";
 export default {
   data() {
     return {
@@ -40,7 +43,8 @@ export default {
     [Tab.name]: Tab,
     [Tabs.name]: Tabs,
     navbar,
-    find
+    find,
+    me
   },
   methods: {
     showPopup() {

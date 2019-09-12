@@ -1,6 +1,6 @@
 <template>
   <section id="find">
-    <div id="banner">
+    <div id="banner" @touchstart.stop @touchend.stop @touchmove.stop>
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="(item, index) in images" :key="index">
           <img v-lazy="item.pic" />

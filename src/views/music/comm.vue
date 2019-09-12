@@ -1,40 +1,68 @@
 <template>
-<section id="songComment">
-  <head>
-    <van-nav-bar left-arrow>
-      <van-icon name="fail" slot="right" />
-      <van-icon name="arrow-left" slot="left" @click="back" />
-      <div class="musicTitle_1" slot="title">
-        <div>{{title}}</div>
+  <section id="songComment">
+    <modHead @left="back" :title="title"></modHead>
+    <div id="loading" v-show="loadType">
+      <van-loading color="rgb(255, 68, 68)" v-if="!isError">
+        <span>努力加载中...</span>
+      </van-loading>
+      <div v-else style="display: flex;font-size: .5rem;color: red;">
+        <van-icon name="cross" />
+        <span>加载失败</span>
       </div>
-    </van-nav-bar>
-  </head>
-  <div id="loading" v-show="loadType">
-    <van-loading color="rgb(255, 68, 68)">
-      <span>努力加载中...</span>
-    </van-loading>
-  </div>
-  <router-view></router-view>
-</section>
+    </div>
+    <router-view></router-view>
+    <footer class="field">
+      <van-field v-model="commValue" placeholder="这一次也许就是你上热评了" />
+      <van-icon name="close" style="margin-right:5px" />
+      <van-icon name="smile-o" />
+      <div class="submit" @click="submitComm(1)" :class="{commFont:isCommFont}">发送</div>
+    </footer>
+  </section>
 </template>
 
 <script>
-import { NavBar, Icon, Loading } from "vant";
+import { NavBar, Icon, Loading, Field } from "vant";
+import modHead from "../../components/head";
 export default {
   data() {
     return {
       title: "",
-      loadType: true
+      loadType: true,
+      isError: false,
+      commValue: ""
     };
   },
   components: {
     [NavBar.name]: NavBar,
     [Icon.name]: Icon,
-    [Loading.name]: Loading
+    [Loading.name]: Loading,
+    [Field.name]: Field,
+    modHead
+  },
+  computed: {
+    commentData() {
+      return this.$store.state.commentData;
+    },
+    isCommFont() {
+      return this.commValue == "" ? false : true;
+    }
   },
   methods: {
     back() {
+      this.isError = false;
       this.$router.go(-1);
+    },
+    submitComm(isT) {
+      if (this.isCommFont) {
+        this.$http
+          .get(
+            `/comment?t=${isT}&type=${this.commentData.type}&id=${this.commentData.id}&content=${this.commValue}`
+          )
+          .then(response => {})
+          .catch(error => {
+            throw new Error(error);
+          });
+      }
     }
   }
 };
@@ -42,9 +70,11 @@ export default {
 <style scoped>
 #songComment {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 head {
-  position: fixed;
   width: 100%;
   top: 0;
   background: #fff;
@@ -70,21 +100,26 @@ head .van-icon {
   justify-content: center;
   box-sizing: border-box;
 }
-</style>
-<style>
-#songComment .van-nav-bar__title {
-  margin: 0 1rem;
+.field {
+  bottom: 0;
+  height: 6.3vh;
+  width: 100%;
   display: flex;
-  background: initial;
+  align-items: center;
+  background: #fff;
+  font-size: 0.4rem;
+  z-index: 999;
+  border-top: 1px solid #f6f6f6;
 }
-#songComment .van-nav-bar {
-  background: transparent;
+.field > i {
+  font-size: 0.6rem;
 }
-#songComment .van-nav-bar__left,
-#songComment .van-nav-bar__right {
-  font-size: 0.5rem;
+.submit {
+  width: 2rem;
+  text-align: center;
+  color: #a3a3a3;
 }
-#songComment [class*="van-hairline"]::after {
-  border: 0;
+.commFont {
+  color: #3b3b3b;
 }
 </style>

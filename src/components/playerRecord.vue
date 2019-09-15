@@ -57,7 +57,6 @@ export default {
         name: "列表循环",
         icon: "close"
       },
-      playIndex: 0,
       randomMap: [] //随机播放的映射列表
     };
   },
@@ -75,7 +74,7 @@ export default {
     playList() {
       return this.$store.state.playList;
     },
-    vuexPlayIndex() {
+    playIndex() {
       return this.$store.state.playIndex;
     },
     playTypeIndex() {
@@ -90,6 +89,13 @@ export default {
   },
   methods: {
     changePlayIndex(index) {
+      if (this.playTypeIndex === 1) {
+        let musicId = this.playList[index].id;
+        index = this.randomMap.findIndex(item => {
+          return item.id === musicId;
+        });
+        this.$store.commit("playIndex", index);
+      }
       this.$store.commit("playIndex", index);
     },
     selectList() {
@@ -144,18 +150,24 @@ export default {
     userData(to, from) {
       this.userData && this.selectList();
     },
-    vuexPlayIndex(to) {
-      this.playIndex = to;
-    },
     playTypeIndex(to) {
       if (to === 1) {
         this.randomMap = shuffle(this.playList);
-        this.playIndex = this.playList.findIndex(item => {
+        let index = this.randomMap.findIndex(item => {
           return item.id === this.currentMusic;
         });
+        this.$store.commit("playIndex", index);
       }
-      console.log("azw");
       this.currentPlay = playType.get(to);
+    }
+  },
+  playList() {
+    if (this.playTypeIndex === 1) {
+      this.randomMap = shuffle(this.playList);
+      let index = this.randomMap.findIndex(item => {
+        return item.id === this.currentMusic;
+      });
+      this.$store.commit("playIndex", index);
     }
   }
 };

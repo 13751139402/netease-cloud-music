@@ -6,7 +6,7 @@ Vue.use(Router)
 let routes = [
   {
     path: '/',
-    redirect: "playList"
+    redirect: "home"
   },
   {
     path: '/login',

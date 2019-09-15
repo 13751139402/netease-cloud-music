@@ -30,6 +30,7 @@
       :src="playData.music"
       @timeupdate="timeupData"
       ref="audio"
+      :loop="loopType"
       @canplay="canplay"
       @ended="ended"
     >播放器失败</audio>
@@ -46,6 +47,9 @@ export default {
     };
   },
   computed: {
+    loopType() {
+      return this.playTypeIndex === 2;
+    },
     playData() {
       this.$store.commit("changePlayType", true);
       return this.$store.state.playData;
@@ -63,6 +67,9 @@ export default {
     },
     volume() {
       return this.$store.state.audio.volume;
+    },
+    playTypeIndex() {
+      return this.$store.state.playTypeIndex;
     }
   },
   components: {
@@ -91,7 +98,9 @@ export default {
       this.$store.commit("duration", this.myAudio.duration);
     },
     ended() {
-      this.$store.commit('playIndexNext');
+      if (!this.loopType) {
+        this.$store.commit("playIndexNext");
+      }
       this.$store.commit("changePlayType", false);
     }
   },

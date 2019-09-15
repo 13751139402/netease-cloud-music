@@ -1,7 +1,7 @@
 <template>
   <section id="music">
     <img :src="`${playData.pic}?param=50y50`" id="background" />
-    <modHead @left="back">
+    <modHead>
       <div class="musicTitle_1" slot="title">
         <div class="musicName">{{playData.name}}</div>
         <div class="author">{{artists}}</div>
@@ -30,10 +30,10 @@
       </div>
       <div id="control">
         <van-icon name="close" />
-        <van-icon name="arrow-left" />
+        <van-icon name="arrow-left" @click="last" />
         <van-icon name="pause-circle-o" v-show="play" @click="control" class="palyer" />
         <van-icon name="play-circle-o" v-show="!play" @click="control" class="palyer" />
-        <van-icon name="arrow" />
+        <van-icon name="arrow" @click="next" />
         <van-icon name="todo-list-o" @click="changeRecord" />
       </div>
     </footer>
@@ -91,9 +91,6 @@ export default {
     modHead
   },
   methods: {
-    back() {
-      this.$router.push("/home");
-    },
     control() {
       this.$store.commit("changePlayType", !this.play);
     },
@@ -105,6 +102,12 @@ export default {
     },
     changeRecord() {
       this.$store.commit("showRecord");
+    },
+    next() {
+      this.$store.commit('playIndexNext');
+    },
+    last() {
+      this.$store.commit('playIndexLast');
     }
   },
   watch: {
@@ -150,6 +153,7 @@ export default {
   align-items: baseline;
   line-height: initial;
   color: #fff;
+  width: 90%;
 }
 .author {
   font-size: 0.3rem;
@@ -243,7 +247,6 @@ head .van-icon {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  width: 90%;
 }
 </style>
 <style>

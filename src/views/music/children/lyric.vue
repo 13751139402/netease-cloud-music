@@ -64,7 +64,17 @@ export default {
       this.$http
         .get(`/lyric?id=${id}`)
         .then(response => {
-          let data = response.data.lrc.lyric;
+          let lrc = response.data.lrc;
+          let data = lrc ? lrc.lyric : "";
+          if (data === "") {
+            this.lyricData = [
+              {
+                id: 1,
+                text: "暂无歌词"
+              }
+            ];
+            return;
+          }
           let array = [];
           data.replace(/\[(.*)\](.*)/g, (match, time, text) => {
             let timeArr = time.split("][");
@@ -118,7 +128,7 @@ export default {
       }
     },
     linkRouter() {
-      this.$parent.open=true;
+      this.$parent.open = true;
     },
     onChange(value) {
       this.$store.commit("volume", value * 0.01);
@@ -144,9 +154,6 @@ export default {
     volume(to) {
       this.volumeProg = to * 100;
     }
-  },
-  mounted() {
-    this.selectLyric(this.muiscId);
   }
 };
 </script>

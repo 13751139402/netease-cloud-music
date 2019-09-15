@@ -171,7 +171,7 @@ figure > head {
 .commLike {
   align-items: center;
   justify-content: center;
-  font-size: 0.3rem;
+  font-size: 0.35rem;
 }
 .text {
   color: #3b3b3b;

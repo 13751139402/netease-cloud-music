@@ -32,4 +32,24 @@ export default {
     commentData(state, data) {
         state.commentData = data;
     },
+    playList(state, list) {
+        state.playList = list;
+    },
+    playIndex(state, index) {
+        state.playIndex = index;
+    },
+    playIndexNext(state) {
+        if (state.playIndex < state.playList.length - 1) {
+            state.playIndex += 1;
+        } else {
+            state.playIndex = 0;
+        }
+    },
+    playIndexLast(state) {
+        if (state.playIndex > 0) {
+            state.playIndex -= 1;
+        } else {
+            state.playIndex = state.playList.length - 1;
+        }
+    }
 }

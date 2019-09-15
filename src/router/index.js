@@ -39,11 +39,10 @@ let routes = [
   },
   {
     path: '/comment',
-    name: 'comment',
     component: () => import('../views/music/comm'),
     children: [{
-      path: '/',
-      redirect: 'song',
+      path: '',
+      redirect: "song"
     },
     {
       path: 'song',
@@ -70,6 +69,11 @@ let routes = [
   {
     path: '/playList',
     name: 'playList',
+    meta: {
+      keepAlive: true,
+      scrollEl: "list_main",
+      scrollTop: 0,
+    },
     component: () => import('../views/playList/index')
   }
 ]

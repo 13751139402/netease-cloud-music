@@ -1,7 +1,7 @@
 <template>
   <section id="home">
     <van-icon name="setting-o" @click="showPopup" class="left" />
-    <van-tabs swipeable v-model="active">
+    <van-tabs swipeable v-model="active" sticky>
       <van-tab title="我的" name="me">
         <me></me>
       </van-tab>
@@ -59,22 +59,22 @@ export default {
   height: 100%;
 }
 .left {
-  position: absolute;
+  position: fixed;
   top: 0.25rem;
   left: 0.3rem;
-  z-index: 99;
+  z-index: 999;
   font-size: 0.7rem;
 }
 .rigth {
-  position: absolute;
+  position: fixed;
   top: 0.25rem;
   right: 0.3rem;
-  z-index: 99;
+  z-index: 999;
   font-size: 0.7rem;
 }
 </style>
 <style>
-#home .van-tabs--line > .van-tabs__wrap {
-  padding: 0rem 1rem;
+#home .van-tabs__nav--line {
+  padding: 0rem 1rem 0.4rem 1rem;
 }
 </style>

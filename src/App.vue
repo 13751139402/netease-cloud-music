@@ -9,15 +9,15 @@
         </footer>
       </section>
     </transition>
-      <keep-alive>
-        <!--使用keep-alive会将页面缓存-->
-        <router-view v-if="$route.meta.keepAlive"></router-view>
-      </keep-alive>
-      <router-view v-if="!$route.meta.keepAlive"></router-view>
+    <keep-alive>
+      <!--使用keep-alive会将页面缓存-->
+      <router-view v-if="$route.meta.keepAlive"></router-view>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"></router-view>
     <footer>
       <player v-if="this.$store.state.playData"></player>
     </footer>
-    <palyRecord></palyRecord>
+    <palyRecord ref="record"></palyRecord>
   </div>
 </template>
 <script>
@@ -40,8 +40,9 @@ export default {
       //this.showShade = false;
     }, 1000);
     let userData = this.storage.get("userData");
+
     //let cookie =this.storage.getCookie("MUSIC_U");
-    if (userData && userData !== "undefined") {
+    if (userData !== "undefined") {
       if (userData === "experience") {
         //this.$router.push("/home");
       } else {
@@ -122,8 +123,7 @@ body {
 .footer {
   font-size: 0.5rem;
 }
-.figure{
+.figure {
   margin: 0;
 }
-
 </style>

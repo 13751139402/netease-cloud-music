@@ -28,7 +28,11 @@ export default {
   },
   methods: {
     left() {
-      this.$emit("left");
+      if (this.$listeners.left) {
+        this.$emit("left");
+      } else {
+        this.$router.go(-1);
+      }
     }
   }
 };

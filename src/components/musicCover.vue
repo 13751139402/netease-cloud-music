@@ -77,6 +77,5 @@ img {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   width: 2.9rem;
-  height: 0.7rem;
 }
 </style>

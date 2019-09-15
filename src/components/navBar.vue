@@ -129,10 +129,12 @@ export default {
   },
   methods: {
     exit() {
-      this.$store.commit("upDateUser", false);
-      this.$store.commit("upDatePlay", false);
-      this.storage.remove("userData");
-      this.$router.push({ path: "/login", query: { type: "login" } });
+      this.$http.get("/logout").then(() => {
+        this.$store.commit("upDateUser", false);
+        this.$store.commit("upDatePlay", false);
+        this.storage.remove("userData");
+        this.$router.push({ path: "/login", query: { type: "login" } });
+      });
     },
     loginIn() {
       this.$store.commit("upDateUser", false);

@@ -57,7 +57,9 @@ export default {
       return this.$store.state.audio.skip;
     },
     isRouteHome() {
-      return this.$route.matched[0].path == "/home";
+      let allow = "/home/playList";
+      let reg = RegExp(this.$route.matched[0].path);
+      return reg.test(allow);
     },
     volume() {
       return this.$store.state.audio.volume;
@@ -66,7 +68,7 @@ export default {
   components: {
     [Icon.name]: Icon,
     [Image.name]: Image,
-    [Circle.name]: Circle,
+    [Circle.name]: Circle
   },
   methods: {
     changeRecord() {
@@ -89,6 +91,7 @@ export default {
       this.$store.commit("duration", this.myAudio.duration);
     },
     ended() {
+      this.$store.commit('playIndexNext');
       this.$store.commit("changePlayType", false);
     }
   },

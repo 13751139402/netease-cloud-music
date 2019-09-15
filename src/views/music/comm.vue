@@ -11,17 +11,11 @@
       </div>
     </div>
     <router-view></router-view>
-    <footer class="field">
-      <van-field v-model="commValue" placeholder="这一次也许就是你上热评了" />
-      <van-icon name="close" style="margin-right:5px" />
-      <van-icon name="smile-o" />
-      <div class="submit" @click="submitComm(1)" :class="{commFont:isCommFont}">发送</div>
-    </footer>
   </section>
 </template>
 
 <script>
-import { NavBar, Icon, Loading, Field } from "vant";
+import { NavBar, Icon, Loading } from "vant";
 import modHead from "../../components/head";
 export default {
   data() {
@@ -29,40 +23,23 @@ export default {
       title: "",
       loadType: true,
       isError: false,
-      commValue: ""
     };
   },
   components: {
     [NavBar.name]: NavBar,
     [Icon.name]: Icon,
     [Loading.name]: Loading,
-    [Field.name]: Field,
     modHead
   },
   computed: {
     commentData() {
       return this.$store.state.commentData;
-    },
-    isCommFont() {
-      return this.commValue == "" ? false : true;
     }
   },
   methods: {
     back() {
       this.isError = false;
       this.$router.go(-1);
-    },
-    submitComm(isT) {
-      if (this.isCommFont) {
-        this.$http
-          .get(
-            `/comment?t=${isT}&type=${this.commentData.type}&id=${this.commentData.id}&content=${this.commValue}`
-          )
-          .then(response => {})
-          .catch(error => {
-            throw new Error(error);
-          });
-      }
     }
   }
 };
@@ -100,26 +77,5 @@ head .van-icon {
   justify-content: center;
   box-sizing: border-box;
 }
-.field {
-  bottom: 0;
-  height: 6.3vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  background: #fff;
-  font-size: 0.4rem;
-  z-index: 999;
-  border-top: 1px solid #f6f6f6;
-}
-.field > i {
-  font-size: 0.6rem;
-}
-.submit {
-  width: 2rem;
-  text-align: center;
-  color: #a3a3a3;
-}
-.commFont {
-  color: #3b3b3b;
-}
+
 </style>

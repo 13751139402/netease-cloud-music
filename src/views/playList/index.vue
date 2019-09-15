@@ -1,9 +1,6 @@
 <template>
 <section id="playList">
-  <img
-    src="https://p2.music.126.net/nvmWvcUvkjcBt9O3pZvcVg==/18600438208923747.jpg??param=50y50"
-    id="background"
-  />
+  <img :src="playlist.pic" id="background" />
   <modHead title="歌单" style="color:#fff;position: fixed;z-index:999">
     <div slot="right">
       <van-icon name="search" style="margin-right:10px" />
@@ -23,14 +20,14 @@
         <div id="details_title">
           <span style="font-weight: bold;">{{playlist.name}}</span>
           <figure id="details_title_1">
-            <img :src="user.avatarUrl" id="details_title_head" />
+            <img :src="playlist.nickname&&playlist.nickname.pic" id="details_title_head" />
             <span>{{playlist.nickname&&playlist.nickname.name}}</span>
             <van-icon name="arrow" />
           </figure>
         </div>
       </div>
       <ul id="control">
-        <li  @click="linkComm">
+        <li @click="linkComm">
           <van-icon name="close" />
           <span>评论</span>
         </li>
@@ -75,7 +72,7 @@
             @load="onLoad"
             :immediate-check="false"
           >
-            <van-cell v-for="(item,index) in list" :key="item.id">
+            <van-cell v-for="(item,index) in list" :key="item.id" @click="linkMusic(item.id)">
               <div slot="icon" class="listNum">{{index+1}}</div>
               <div slot="title" class="listTtitle">{{item.name}}</div>
               <div slot="label" class="listLabel">{{item.details}}</div>
@@ -110,6 +107,9 @@ export default {
   computed: {
     user() {
       return this.$store.state.userData;
+    },
+    playListId() {
+      return this.$store.state.playListId;
     }
   },
   components: {
@@ -122,18 +122,28 @@ export default {
   },
   methods: {
     selectPlayList() {
+      let num = num => {
+        if (num < 100000) {
+          return num;
+        } else if (100000 < num && num < 100000000) {
+          return `${Math.floor(num / 100000)}万`;
+        } else {
+          return `${(num / 100000000).toFixed(1)}亿`;
+        }
+      };
+      this.list = [];
       this.$http
-        .get(`/playlist/detail?id=${this.$store.state.playListId}`)
+        .get(`/playlist/detail?id=${this.playListId}`)
         .then(response => {
-          console.log("za");
           let playlist = response.data.playlist;
           this.playlist = {
             nickname: {
               id: playlist.creator.userId,
-              name: playlist.creator.nickname
+              name: playlist.creator.nickname,
+              pic: playlist.creator.avatarUrl
             },
             name: playlist.name.replace(this.user.nickname, "我"),
-            playCount: playlist.playCount,
+            playCount: num(playlist.playCount),
             trackCount: playlist.trackCount,
             pic: playlist.coverImgUrl
           };
@@ -153,9 +163,8 @@ export default {
       } else {
         this.$refs.details.style.opacity = 1;
       }
-      if (percent === 1) {
+      if (percent >= 0.99) {
         this.$refs.list.style.overflowY = "auto";
-        this.$refs.list.scrollTop = 1;
         this.$refs.container.style.overflowY = "hidden";
       }
     },
@@ -174,6 +183,7 @@ export default {
           return target;
         }, [])
         .join(",");
+
       this.$http
         .get(`/song/detail?ids=${params}`)
         .then(response => {
@@ -215,18 +225,41 @@ export default {
     },
     linkComm() {
       let data = {
-        id: this.$store.state.playListId, //评论id
+        id: this.playListId, //评论id
         name: this.playlist.name, //评论名称
-        artists: [this.playlist.artists], //作者
-        type: 2 //类型 歌单
+        artists: [this.playlist.nickname], //作者
+        type: 2, //类型 歌单
+        pic: this.playlist.pic
       };
       this.$store.commit("commentData", data);
-      this.$router.push("comment")
+      this.$router.push("comment");
+    },
+    linkMusic(id) {
+      this.$store.commit("playList", this.list);
+      this.$store.dispatch("selectMusic", id);
+      //this.$router.push("/music");
+    }
+  },
+  created() {
+    this.scrollTop = referee.debounce(this.scrollTop, 100);
+  },
+  watch: {
+    playListId() {
+      this.selectPlayList();
     }
   },
   created() {
     this.selectPlayList();
-    this.scrollTop = referee.debounce(this.scrollTop, 100);
+  },
+  activated() {
+    let container = this.$refs.container,
+      detail = this.$refs.details,
+      list = this.$refs.list;
+    if (container.style.overflowY === "hidden") {
+      container.scrollTop = container.scrollHeight - container.clientHeight;
+    } else {
+      detail.style.opacity = 1;
+    }
   }
 };
 </script>
@@ -246,7 +279,7 @@ export default {
   width: 100;
   height: 100%;
   width: 100%;
-  padding-top: 1.5rem;
+  padding-top: 1.2rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -287,7 +320,7 @@ export default {
 #control {
   font-size: 0.7rem;
   display: flex;
-  padding: 0.5rem 0;
+  margin-top: 0.2rem;
   justify-content: space-around;
 }
 #control > li {

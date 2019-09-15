@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section id="me">
     <figure id="module" @touchstart.stop @touchend.stop @touchmove.stop>
       <ul>
         <li>
@@ -98,6 +98,7 @@
             v-for="{id,coverImgUrl,name,trackCount} in createdPlaylist"
             :key="id"
             :border="false"
+            @click="linkPlayList(id)"
           >
             <img :src="`${coverImgUrl}?param=100y100`" slot="icon" class="listImg" />
             <p slot="title" class="iconTitle">
@@ -120,6 +121,7 @@
             v-for="{id,coverImgUrl,name,trackCount} in subPlaylist"
             :key="id"
             :border="false"
+            @click="linkPlayList(id)"
           >
             <img :src="`${coverImgUrl}?param=100y100`" slot="icon" class="listImg" />
             <p slot="title" class="iconTitle">
@@ -146,7 +148,7 @@ export default {
   },
   data() {
     return {
-      activeNames: ["1","2"],
+      activeNames: ["1", "2"],
       createdPlaylist: [],
       subPlaylist: [],
       subCount: {
@@ -187,15 +189,22 @@ export default {
         .catch(error => {
           throw new Error(error);
         });
+    },
+    linkPlayList(id) {
+      this.$store.commit("playListId", id);
+      this.$router.push("/playList");
     }
   },
   mounted() {
-    this.selectSubCount();
+    this.user && this.selectSubCount();
   }
 };
 </script>
 
 <style scoped>
+#me {
+  padding-bottom: 7vh;
+}
 figure {
   display: flex;
   width: 100%;

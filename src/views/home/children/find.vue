@@ -33,6 +33,7 @@
               :pic="item.picUrl"
               :lookNum="item[countType]"
               :title="item.name"
+              @click="linkPlayList(item.id)"
             ></musicCover>
           </musicContainer>
         </article>
@@ -53,12 +54,12 @@
           <van-tab title="新歌">
             <musicContainer>
               <musicCover
-                v-for="(item,index) in newMusic"
+                v-for="(item) in newMusic"
                 :key="item.id"
                 :id="item.id"
                 :pic="item.pic"
                 :title="item.name"
-                @click="playMusic(index)"
+                @click="playMusic(item.id)"
               >
                 <van-icon name="play-circle-o" class="playMusic" />
               </musicCover>
@@ -177,8 +178,12 @@ export default {
         }, this.newMusic);
       });
     },
-    playMusic(index) {
-      this.$store.dispatch("selectMusic", this.newMusic[index]);
+    linkPlayList(id) {
+      this.$store.commit("playListId", id);
+      this.$router.push("/playList");
+    },
+    playMusic(id) {
+      this.$store.dispatch("selectMusic", id);
     }
   },
   created() {
@@ -212,6 +217,8 @@ title {
   align-items: center;
   margin: 0.5rem 0;
   position: relative;
+  display: block;
+  display: flex;
 }
 </style>
 <style>

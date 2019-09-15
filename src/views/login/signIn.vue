@@ -36,17 +36,13 @@ export default {
           `/login/cellphone?phone=${this.$route.query.phone}&password=${this.passwork}`
         )
         .then(response => {
-          let data=response.data.profile;
+          let data = response.data.profile;
           this.$store.commit("upDateUser", data);
           this.$router.push("/home");
-          this.storage.set('userData',JSON.stringify(data))
+          this.storage.set("userData", JSON.stringify(data));
         })
         .catch(error => {
-          Notify({
-            type: "danger",
-            message: error.response.data.message,
-            duration: 1000
-          });
+          Notify({ type: "danger", message: `密码错误` });
         });
     },
     onClickLeft() {

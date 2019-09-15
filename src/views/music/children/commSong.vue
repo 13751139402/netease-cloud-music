@@ -18,33 +18,44 @@
         </div>
       </span>
     </comments>
-    <comments :data="musicComment" title="最新评论" @commLoad="selectMusicComment" ref="musicComm"></comments>
+    <comments :data="musicComment" title="最新评论" @commLoad="selectMusicComment" ref="musicComm" style="margin-bottom: 6.3vh;"></comments>
+    <footer class="field">
+      <van-field v-model="commValue" placeholder="这一次也许就是你上热评了" />
+      <van-icon name="close" style="margin-right:5px" />
+      <van-icon name="smile-o" />
+      <div class="submit" @click="submitComm(1)" :class="{commFont:isCommFont}">发送</div>
+    </footer>
   </main>
 </template>
 
 <script>
 import comments from "../../../components/comment";
-import { Icon } from "vant";
-let typeMap={
-  0:"music",
-  2:"playlist"
-}
+import { Icon, Field, Toast } from "vant";
+let typeMap = {
+  0: "music",
+  2: "playlist"
+};
 export default {
   data() {
     return {
       hotComments: [],
       musicComment: [],
       commPage: 0,
-      total: 0
+      total: 0,
+      commValue: ""
     };
   },
   components: {
     comments,
-    [Icon.name]: Icon
+    [Icon.name]: Icon,
+    [Field.name]: Field
   },
   computed: {
     commentData() {
       return this.$store.state.commentData;
+    },
+    isCommFont() {
+      return this.commValue == "" ? false : true;
     },
     artists() {
       if (this.commentData && this.commentData.artists) {
@@ -66,7 +77,9 @@ export default {
     },
     hotComment() {
       return this.$http
-        .get(`comment/hot?id=${this.commentData.id}&type=${this.commentData.type}&limit=15`)
+        .get(
+          `comment/hot?id=${this.commentData.id}&type=${this.commentData.type}&limit=15`
+        )
         .then(response => {
           this.hotComments = response.data.hotComments;
         })
@@ -78,8 +91,9 @@ export default {
     selectMusicComment() {
       return this.$http
         .get(
-          `/comment/${typeMap[this.commentData.type]}?id=${this.commentData.id}&limit=15&offset=${this
-            .commPage * 15}&before=0`
+          `/comment/${typeMap[this.commentData.type]}?id=${
+            this.commentData.id
+          }&limit=15&offset=${this.commPage * 15}&before=0`
         )
         .then(response => {
           this.musicComment.push(...response.data.comments);
@@ -96,7 +110,11 @@ export default {
     },
     selectTotal() {
       return this.$http
-        .get(`/comment/${typeMap[this.commentData.type]}?id=${this.commentData.id}&limit=0&before=0`)
+        .get(
+          `/comment/${typeMap[this.commentData.type]}?id=${
+            this.commentData.id
+          }&limit=0&before=0`
+        )
         .then(response => {
           let total = response.data.total;
           this.total = total;
@@ -116,6 +134,31 @@ export default {
         .then(() => {
           _this.$parent.loadType = false;
         });
+    },
+    submitComm(isT) {
+      if (this.isCommFont) {
+        this.$http
+          .get(
+            `/comment?t=${isT}&type=${this.commentData.type}&id=${this.commentData.id}&content=${this.commValue}`
+          )
+          .then(response => {
+            this.musicComment.unshift(response.data.comment);
+            this.commValue = "";
+            Toast({
+              type:'success',
+              message:"评论成功",
+              duration:1000
+            });
+          })
+          .catch(error => {
+            Toast({
+              type:'faill',
+              message:"评论失败",
+              duration:1000
+            });
+            throw new Error(error);
+          });
+      }
     }
   },
   watch: {
@@ -126,7 +169,6 @@ export default {
     }
   },
   mounted() {
-    console.log("zz");
     this.init();
   }
 };
@@ -178,5 +220,28 @@ a {
 .hotComm:hover {
   background: #bbbbbb;
   color: #fff !important;
+}
+.field {
+  bottom: 0;
+  height: 6.3vh;
+  width: 100%;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  font-size: 0.4rem;
+  z-index: 999;
+  border-top: 1px solid #f6f6f6;
+}
+.field > i {
+  font-size: 0.6rem;
+}
+.submit {
+  width: 2rem;
+  text-align: center;
+  color: #a3a3a3;
+}
+.commFont {
+  color: #3b3b3b;
 }
 </style>

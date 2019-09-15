@@ -4,7 +4,7 @@
     <head id="header">
       <div @click="changePlayType">
         <van-icon :name="currentPlay.icon" style="margin-right: 2px;" />
-        <span>{{currentPlay.name}}(31)</span>
+        <span>{{currentPlay.name}}({{playList.length}})</span>
       </div>
       <div>
         <van-icon name="close" />收藏全部
@@ -13,7 +13,7 @@
     </head>
     <van-list :finished="true" finished-text="没有更多了" style="margin-top:1rem">
       <van-cell
-        v-for="(item,index) in list"
+        v-for="(item,index) in playList"
         :key="item.id"
         :title="item.name"
         :class="{currentMusic:currentMusic===item.id}"
@@ -37,34 +37,28 @@ const playType = new Map([
   [2, { name: "单曲循环", icon: "fire-o" }],
   [3, { name: "心动模式", icon: "like-o" }]
 ]);
-playType[Symbol.iterator] = function() {
-  let num = 0;
-  return {
-    next: () => {
-      if (num === this.size) {
-        num = 0;
-      }
-      let value = this.get(num);
-      return {
-        value,
-        done: false,
-        key: num++
-      };
-    }
-  };
-};
-const iterPlay = playType[Symbol.iterator]();
+
+function shuffle(arr) {
+  let i = arr.length;
+  arr = JSON.parse(JSON.stringify(arr));
+  while (i) {
+    let j = Math.floor(Math.random() * i--);
+    [arr[j], arr[i]] = [arr[i], arr[j]];
+  }
+  return arr;
+}
+
 export default {
   data() {
     return {
       show: this.isShow,
-      list: [],
       currentPlay: {
         //0:列表循环 1:随机播放 2:单曲循环 3:心动模式
-        name: "",
-        icon: ""
+        name: "列表循环",
+        icon: "close"
       },
-      playIndex: 0
+      playIndex: 0,
+      randomMap: [] //随机播放的映射列表
     };
   },
   computed: {
@@ -83,6 +77,9 @@ export default {
     },
     vuexPlayIndex() {
       return this.$store.state.playIndex;
+    },
+    playTypeIndex() {
+      return this.$store.state.playTypeIndex;
     }
   },
   components: {
@@ -131,12 +128,15 @@ export default {
       this.$store.commit("showRecord");
     },
     changePlayType() {
-      this.currentPlay = iterPlay.next().value;
+      this.$store.commit("changePlayTypeIndex");
     }
   },
   watch: {
     playIndex(to) {
-      this.$store.dispatch("selectMusic", this.list[to].id);
+      this.$store.dispatch(
+        "selectMusic",
+        this.playTypeIndex === 1 ? this.randomMap[to].id : this.playList[to].id
+      );
     },
     isShow(to) {
       this.show = to;
@@ -144,15 +144,19 @@ export default {
     userData(to, from) {
       this.userData && this.selectList();
     },
-    playList(to) {
-      this.list = to;
-    },
     vuexPlayIndex(to) {
       this.playIndex = to;
+    },
+    playTypeIndex(to) {
+      if (to === 1) {
+        this.randomMap = shuffle(this.playList);
+        this.playIndex = this.playList.findIndex(item => {
+          return item.id === this.currentMusic;
+        });
+      }
+      console.log("azw");
+      this.currentPlay = playType.get(to);
     }
-  },
-  created() {
-    this.changePlayType();
   }
 };
 </script>

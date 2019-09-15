@@ -35,6 +35,8 @@ export default {
     playList(state, list) {
         state.playList = list;
     },
+
+    //-------------- 播放列表
     playIndex(state, index) {
         state.playIndex = index;
     },
@@ -50,6 +52,13 @@ export default {
             state.playIndex -= 1;
         } else {
             state.playIndex = state.playList.length - 1;
+        }
+    },
+    changePlayTypeIndex(state) {
+        if (state.playTypeIndex + 1 >= 4) {
+            state.playTypeIndex = 0;
+        } else {
+            state.playTypeIndex += 1;
         }
     }
 }

@@ -43,7 +43,7 @@ export default {
     },
     totalNum() {
       let total = this.total;
-      if (total < 999) {
+      if (total <= 999) {
         return total;
       } else if (total > 999 && total < 10000) {
         return `999+`;
@@ -64,7 +64,7 @@ export default {
         name: this.playData.name, //评论名称
         artists: this.playData.artists, //作者
         type: 0, //类型 歌曲
-        pic: this.playData.pic,
+        pic: this.playData.pic
       };
       this.$store.commit("commentData", data);
       this.$router.push("/comment");
@@ -87,6 +87,9 @@ export default {
     pid() {
       this.selectTotal();
     }
+  },
+  created() {
+    this.selectTotal();
   }
 };
 </script>

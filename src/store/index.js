@@ -11,7 +11,8 @@ const state = {
 	playData: false,  // palyer-播放数据
 
 	playList: [],     // 播放列表
-	playIndex:0,        // 播放音乐在播放列表中的index
+	playIndex: 0,       // 播放音乐在播放列表中的index
+	playTypeIndex: 0,	// 播放模式 0:列表循环 1:随机播放 2:单曲循环 3:心动模式
 
 	audio: {
 		type: false,  // 播放状态 true:播放 Data

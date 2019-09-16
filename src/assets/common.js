@@ -143,7 +143,7 @@ var Time = {
         var date = new Date(time);
         var month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
         var day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
-        return date.getFullYear() + '年' + month + '月' + day+'日';
+        return date.getFullYear() + '年' + month + '月' + day + '日';
     },
     //获取标准月日
     getMonthDate: function (time) {
@@ -167,7 +167,9 @@ var Time = {
         } else if (timer < 3600) {
             tip = Math.floor(timer / 60) + '分钟前';
         } else if (timer >= 3600 && (timestamp - today >= 0)) {
-            tip = Math.floor(timer / 3600) + '小时前';
+            //tip = Math.floor(timer / 3600) + '小时前';
+            let time = new Date(timestamp);
+            tip = `${String(time.getHours()).padStart(2, '0')}:${String(time.getMinutes()).padStart(2, '0')}`;
         } else if (timer / 86400 <= 31) {
             tip = Math.ceil(timer / 86400) + '天前';
         } else if (timer / 86400 <= 365) {

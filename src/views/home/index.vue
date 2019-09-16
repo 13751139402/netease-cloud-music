@@ -8,7 +8,9 @@
       <van-tab title="发现" name="find">
         <find></find>
       </van-tab>
-      <van-tab title="云村" name="burg">云村</van-tab>
+      <van-tab title="云村" name="burg">
+        <burg></burg>
+      </van-tab>
       <van-tab title="视频" name="video">视频</van-tab>
     </van-tabs>
     <van-icon name="search" class="rigth" />
@@ -25,6 +27,7 @@ import { Icon, Tab, Tabs } from "vant";
 import navbar from "../../components/navBar";
 import find from "./children/find";
 import me from "./children/me";
+import burg from "./children/burg";
 export default {
   data() {
     return {
@@ -44,7 +47,8 @@ export default {
     [Tabs.name]: Tabs,
     navbar,
     find,
-    me
+    me,
+    burg
   },
   methods: {
     showPopup() {

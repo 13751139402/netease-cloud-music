@@ -7,13 +7,18 @@
   url('lconfont/iconfont.svg?t=1566560689127#iconfont') format('svg'); /* iOS 4.1- */
 }
 
-.iconfont {
-  font-family: "iconfont" !important;
+.icon {
+  font-family: "icon" !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+@font-face {
+  font-family: 'icon';
+  src: url('./lconfont/iconfont.ttf') format('truetype');
+}
+
 
 .icon-icon:before {
   content: "\e62d";

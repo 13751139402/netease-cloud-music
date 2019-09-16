@@ -136,7 +136,6 @@ export default {
         .get(`/playlist/detail?id=${this.playListId}`)
         .then(response => {
           let playlist = response.data.playlist;
-          console.log("总数检测")
           this.playlist = {
             nickname: {
               id: playlist.creator.userId,

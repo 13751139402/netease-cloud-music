@@ -36,6 +36,7 @@ export default {
           `/login/cellphone?phone=${this.$route.query.phone}&password=${this.passwork}`
         )
         .then(response => {
+          console.log("登录");
           let data = response.data.profile;
           this.$store.commit("upDateUser", data);
           this.$router.push("/home");

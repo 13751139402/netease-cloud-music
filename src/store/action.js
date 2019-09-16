@@ -4,7 +4,7 @@ export default {
     selectMusic({ commit }, id) {
         let musicUrl = () => {
             return http
-                .get(`/song/url?id=${id}&br=12800 `)
+                .get(`/song/url?id=${id}`)
                 .then(response => {
                     return response.data.data[0].url;
                 })

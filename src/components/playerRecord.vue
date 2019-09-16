@@ -34,8 +34,7 @@ import { Popup, Icon, List, Cell } from "vant";
 const playType = new Map([
   [0, { name: "列表循环", icon: "close" }],
   [1, { name: "随机播放", icon: "star-o" }],
-  [2, { name: "单曲循环", icon: "fire-o" }],
-  [3, { name: "心动模式", icon: "like-o" }]
+  [2, { name: "单曲循环", icon: "fire-o" }]
 ]);
 
 function shuffle(arr) {
@@ -53,7 +52,7 @@ export default {
     return {
       show: this.isShow,
       currentPlay: {
-        //0:列表循环 1:随机播放 2:单曲循环 3:心动模式
+        //0:列表循环 1:随机播放 2:单曲循环
         name: "列表循环",
         icon: "close"
       },
@@ -162,6 +161,7 @@ export default {
     }
   },
   playList() {
+    console.log("877");
     if (this.playTypeIndex === 1) {
       this.randomMap = shuffle(this.playList);
       let index = this.randomMap.findIndex(item => {

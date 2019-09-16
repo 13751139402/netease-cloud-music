@@ -29,7 +29,7 @@
         <span id="progressRight">{{duration}}</span>
       </div>
       <div id="control">
-        <van-icon name="close" />
+        <van-icon :name="playTypeIcon" @click="changePlayType" />
         <van-icon name="arrow-left" @click="last" />
         <van-icon name="pause-circle-o" v-show="play" @click="control" class="palyer" />
         <van-icon name="play-circle-o" v-show="!play" @click="control" class="palyer" />
@@ -41,6 +41,11 @@
 </template>
 
 <script>
+const playType = new Map([
+  [0, { name: "列表循环", icon: "close" }],
+  [1, { name: "随机播放", icon: "star-o" }],
+  [2, { name: "单曲循环", icon: "fire-o" }]
+]);
 import { NavBar, Icon, Slider } from "vant";
 import cover from "./children/cover";
 import lyric from "./children/lyric";
@@ -50,7 +55,8 @@ export default {
     return {
       progress: 0,
       isDrag: false,
-      open: true
+      open: true,
+      playTypeIcon: "close"
     };
   },
   computed: {
@@ -80,6 +86,9 @@ export default {
       } else {
         return false;
       }
+    },
+    playTypeIndex() {
+      return this.$store.state.playTypeIndex;
     }
   },
   components: {
@@ -104,10 +113,13 @@ export default {
       this.$store.commit("showRecord");
     },
     next() {
-      this.$store.commit('playIndexNext');
+      this.$store.commit("playIndexNext");
     },
     last() {
-      this.$store.commit('playIndexLast');
+      this.$store.commit("playIndexLast");
+    },
+    changePlayType() {
+      this.$store.commit("changePlayTypeIndex");
     }
   },
   watch: {
@@ -116,6 +128,9 @@ export default {
         return;
       }
       this.progress = to;
+    },
+    playTypeIndex(to) {
+      this.playTypeIcon = playType.get(to).icon;
     }
   }
 };

@@ -55,7 +55,7 @@ export default {
         }
     },
     changePlayTypeIndex(state) {
-        if (state.playTypeIndex + 1 >= 4) {
+        if (state.playTypeIndex + 1 >= 3) {
             state.playTypeIndex = 0;
         } else {
             state.playTypeIndex += 1;

@@ -6,7 +6,12 @@ Vue.use(Router)
 let routes = [
   {
     path: '/',
-    redirect: "home"
+    redirect: "video"
+  },
+  {
+    path: '/video',
+    name: 'video',
+    component: () => import('../components/video.vue'),
   },
   {
     path: '/login',

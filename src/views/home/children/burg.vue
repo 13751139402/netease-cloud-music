@@ -1,15 +1,34 @@
 <template>
   <section id="burg">
-    <moments v-for="(item) in event" :key="item.id" :data="item"></moments>
+    <van-list
+      v-model="loading"
+      :finished="finished"
+      @load="selectData"
+      finished-text="没有更多了"
+      :error.sync="error"
+      error-text="请求失败，点击重新加载"
+    >
+      <moments v-for="item in event" :key="item.id" :data="item"></moments>
+    </van-list>
   </section>
 </template>
 
 <script>
+import { List } from "vant";
 import moments from "../../../components/moments";
 export default {
-  components: { moments },
+  components: {
+    moments,
+    [List.name]: List
+  },
   data() {
-    return { event: [] };
+    return {
+      event: [],
+      lasttime: "-1",
+      loading: false, //是否正在加载
+      finished: false, //是否加载完成
+      error: false
+    };
   },
   computed: {
     userData() {
@@ -17,12 +36,18 @@ export default {
     }
   },
   methods: {
-    //event?pagesize=20&lasttime=-1
     selectData() {
       this.$http
-        .get(`/user/event?uid=${this.userData.userId}`)
+        .get(`event?pagesize=10&lasttime=${this.lasttime}`)
         .then(response => {
-          this.event = response.data.events;
+          let event = response.data.event;
+          this.event.push(...event);
+          this.lasttime = this.event[event.length - 1].showTime;
+          this.loading = false;
+          this.error = false;
+          // if (this.event.length >= this.total) {
+          //   this.finished = true;
+          // }
         });
     }
   },

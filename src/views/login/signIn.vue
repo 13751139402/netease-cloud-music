@@ -36,13 +36,12 @@ export default {
           `/login/cellphone?phone=${this.$route.query.phone}&password=${this.passwork}`
         )
         .then(response => {
-          console.log("登录");
           let data = response.data.profile;
           this.$store.commit("upDateUser", data);
           this.$router.push("/home");
           this.storage.set("userData", JSON.stringify(data));
         })
-        .catch(error => {
+        .catch(() => {
           Notify({ type: "danger", message: `密码错误` });
         });
     },

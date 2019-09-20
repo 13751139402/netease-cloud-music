@@ -11,22 +11,22 @@
     <p v-time="event.eventTime" class="author_time"></p>
   </head>
   <article class="article">
-    <span>{{moments.msg}}</span>
+    <div class="msg" v-if="moments.msg">{{moments.msg}}</div>
     <momentsMain :data="event"></momentsMain>
   </article>
   <footer class="info">
     <div class="info_1">
       <div>
         <van-icon name="bar-chart-o" />
-        <span>8</span>
+        <span>{{info.shareCount}}</span>
       </div>
       <div>
         <van-icon name="comment-o" />
-        <span>9</span>
+        <span>{{info.commentCount}}</span>
       </div>
       <div>
-        <van-icon name="good-job-o" />
-        <span>125</span>
+        <van-icon :name="info.liked?'good-job':'good-job-o'"  />
+        <span>{{info.likedCount}}</span>
       </div>
     </div>
     <div>
@@ -39,7 +39,7 @@
 <script>
 import mixins from "../assets/mixins";
 import momentsMain from "./momentsMain";
-import { Icon } from "vant";
+import { Icon, ImagePreview } from "vant";
 const momentsType = {
   22: "转发",
   39: "发布视频",
@@ -48,18 +48,22 @@ const momentsType = {
   13: "分享歌单"
 };
 export default {
-  components: { [Icon.name]: Icon, momentsMain },
+  components: {
+    [Icon.name]: Icon,
+    [ImagePreview.name]: ImagePreview,
+    momentsMain
+  },
   mixins: [mixins],
   props: ["data"],
   data() {
     return {
       event: this.data,
-      moments: {}
+      moments: {},
+      info: this.data.info
     };
   },
-  methods: {},
   created() {
-    this.moments = JSON.parse(this.event.json);
+    this.event.moments = this.moments = JSON.parse(this.event.json);
     this.event.type = momentsType[this.event.type];
   }
 };
@@ -128,7 +132,10 @@ export default {
 }
 .info div {
   display: flex;
-  /* justify-content: center; */
   align-items: center;
+}
+.msg {
+  margin-bottom: 10px;
+  line-height: 24px;
 }
 </style>

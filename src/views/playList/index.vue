@@ -242,19 +242,17 @@ export default {
   },
   created() {
     this.scrollTop = referee.debounce(this.scrollTop, 100);
+    this.selectPlayList();
   },
   watch: {
     playListId() {
       this.selectPlayList();
     }
   },
-  created() {
-    this.selectPlayList();
-  },
   activated() {
     let container = this.$refs.container,
-      detail = this.$refs.details,
-      list = this.$refs.list;
+      detail = this.$refs.details;
+    //list = this.$refs.list;
     if (container.style.overflowY === "hidden") {
       container.scrollTop = container.scrollHeight - container.clientHeight;
     } else {

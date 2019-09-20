@@ -83,7 +83,7 @@ export default {
         .then(response => {
           this.hotComments = response.data.hotComments;
         })
-        .catch(error => {
+        .catch(() => {
           //this.$parent.isError = true;
           //throw new Error(error);
         });

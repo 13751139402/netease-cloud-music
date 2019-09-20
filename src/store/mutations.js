@@ -60,5 +60,10 @@ export default {
         } else {
             state.playTypeIndex += 1;
         }
-    }
+    },
+
+    //-------------- voide
+    videoId(state, id) {
+        state.videoId = id;
+    },
 }

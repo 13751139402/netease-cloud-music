@@ -146,7 +146,7 @@ export default {
     isShow(to) {
       this.show = to;
     },
-    userData(to, from) {
+    userData() {
       this.userData && this.selectList();
     },
     playTypeIndex(to) {
@@ -161,7 +161,6 @@ export default {
     }
   },
   playList() {
-    console.log("877");
     if (this.playTypeIndex === 1) {
       this.randomMap = shuffle(this.playList);
       let index = this.randomMap.findIndex(item => {

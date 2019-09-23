@@ -75,6 +75,7 @@ export default {
         Object.assign(item, { title, label });
       });
       this.songData = song.result;
+      
     }
   }
 };

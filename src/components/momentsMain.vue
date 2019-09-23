@@ -132,8 +132,7 @@ export default {
       };
     }
   },
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
 
@@ -151,7 +150,10 @@ figure img {
   margin-bottom: 0.3rem;
 }
 
-.pic_1,
+.pic_1 {
+  grid-template-columns: auto;
+  height: 7rem;
+}
 .pic_2,
 .pic_4 {
   grid-template-columns: auto auto;
@@ -163,6 +165,7 @@ figure img {
 .pic_6,
 .pic_9 {
   grid-template-columns: auto auto auto;
+  height: 8rem;
 }
 .pic_5 {
   grid-template-columns: repeat(6, auto);

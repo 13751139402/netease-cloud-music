@@ -25,7 +25,7 @@
         <span>{{info.commentCount}}</span>
       </div>
       <div>
-        <van-icon :name="info.liked?'good-job':'good-job-o'"  />
+        <van-icon :name="info.liked?'good-job':'good-job-o'" />
         <span>{{info.likedCount}}</span>
       </div>
     </div>
@@ -128,14 +128,15 @@ export default {
 }
 .info_1 span {
   color: #999999;
-  font-size: 0.45rem;
+  font-size: 0.4rem;
 }
 .info div {
   display: flex;
   align-items: center;
 }
 .msg {
-  margin-bottom: 10px;
-  line-height: 24px;
+  margin-bottom: 0.26667rem;
+  line-height: 0.64rem;
+  width: 8rem;
 }
 </style>

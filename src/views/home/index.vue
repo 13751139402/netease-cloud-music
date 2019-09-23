@@ -79,6 +79,6 @@ export default {
 </style>
 <style>
 #home .van-tabs__nav--line {
-  padding: 0rem 1rem 0.4rem 1rem;
+  margin: 0rem 1.2rem 0.4rem 1.2rem;
 }
 </style>

@@ -38,21 +38,15 @@ export default {
   methods: {
     selectData() {
       this.$http
-        .get(`event?pagesize=10&lasttime=${this.lasttime}`)
+        .get(`event?pagesize=2&lasttime=${this.lasttime}`)
         .then(response => {
           let event = response.data.event;
           this.event.push(...event);
-          this.lasttime = this.event[event.length - 1].showTime;
+          this.lasttime = this.event[this.event.length - 1].eventTime;
           this.loading = false;
           this.error = false;
-          // if (this.event.length >= this.total) {
-          //   this.finished = true;
-          // }
         });
     }
-  },
-  created() {
-    this.selectData();
   }
 };
 </script>

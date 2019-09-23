@@ -6,12 +6,31 @@ Vue.use(Router)
 let routes = [
   {
     path: '/',
-    redirect: "video"
+    redirect: "search"
   },
   {
     path: '/video',
     name: 'video',
     component: () => import('../components/video.vue'),
+  },
+  {
+    path: '/search',
+    component: () => import('../views/search/index'),
+    children: [
+      {
+        path: "",
+        redirect: "details"
+      },
+      {
+        path: 'hot',
+        component: () => import('../views/search/children/searchHot'),
+      },
+      {
+        path: 'details',
+        name: 'searchDetails',
+        component: () => import('../views/search/children/searchDetails'),
+      },
+    ],
   },
   {
     path: '/login',
@@ -51,7 +70,6 @@ let routes = [
     },
     {
       path: 'song',
-      name: 'song',
       meta: {
         keepAlive: true,
         scrollEl: "scroll",

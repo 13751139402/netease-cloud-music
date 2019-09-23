@@ -1,3 +1,5 @@
+import { stat } from "fs";
+
 export default {
     upDateUser(state, data) {
         state.userData = data;
@@ -66,4 +68,10 @@ export default {
     videoId(state, id) {
         state.videoId = id;
     },
+
+
+    //-------------- search
+    keywords(state, value) {
+        state.keywords = value;
+    }
 }

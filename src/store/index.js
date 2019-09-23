@@ -28,7 +28,9 @@ const state = {
     showRecord: false, // 播放歌单是否显示
     scrollLyric: false, // 歌词页面的滚动条
     playListId: "", //当前歌单id
-    commentData: {} // 评论数据
+    commentData: {}, // 评论数据
+
+    keywords: "",  //搜索关键字
 }
 
 export default new Vuex.Store({

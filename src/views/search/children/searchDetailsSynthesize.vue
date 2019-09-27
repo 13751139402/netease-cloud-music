@@ -1,9 +1,9 @@
 <template>
   <section class="synthesize">
-    <!-- <Cell :data="songData" type="songs"></Cell>
+    <Cell :data="songData" type="songs"></Cell>
     <Cell :data="playListData" type="playLists"></Cell>
     <Cell :data="video" type="videos"></Cell>
-    <Cell :data="artist" type="artists"></Cell> -->
+    <Cell :data="artist" type="artists"></Cell>
   </section>
 </template>
 

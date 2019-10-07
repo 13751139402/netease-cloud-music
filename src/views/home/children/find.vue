@@ -212,6 +212,9 @@ h1 {
   font-size: 0.45rem;
   font-weight: bold;
 }
+#newMusic {
+  height: 5rem;
+}
 title {
   justify-content: space-between;
   align-items: center;

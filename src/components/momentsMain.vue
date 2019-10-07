@@ -41,11 +41,15 @@ export default {
     }
     switch (Object.keys(data.moments)[1]) {
       case "video": //视频
+        let musicData = JSON.parse(this.data.json).video;
         children.push(
           h(video, {
             // 组件 prop
             props: {
-              data: JSON.parse(this.data.json).video
+              videoId: musicData.videoId,
+              duration: musicData.durationms,
+              coverUrl: musicData.coverUrl,
+              playCount: musicData.playTime
             }
           })
         );
@@ -137,16 +141,19 @@ export default {
 </script>
 
 <style scoped>
+.song img {
+  height: 100%;
+  width: auto;
+}
 figure img {
   border-radius: 5px;
-  height: 100%;
+  width: 100%;
 }
 .containerPic {
   display: grid;
   grid-gap: 0.13333rem;
   justify-items: center;
   align-items: center;
-  height: 4rem;
   margin-bottom: 0.3rem;
 }
 
@@ -166,6 +173,9 @@ figure img {
 .pic_9 {
   grid-template-columns: auto auto auto;
   height: 8rem;
+}
+.pic_3 {
+  height: 4rem !important;
 }
 .pic_5 {
   grid-template-columns: repeat(6, auto);

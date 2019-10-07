@@ -2,6 +2,7 @@
   <div class="container">
     <div class="player">
       <video-player
+        v-if="ifShowVideo"
         class="video-player vjs-custom-skin needsclick"
         ref="videoPlayer"
         :playsinline="true"
@@ -11,6 +12,7 @@
         @play="onPlay"
         @timeupdate="onPlayerTimeupDate"
       ></video-player>
+      <img :src="coverUrl" style="width: 100%;" v-else />
       <figure @click="onPlayer" class="playbln">
         <div class="playBtn" v-show="!playBln">
           <van-icon :name="playBtnType" />
@@ -20,12 +22,12 @@
         <div class="control_left">
           <div v-show="!playBln" class="display: flex;" @click="onPlayer">
             <van-icon name="play-circle-o" />
-            <span class="control_text">{{this.data.playTime}}</span>
+            <span class="control_text">{{playCount}}</span>
           </div>
         </div>
         <div class="control_right">
           <van-icon name="bar-chart-o" />
-          <span class="control_text">{{timeLeft}}</span>
+          <span class="control_text">{{durationms|switchSec}}</span>
         </div>
       </figure>
     </div>
@@ -36,19 +38,34 @@
 import { Icon } from "vant";
 import { videoPlayer } from "vue-video-player";
 
-const switchSec = function(sec) {
-  return `${String(Math.round(sec / 60)).padStart(2, 0)}:${String(
-    Math.floor(sec % 60)
-  ).padStart(2, 0)}`;
-};
-
 export default {
-  props: ["data"],
+  props: {
+    videoId: {
+      // id
+      type: [String, Number]
+    },
+    duration: {
+      // 时长
+      type: Number
+    },
+    coverUrl: {
+      // 封面url
+      type: String
+    },
+    playCount: {
+      // 播放数量
+      type: Number
+    },
+    videoType: {
+      type: String,
+      default: "video"
+    }
+  },
   data() {
     return {
       playerOptions: {
         //        playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
-        autoplay: false, //如果true,浏览器准备好时开始回放。
+        autoplay: true , //如果true,浏览器准备好时开始回放。
         muted: false, // 默认情况下将会消除任何音频。
         loop: false, // 导致视频一结束就重新开始。
         preload: "auto", // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
@@ -57,10 +74,11 @@ export default {
         fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
         sources: [
           {
-            src: ""
+            src:
+              "http://vodkgeyttp8.vod.126.net/cloudmusic/3ebd/mv/943d/4293c082c633f7b2f39cf0b5c2bba306.mp4?wsSecret=f77ebe1a9a6618bb0cc995616f734ed3&wsTime=1570026640"
           }
         ],
-        poster: "", //你的封面地址
+        poster: this.coverUrl, //你的封面地址
         width: document.documentElement.clientWidth,
         notSupportedMessage: "此视频暂无法播放，请稍后再试", //允许覆盖Video.js无法播放媒体源时显示的默认信息。
         controlBar: {
@@ -71,8 +89,9 @@ export default {
         }
       },
       playBln: false, //是否处于播放状态
-      timeLeft: 0,
-      playBtnType: "play-circle-o"
+      durationms: this.duration,
+      playBtnType: "play-circle-o",
+      ifPlayLoad:false
     };
   },
   components: {
@@ -80,56 +99,72 @@ export default {
     [Icon.name]: Icon
   },
   computed: {
+    currentVideoId() {
+      return this.$store.state.videoId;
+    },
     ifPause() {
-      return this.$store.state.videoId !== this.data.videoId;
+      return this.currentVideoId !== this.videoId;
+    },
+    ifShowVideo() {
+      return !!this.$refs.videoPlayer || this.currentVideoId === this.videoId;
     }
   },
   methods: {
     onPlayerTimeupDate(player) {
-      this.timeLeft = switchSec(player.remainingTime());
+      this.durationms = player.remainingTime() * 1000;
     },
     onPlayEnded() {
       this.playBtnType = "replay";
       this.playBln = false;
-      this.timeLeft = switchSec(this.data.durationms / 1000);
+      this.durationms = this.duration;
     },
     onPlayPause() {
       this.playBtnType = "play-circle-o";
       this.playBln = !this.playBln;
     },
     onPlay() {
-      this.$store.commit("videoId", this.data.videoId);
+      this.$store.commit("videoId", this.videoId);
       this.playBln = !this.playBln;
     },
     selectVideoUrl(id) {
       this.$http
-        .get(`/video/url?id=${id}`)
-        .then(response => {
-          this.playerOptions.sources[0].src = response.data.urls[0].url;
+        .get(`${this.videoType}/url?id=${id}`)
+        .then(({ data }) => {
+          this.playerOptions.sources[0].src =
+            this.videoType == "mv" ? data.data.url : data.urls[0].url;
         })
         .catch(error => {
-          console.error(error);
+          // console.error(error);
         });
     },
     onPlayer() {
-      if (this.playBln) {
-        this.$refs.videoPlayer.player.pause();
-      } else {
-        this.$refs.videoPlayer.player.play();
-      }
-    }
+      this.$store.commit("videoId", this.videoId);
+      this.$nextTick(() => {
+        if (this.playBln) {
+          this.$refs.videoPlayer.player.pause();
+        } else {
+          this.$refs.videoPlayer.player.play();
+        }
+      });
+    },
   },
   watch: {
     ifPause(to) {
-      if (this.playBln && to) {
+      if (this.playBln) {
         this.$refs.videoPlayer.player.pause();
       }
     }
   },
+  filters: {
+    switchSec(sec) {
+      sec = sec / 1000;
+      return `${String(Math.round(sec / 60)).padStart(2, 0)}:${String(
+        Math.floor(sec % 60)
+      ).padStart(2, 0)}`;
+    }
+  },
   mounted() {
-    this.timeLeft = switchSec(this.data.durationms / 1000);
-    this.playerOptions.poster = this.data.coverUrl;
-    this.selectVideoUrl(this.data.videoId);
+    this.selectVideoUrl(this.videoId);
   }
 };
 </script>
@@ -176,8 +211,6 @@ export default {
 .control_text {
   margin-left: 0.1rem;
 }
-.playBtn {
-}
 .playbln {
   position: absolute;
   left: 0;
@@ -190,5 +223,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+*{
+  line-height: 0;
 }
 </style>

@@ -179,7 +179,7 @@ export default {
     },
     selectSubCount() {
       this.$http
-        .get(`http://hsid.top:4000/user/subcount`)
+        .get(`user/subcount`)
         .then(response => {
           this.subCount.createdPlaylistCount =
             response.data.createdPlaylistCount;

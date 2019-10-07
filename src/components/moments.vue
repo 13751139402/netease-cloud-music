@@ -112,6 +112,7 @@ export default {
 .article {
   color: #333333;
   font-size: 0.45rem;
+  width: 100%;
 }
 .info {
   display: flex;

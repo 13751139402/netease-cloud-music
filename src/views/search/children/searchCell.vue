@@ -1,9 +1,20 @@
 <template>
   <section class="searchCell" v-if="cellData">
     <van-cell-group :title="typeName" :border="false">
-      <van-list v-model="loading" :finished="finished" @load="onLoad1" :immediate-check="false">
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        @load="onLoad"
+        :immediate-check="false"
+        error-text="请求失败，点击重新加载"
+      >
         <template v-if="type==='songs'">
-          <van-cell :title="item.title" v-for="item in cellData" :key="item.id">
+          <van-cell
+            :title="item.title"
+            v-for="item in cellData"
+            :key="item.id"
+            @click="submit(item.id)"
+          >
             <span slot="label">
               <p>{{item.label}}</p>
               <p v-for="(al,index) in item.alia" :key="index">{{al}}</p>
@@ -14,9 +25,14 @@
             </figure>
           </van-cell>
         </template>
-        <template v-else-if="type==='playLists'">
+        <template v-else-if="type==='playlists'">
           <ul>
-            <li v-for="item in cellData" :key="item.id" class="playList_item">
+            <li
+              v-for="item in cellData"
+              :key="item.id"
+              class="playList_item"
+              @click="submit(item.id)"
+            >
               <div class="imgContainer">
                 <img :src="`${item.coverImgUrl}?param=100y100`" class="playList_img" />
               </div>
@@ -29,14 +45,14 @@
             </li>
           </ul>
         </template>
-        <template v-else-if="type==='videos'">
+        <template v-else-if="type==='videos'" @click="submit(item.id)">
           <ul>
             <li v-for="item in cellData" :key="item.vid" class="playList_item">
               <div class="imgContainer">
                 <img :src="item.coverUrl" class="playList_img" style="width:3.5rem" />
                 <p class="videos_playTime">
                   <van-icon name="play-circle-o" />
-                  <span>{{item.playTime}}</span>
+                  <span>{{item.playTime|lookNumAbbr}}</span>
                 </p>
               </div>
               <div class="playList_detail">
@@ -68,7 +84,7 @@
             </li>
           </ul>
         </template>
-        <div class="moreText">
+        <div class="moreText" v-if="finished&&moreText" @click="moreSubmit">
           <span>{{moreText}}</span>
           <van-icon name="arrow" />
         </div>
@@ -80,12 +96,14 @@
 <script>
 const typeMap = {
   songs: "单曲",
-  playLists: "歌单",
+  playlists: "歌单",
   videos: "视频",
   artists: "歌手"
 };
+import mixins from "@/assets/mixins.js";
 import { Cell, CellGroup, Icon, List } from "vant";
 export default {
+  mixins: [mixins],
   props: {
     data: {
       default: false
@@ -93,21 +111,37 @@ export default {
     type: {
       type: String
     },
+    error: {
+      type: Boolean
+    },
     dataLen: {
-      type: Number,
+      type: [Number, String],
       default: 0
     }
   },
   data() {
     return {
-      loading: false
+      loading: false,
+      pageNum: 1,
+      limit: 30
     };
   },
   methods: {
-    onLoad1() {
-      console.log(this.data[this.type].length >= this.dataLen);
-
-      console.log("d我打的");
+    onLoad() {
+      this.$emit("load", {
+        type: this.type,
+        pageNum: ++this.pageNum,
+        limit: this.limit
+      });
+      if (this.data[this.type].length >= this.dataLen) {
+        this.finished = true;
+      }
+    },
+    submit(id) {
+      this.$emit("submit", id);
+    },
+    moreSubmit() {
+      this.$emit("moreSubmit", id);
     }
   },
   computed: {
@@ -117,12 +151,16 @@ export default {
     typeName() {
       return typeMap[this.type];
     },
-
     cellData() {
       return this.data[this.type];
     },
     moreText() {
       return this.data.moreText;
+    },
+    ifSynthesize() {
+      console.log(this.moreText);
+      
+      return this.moreText ? false : "没有更多了";
     }
   },
   components: {
@@ -130,6 +168,11 @@ export default {
     [CellGroup.name]: CellGroup,
     [Icon.name]: Icon,
     [List.name]: List
+  },
+  watch: {
+    cellData() {
+      this.loading = false;
+    }
   }
 };
 </script>
@@ -158,6 +201,7 @@ export default {
 .playList_img {
   border-radius: 5px;
   width: 2.5rem;
+  height: 2rem;
 }
 .imgContainer {
   margin-right: 10px;
@@ -169,8 +213,9 @@ export default {
 .videos_playTime {
   position: absolute;
   display: flex;
-  top: 0;
-  right: 0;
+  top: 4px;
+  right: 4px;
+  font-size: 0.3rem;
   color: #fff;
 }
 .label {
@@ -185,6 +230,8 @@ export default {
 .artist_img {
   border-radius: 50px;
   margin-right: 10px;
+  width: 2rem;
+  height: 2rem;
 }
 .artist_name {
   border-radius: 50px;

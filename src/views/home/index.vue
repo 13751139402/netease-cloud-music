@@ -2,18 +2,20 @@
   <section id="home">
     <van-icon name="setting-o" @click="showPopup" class="left" />
     <van-tabs swipeable v-model="active" sticky>
-      <van-tab title="我的" name="me">
+      <van-tab title="我的" name="me" ref="me">
         <me></me>
       </van-tab>
-      <van-tab title="发现" name="find">
+      <van-tab title="发现" name="find" ref="find">
         <find></find>
       </van-tab>
-      <van-tab title="云村" name="burg">
+      <van-tab title="云村" name="burg" v-if="userData" ref="burg">
         <burg></burg>
       </van-tab>
-      <van-tab title="视频" name="video">视频</van-tab>
+      <van-tab title="视频" name="video" ref="video">
+        <view-video></view-video>
+      </van-tab>
     </van-tabs>
-    <van-icon name="search" class="rigth" />
+    <van-icon name="search" class="rigth" @click="linkSearch" />
     <nav>
       <navbar :isShowPopup="isShowPopup"></navbar>
     </nav>
@@ -27,6 +29,8 @@ import { Icon, Tab, Tabs } from "vant";
 import navbar from "../../components/navBar";
 import find from "./children/find";
 import me from "./children/me";
+import video from "./children/video";
+import { mapState } from "vuex";
 import burg from "./children/burg";
 export default {
   data() {
@@ -36,10 +40,16 @@ export default {
       active: "find"
     };
   },
+  watch: {
+    active(to, from) {
+      Object.assign(this.$refs[from].$data, this.$refs[from].$options.data());
+    }
+  },
   computed: {
     tabId() {
       return this.$route.path.split("/")[2];
-    }
+    },
+    ...mapState(["userData"])
   },
   components: {
     [Icon.name]: Icon,
@@ -48,16 +58,23 @@ export default {
     navbar,
     find,
     me,
-    burg
+    burg,
+    "view-video": video
   },
   methods: {
     showPopup() {
       this.isShowPopup = true;
+    },
+    linkSearch() {
+      this.$router.push("/search");
     }
   }
 };
 </script>
 <style scoped>
+#home >>> .van-sticky--fixed {
+  background: #fff;
+}
 #home {
   width: 100%;
   height: 100%;
@@ -75,6 +92,9 @@ export default {
   right: 0.3rem;
   z-index: 999;
   font-size: 0.7rem;
+}
+#home >>> .van-tabs {
+  overflow: hidden;
 }
 </style>
 <style>

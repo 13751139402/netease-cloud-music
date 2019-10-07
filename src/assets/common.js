@@ -42,36 +42,36 @@ let storage = {
 let cookie = {
     /**
      * 设置cookie
-     * @param name cookie的名称
-     * @param value cookie的值
-     * @param day cookie的过期时间
+     * @param cname cookie的名称
+     * @param cvalue cookie的值
+     * @param exdays cookie的过期时间
      */
-    setCookie: function (name, value, day) {
-        if (day !== 0) {     //当设置的时间等于0时，不设置expires属性，cookie在浏览器关闭后删除
-            var expires = day * 24 * 60 * 60 * 1000;
-            var date = new Date(+new Date() + expires);
-            document.cookie = name + "=" + escape(value) + ";expires=" + date.toUTCString();
-        } else {
-            document.cookie = name + "=" + escape(value);
-        }
+    setCookie: function (cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     },
     /**
      * 获取对应名称的cookie
-     * @param name cookie的名称
+     * @param cname cookie的名称
      * @returns {null} 不存在时，返回null
      */
-    getCookie: function (name) {
-        var arr = document.cookie.match(reg);
-        var reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-        if (arr) {
-            let data = unescape(arr[2]);
-            if (data === "undefined") {
-                return null;
+    getCookie: function (cname) {
+
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
             }
-            return unescape(data);
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
         }
-        else
-            return null;
+        return null;
     },
 }
 

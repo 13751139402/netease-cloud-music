@@ -28,7 +28,6 @@ module.exports = {
   chainWebpack: config => {
     config.resolve.alias
       .set('imgs', resolve('src/assets/images'))
-      .set('src', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
-
+      .set('@', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
   }
 };

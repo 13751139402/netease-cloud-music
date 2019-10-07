@@ -1,17 +1,18 @@
 <template>
 <section id="playList">
-  <img :src="playlist.pic" id="background" />
+  <canvas id="backGroundCanvas" width="100" height="100" ref="backGroundCanvas"></canvas>
+  <img :src="`${playlist.pic}?param=200y200`" id="background" ref="backGroundImage" v-getImageColor />
   <modHead title="歌单" style="color:#fff;position: fixed;z-index:999">
     <div slot="right">
       <van-icon name="search" style="margin-right:10px" />
       <van-icon name="more-o" />
     </div>
   </modHead>
-  <main id="container" @scroll="scrollBottom" ref="container">
+  <main id="container" ref="container">
     <figure id="details" ref="details">
       <div id="details_img">
         <figure style="position: relative;">
-          <img :src="playlist.pic" id="details_cover" />
+          <img :src="`${playlist.pic}?param=200y200`" id="details_cover" />
           <div id="playCount">
             <van-icon name="play-circle-o" style="margin-right: 2px;" />
             <span>{{playlist.playCount}}</span>
@@ -64,16 +65,22 @@
           <span>播放全部</span>
           <span>(共{{playlist.trackCount}}首)</span>
         </head>
-        <main id="list_main" ref="list" @scroll="scrollTop">
-          <van-list
-            v-model="loading"
-            :finished="finished"
-            finished-text="没有更多了"
-            @load="onLoad"
-            :immediate-check="false"
-          >
+        <main id="list_main">
+          <transition name="van-fade">
+            <van-loading color="rgb(255, 68, 68)" v-show="initLoading" class="initLoading">
+              <span>努力加载中...</span>
+            </van-loading>
+          </transition>
+          <van-list v-model="loading" :finished="finished" @load="onLoad" :immediate-check="false">
             <van-cell v-for="(item,index) in list" :key="item.id" @click="linkMusic(item.id)">
-              <div slot="icon" class="listNum">{{index+1}}</div>
+              <van-icon
+                name="volume-o"
+                v-if="musicId===item.id"
+                slot="icon"
+                class="listNum"
+                color="red"
+              />
+              <div slot="icon" class="listNum" v-else>{{index+1}}</div>
               <div slot="title" class="listTtitle">{{item.name}}</div>
               <div slot="label" class="listLabel">{{item.details}}</div>
               <div slot="default" class="listValue">
@@ -90,8 +97,9 @@
 </template>
 
 <script>
-import { NavBar, Icon, Cell, CellGroup, List } from "vant";
+import { NavBar, Icon, Cell, CellGroup, List, Loading } from "vant";
 import modHead from "../../components/head";
+import mixins from "@/assets/mixins";
 import { referee } from "../../assets/common";
 export default {
   data() {
@@ -101,6 +109,7 @@ export default {
       loading: false,
       finished: false,
       dataLen: 0,
+      initLoading: true,
       playlist: {}
     };
   },
@@ -110,6 +119,9 @@ export default {
     },
     playListId() {
       return this.$store.state.playListId;
+    },
+    musicId() {
+      return this.$store.state.musicId;
     }
   },
   components: {
@@ -118,10 +130,13 @@ export default {
     [Cell.name]: Cell,
     [CellGroup.name]: CellGroup,
     [List.name]: List,
-    modHead
+    modHead,
+    [Loading.name]: Loading
   },
+  mixins: [mixins],
   methods: {
     selectPlayList() {
+      this.initLoading = true;
       let num = num => {
         if (num < 100000) {
           return num;
@@ -136,6 +151,8 @@ export default {
         .get(`/playlist/detail?id=${this.playListId}`)
         .then(response => {
           let playlist = response.data.playlist;
+          console.log(playlist);
+
           this.playlist = {
             nickname: {
               id: playlist.creator.userId,
@@ -150,31 +167,34 @@ export default {
           this.data = response.data.privileges;
           this.dataLen = this.data.length;
           this.onLoad();
+          this.$nextTick(() => {
+            this.initLoading = false;
+          });
         })
         .catch(error => {
           throw new Error(error);
         });
     },
-    scrollBottom(event) {
-      let el = event.target;
-      let percent = el.scrollTop / (el.scrollHeight - el.clientHeight);
-      if (percent > 0.7) {
-        this.$refs.details.style.opacity = 1 - percent;
-      } else {
-        this.$refs.details.style.opacity = 1;
-      }
-      if (percent >= 0.99) {
-        this.$refs.list.style.overflowY = "auto";
-        this.$refs.container.style.overflowY = "hidden";
-      }
-    },
-    scrollTop(event) {
-      let el = event.target;
-      if (el.scrollTop === 0) {
-        this.$refs.list.style.overflowY = "hidden";
-        this.$refs.container.style.overflowY = "auto";
-      }
-    },
+    // scrollBottom(event) {
+    //   let el = event.target;
+    //   let percent = el.scrollTop / (el.scrollHeight - el.clientHeight);
+    //   if (percent > 0.7) {
+    //     this.$refs.details.style.opacity = 1 - percent;
+    //   } else {
+    //     this.$refs.details.style.opacity = 1;
+    //   }
+    //   if (percent >= 0.99) {
+    //     this.$refs.list.style.overflowY = "auto";
+    //     this.$refs.container.style.overflowY = "hidden";
+    //   }
+    // },
+    // scrollTop(event) {
+    //   let el = event.target;
+    //   if (el.scrollTop === 0) {
+    //     this.$refs.list.style.overflowY = "hidden";
+    //     this.$refs.container.style.overflowY = "auto";
+    //   }
+    // },
     onLoad() {
       let item = this.data;
       let params = item
@@ -241,7 +261,7 @@ export default {
     }
   },
   created() {
-    this.scrollTop = referee.debounce(this.scrollTop, 100);
+    // this.scrollTop = referee.debounce(this.scrollTop, 100);
     this.selectPlayList();
   },
   watch: {
@@ -263,6 +283,19 @@ export default {
 </script>
 
 <style scoped>
+.initLoading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: #fff;
+  position: absolute;
+  z-index: 99;
+  height: 3rem;
+}
+.chooseMusic {
+  background: #2a2a2a;
+}
 #playList {
   height: 100%;
   background: gray;
@@ -397,6 +430,9 @@ export default {
   background: #fff;
   height: 1rem;
   box-sizing: border-box;
+  top: 1.2rem;
+  width: 100%;
+  z-index: 99;
 }
 #list_container {
   flex: 1;
@@ -408,8 +444,7 @@ export default {
 }
 #list_main {
   background: #fff;
-  height: calc(100vh - 2.2rem);
-  overflow-y: hidden;
+  position: relative;
 }
 #playCount {
   display: flex;

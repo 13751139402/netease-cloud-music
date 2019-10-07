@@ -9,7 +9,7 @@ Vue.use(Vuex)
 const state = {
     userData: false, // 用户数据
     playData: false, // palyer-播放数据
-
+    musicId: false, // 音乐id
     playList: [], // 播放列表
     playIndex: 0, // 播放音乐在播放列表中的index
     playTypeIndex: 0, // 播放模式 0:列表循环 1:随机播放 2:单曲循环 3:心动模式
@@ -27,7 +27,7 @@ const state = {
 
     showRecord: false, // 播放歌单是否显示
     scrollLyric: false, // 歌词页面的滚动条
-    playListId: "", //当前歌单id
+    playListId: "2711160546", //当前歌单id
     commentData: {}, // 评论数据
 
     keywords: "",  //搜索关键字

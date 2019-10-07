@@ -6,7 +6,7 @@ Vue.use(Router)
 let routes = [
   {
     path: '/',
-    redirect: "search"
+    redirect: "home"
   },
   {
     path: '/video',
@@ -19,15 +19,17 @@ let routes = [
     children: [
       {
         path: "",
-        redirect: "details"
+        redirect: "hot"
       },
       {
         path: 'hot',
+  
         component: () => import('../views/search/children/searchHot'),
       },
       {
         path: 'details',
         name: 'searchDetails',
+        meta: { keepAlive: true },
         component: () => import('../views/search/children/searchDetails'),
       },
     ],

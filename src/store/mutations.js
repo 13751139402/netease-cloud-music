@@ -1,6 +1,7 @@
-import { stat } from "fs";
-
 export default {
+    musicId(state, data) {
+        state.musicId = data;
+    },
     upDateUser(state, data) {
         state.userData = data;
     },

@@ -7,7 +7,7 @@
     <div id="head_main">
       <form action="/">
         <van-search
-          :placeholder="place"
+          :placeholder="defaultKeyWord"
           v-model="keywords"
           left-icon
           :learable="false"
@@ -33,26 +33,35 @@
     </section>
   </head>
   <main>
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
   </main>
 </section>
 </template>
 
 <script>
+import { cookie } from "@/assets/common";
 import { Icon, Search } from "vant";
 export default {
   data() {
     return {
       keywords: "",
-      place: "",
+      defaultKeyWord: "",
       suggest: [],
-      showSuggest: false
+      showSuggest: false,
+      history: []
     };
   },
   props: ["title"],
   components: {
     [Icon.name]: Icon,
     [Search.name]: Search
+  },
+  computed: {
+    vuexKeyWords() {
+      return this.$store.state.keywords;
+    }
   },
   methods: {
     left() {
@@ -66,7 +75,7 @@ export default {
       this.$http
         .get("search/default")
         .then(response => {
-          this.place = response.data.data.showKeyword;
+          this.defaultKeyWord = response.data.data.showKeyword;
         })
         .catch(error => {
           console.error(error);
@@ -89,11 +98,29 @@ export default {
         });
     },
     searchData(value) {
+      if (!value.trim()) {
+        value = this.defaultKeyWord;
+      }
       this.$store.commit("keywords", value);
+
+      let valueIndex = this.history.indexOf(value);
+      if (valueIndex !== -1) {
+        this.history.splice(valueIndex, 1);
+      }
+      this.history.unshift(value);
+      cookie.setCookie("keywordsHistory", JSON.stringify(this.history));
       this.showSuggest = false;
+      this.$router.push("details");
+    }
+  },
+  watch: {
+    vuexKeyWords(to) {
+      this.keywords = to;
     }
   },
   created() {
+    let cookieHistory = cookie.getCookie("keywordsHistory");
+    this.history = cookieHistory ? JSON.parse(cookieHistory) : [];
     this.serachPlace();
   }
 };

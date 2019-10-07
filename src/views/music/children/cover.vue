@@ -6,7 +6,7 @@
     </figure>
     <div id="coverContent">
       <figure id="coverContainer" :class="{coverOn : play}">
-        <img :src="`${pic}?param=150y150`" id="coverPic" />
+        <img :src="`${pic}?param=150y150`" id="coverPic" v-if="pic" />
         <div id="CD"></div>
       </figure>
     </div>
@@ -70,6 +70,9 @@ export default {
       this.$router.push("/comment");
     },
     selectTotal() {
+      if (!this.pid) {
+        return;
+      }
       this.$http
         .get(`/comment/music?id=${this.pid}&limit=0&before=0`)
         .then(response => {

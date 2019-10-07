@@ -29,8 +29,9 @@ export default {
                 name: detail.name,
                 pic: detail.al.picUrl,
                 type: 0,
-                artists:detail.ar,
+                artists: detail.ar,
             }
+            commit("musicId", data.id);
             commit("upDatePlay", data);
         })
     },

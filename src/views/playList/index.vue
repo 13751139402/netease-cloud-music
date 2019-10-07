@@ -1,7 +1,7 @@
 <template>
 <section id="playList">
-  <canvas id="backGroundCanvas" width="100" height="100" ref="backGroundCanvas"></canvas>
-  <img :src="`${playlist.pic}?param=200y200`" id="background" ref="backGroundImage" v-getImageColor />
+  <img :src="`${playlist.pic}?param=200y200`" id="background" />
+  <img :src="`${playlist.pic}?param=200y200`" id="backgroundShade" />
   <modHead title="歌单" style="color:#fff;position: fixed;z-index:999">
     <div slot="right">
       <van-icon name="search" style="margin-right:10px" />
@@ -100,6 +100,7 @@
 import { NavBar, Icon, Cell, CellGroup, List, Loading } from "vant";
 import modHead from "../../components/head";
 import mixins from "@/assets/mixins";
+import Palette from "@/assets/palette";
 import { referee } from "../../assets/common";
 export default {
   data() {
@@ -151,8 +152,6 @@ export default {
         .get(`/playlist/detail?id=${this.playListId}`)
         .then(response => {
           let playlist = response.data.playlist;
-          console.log(playlist);
-
           this.playlist = {
             nickname: {
               id: playlist.creator.userId,
@@ -260,9 +259,8 @@ export default {
       //this.$router.push("/music");
     }
   },
-  created() {
+  mounted() {
     // this.scrollTop = referee.debounce(this.scrollTop, 100);
-    this.selectPlayList();
   },
   watch: {
     playListId() {
@@ -304,6 +302,17 @@ export default {
   background: no-repeat center/100% 100%;
   filter: blur(50px);
   position: fixed;
+  width: 100%;
+}
+
+#backgroundShade {
+  width: 100%;
+  background: no-repeat center/100% 100%;
+  filter: blur(1.33333rem);
+  position: fixed;
+  height: 2.2rem;
+  z-index: 11;
+  overflow: hidden;
 }
 #container {
   position: fixed;

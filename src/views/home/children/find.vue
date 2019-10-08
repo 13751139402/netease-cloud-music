@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-08-26 13:13:00
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 18:19:58
+ * @LastEditTime: 2019-10-08 19:23:13
  -->
 <template>
   <section id="find">
@@ -18,7 +18,7 @@
     <div id="navBar">
       <van-grid class="vanGrid" :border="false" :column-num="5">
         <van-grid-item v-for="(item,index) of navBar" :key="index" :text="item.text">
-          <van-icon class-prefix="icon" :name="item.icon" />
+          <van-icon class-prefix="icon" :name="item.icon" class="van-grid-item__icon" slot="icon" />
         </van-grid-item>
       </van-grid>
     </div>
@@ -111,11 +111,11 @@ export default {
       active: "",
       images: [],
       navBar: [
-        { icon: "gedan", text: "每日推荐" },
-        { icon: "user-o", text: "歌单" },
-        { icon: "photo-o", text: "排行榜" },
-        { icon: "bullhorn-o", text: "电台" },
-        { icon: "bullhorn-o", text: "直播" }
+        { icon: "-rili", text: "每日推荐" },
+        { icon: "gedan", text: "歌单" },
+        { icon: "paihangbang", text: "排行榜" },
+        { icon: "diantai", text: "电台" },
+        { icon: "zhibo", text: "直播" }
       ],
       recommend: [],
       newdisk: [],

@@ -1,80 +1,53 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-26 13:12:55
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 19:53:13
+ -->
 <template>
   <section id="me">
     <figure id="module" @touchstart.stop @touchend.stop @touchmove.stop>
       <ul>
-        <li>
-          <van-icon name="close" />
-          <span>跑步FM</span>
-        </li>
-        <li>
-          <van-icon name="close" />
-          <span>最新电音</span>
-        </li>
-        <li>
-          <van-icon name="close" />
-          <span>驾驶模式</span>
-        </li>
-        <li>
-          <van-icon name="close" />
-          <span>Sati空间</span>
-        </li>
-        <li>
-          <van-icon name="close" />
-          <span>私人FM</span>
-        </li>
-        <li>
-          <van-icon name="close" />
-          <span>私藏推荐</span>
-        </li>
-        <li>
-          <van-icon name="close" />
-          <span>因乐交友</span>
-        </li>
-        <li>
-          <van-icon name="close" />
-          <span>亲子频道</span>
-        </li>
-        <li>
-          <van-icon name="close" />
-          <span>古典专区</span>
-        </li>
-        <li>
-          <van-icon name="close" />
-          <span>爵士音乐</span>
-        </li>
-        <li>
-          <van-icon name="close" />
-          <span>编辑</span>
+        <li v-for="(item,index) of navBar" :key="index">
+          <van-icon class-prefix="icon" :name="item.icon" class="van-grid-item__icon" />
+          <span>{{item.text}}</span>
         </li>
       </ul>
     </figure>
     <figure id="column">
       <van-cell-group :border="false">
-        <van-cell icon="location-o">
+        <van-cell>
+          <van-icon class-prefix="icon" name="bendiyinle" slot="icon" class="iconStyle"></van-icon>
           <p>
             <span>本地音乐</span>
             <span class="cellNum">(331)</span>
           </p>
         </van-cell>
-        <van-cell icon="location-o">
+        <van-cell>
+          <van-icon class-prefix="icon" name="zuijinbofang" slot="icon" class="iconStyle"></van-icon>
           <p>
             <span>最近播放</span>
             <span class="cellNum">(143)</span>
           </p>
         </van-cell>
-        <van-cell icon="location-o">
+        <van-cell>
+          <van-icon class-prefix="icon" name="xiazaipt" slot="icon" class="iconStyle"></van-icon>
           <p>
             <span>下载管理</span>
             <span class="cellNum">(331)</span>
           </p>
         </van-cell>
-        <van-cell icon="location-o">
+        <van-cell>
+          <van-icon class-prefix="icon" name="wodediantai" slot="icon" class="iconStyle"></van-icon>
           <p>
             <span>我的电台</span>
             <span class="cellNum">(0)</span>
           </p>
         </van-cell>
-        <van-cell icon="location-o">
+        <van-cell>
+          <van-icon class-prefix="icon" name="wodeshoucang" slot="icon" class="iconStyle"></van-icon>
           <p>
             <span>我的收藏</span>
             <span class="cellNum">(14)</span>
@@ -137,14 +110,24 @@
 </template>
 
 <script>
-import { Icon, Cell, CellGroup, Collapse, CollapseItem } from "vant";
+import {
+  Icon,
+  Cell,
+  CellGroup,
+  Collapse,
+  CollapseItem,
+  Grid,
+  GridItem
+} from "vant";
 export default {
   components: {
     [Icon.name]: Icon,
     [Cell.name]: Cell,
     [CellGroup.name]: CellGroup,
     [Collapse.name]: Collapse,
-    [CollapseItem.name]: CollapseItem
+    [CollapseItem.name]: CollapseItem,
+    [Grid.name]: Grid,
+    [GridItem.name]: GridItem
   },
   data() {
     return {
@@ -154,7 +137,16 @@ export default {
       subCount: {
         createdPlaylistCount: 0,
         subPlaylistCount: 0
-      }
+      },
+      navBar: [
+        { icon: "bijiben", text: "云村正能量" },
+        { icon: "paobu", text: "跑步FM" },
+        { icon: "jiashi", text: "驾驶模式" },
+        { icon: "yejianmoshi", text: "Sati空间" },
+        { icon: "zhibo", text: "私人FM" },
+        { icon: "-rili", text: "私藏推荐" },
+        { icon: "gedan", text: "最新电音" }
+      ]
     };
   },
   computed: {
@@ -202,6 +194,22 @@ export default {
 </script>
 
 <style scoped>
+.iconStyle {
+  font-size: 0.6rem;
+  margin-right: 10px;
+}
+.vanGrid {
+  color: #ff4747;
+}
+.van-grid-item__icon {
+  font-size: 0.74667rem;
+  padding: 10px;
+  border-radius: 50%;
+  background: linear-gradient(to left, #ff1d12, #ff5a4c);
+  font-size: 0.5rem;
+  color: #fff;
+  margin-bottom: 2px;
+}
 #me {
   padding-bottom: 7vh;
 }
@@ -217,7 +225,7 @@ figure {
 ul {
   display: flex;
   font-size: 0.8rem;
-  margin: 0.3rem 0;
+  padding: 0 5px;
 }
 ul > li {
   display: flex;
@@ -228,8 +236,9 @@ ul > li {
   justify-content: center;
 }
 li > span {
-  font-size: 0.2rem;
+  font-size: 0.1rem;
   margin-top: 0.1rem;
+  color: #999;
 }
 figure > div {
   flex: 1;

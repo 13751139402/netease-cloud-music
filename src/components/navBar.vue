@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-29 16:58:00
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 20:26:44
+ -->
 <template>
   <van-popup v-model="show" position="left" class="Popup" @close="closePopup">
     <main class="PopupMain">
@@ -19,7 +27,10 @@
               style="margin: 0.25rem 0px;display: flex;align-items: center;justify-content: space-between;"
             >
               <span>{{userData.nickname}}</span>
-              <van-button icon="star-o" type="primary" size="mini" round color="#ff4747">按钮</van-button>
+              <div class="signBtn">
+                <van-icon class-prefix="icon" name="jinbi" style="font-size:.3rem;margin-right:5px"></van-icon>
+                <span>签到</span>
+              </div>
             </div>
           </div>
         </div>
@@ -32,7 +43,7 @@
           <figure class="payVip_2">
             <span style="color:#ffffff">超值礼卷免费抽</span>
             <div class="payVip_2_round">
-              <van-icon name="gem" size=".8rem" color="#bddf94" />
+              <van-icon class-prefix="icon" name="changpian" style="font-size:.8rem;color:#bddf94"></van-icon>
             </div>
           </figure>
         </div>
@@ -40,43 +51,77 @@
       <main>
         <div id="PopupNabBar">
           <van-grid class="vanGrid" :border="false">
-            <van-grid-item
-              v-for="(item,index) of PopupNav"
-              :key="index"
-              :icon="item.icon"
-              :text="item.text"
-            />
+            <van-grid-item v-for="(item,index) of PopupNav" :key="index" :text="item.text">
+              <van-icon
+                class-prefix="icon"
+                :name="item.icon"
+                class="van-grid-item__icon"
+                slot="icon"
+              />
+            </van-grid-item>
           </van-grid>
         </div>
         <van-cell-group>
-          <van-cell title="演出" value="杨千嬅上海" icon="location-o" :border="false" />
-          <van-cell title="商城" icon="location-o" :border="false" />
-          <van-cell title="附近的人" icon="location-o" :border="false" />
-          <van-cell title="口袋铃声" icon="location-o" :border="false" />
-          <van-cell title="我的订单" icon="location-o" :border="false" />
+          <van-cell title="演出" value="杨千嬅上海" :border="false">
+            <van-icon class-prefix="icon" name="piao" slot="icon" class="iconStyle" />
+          </van-cell>
+          <van-cell title="商城" :border="false">
+            <van-icon class-prefix="icon" name="gouwuche" slot="icon" class="iconStyle" />
+          </van-cell>
+          <van-cell title="附近的人" :border="false">
+            <van-icon class-prefix="icon" name="fujinderen" slot="icon" class="iconStyle" />
+          </van-cell>
+          <van-cell title="游戏推荐" :border="false">
+            <van-icon class-prefix="icon" name="youxituijian" slot="icon" class="iconStyle" />
+          </van-cell>
+          <van-cell title="我的订单" :border="false">
+            <van-icon class-prefix="icon" name="bijiben" slot="icon" class="iconStyle" />
+          </van-cell>
         </van-cell-group>
         <van-cell-group>
-          <van-cell title="定时停止播放" icon="location-o" :border="false" />
-          <van-cell title="扫一扫" icon="location-o" :border="false" />
-          <van-cell title="音乐闹钟" icon="location-o" :border="false" />
-          <van-cell title="在线听歌免流量" icon="location-o" :border="false" />
-          <van-cell title="游戏推荐" icon="location-o" :border="false" />
-          <van-cell title="优惠卷" icon="location-o" :border="false" />
+          <van-cell title="定时停止播放" :border="false">
+            <van-icon
+              class-prefix="icon"
+              name="dingshitingzhibofang"
+              slot="icon"
+              class="iconStyle"
+            />
+          </van-cell>
+          <van-cell title="扫一扫" :border="false">
+            <van-icon class-prefix="icon" name="saoyisao" slot="icon" class="iconStyle" />
+          </van-cell>
+          <van-cell title="音乐闹钟" :border="false">
+            <van-icon class-prefix="icon" name="yinlenaozhong" slot="icon" class="iconStyle" />
+          </van-cell>
+          <van-cell title="在线听歌免流量" :border="false">
+            <van-icon
+              class-prefix="icon"
+              name="zaixiantinggemianliuliang"
+              slot="icon"
+              class="iconStyle"
+            />
+          </van-cell>
+          <van-cell title="游戏推荐" :border="false">
+            <van-icon class-prefix="icon" name="youxituijian" slot="icon" class="iconStyle" />
+          </van-cell>
+          <van-cell title="优惠卷" :border="false">
+            <van-icon class-prefix="icon" name="youhuiquan" slot="icon" class="iconStyle" />
+          </van-cell>
         </van-cell-group>
       </main>
     </main>
     <footer id="popupFooter" class="van-hairline--top">
       <ul id="setContainer">
         <li>
-          <van-icon name="close" />
+          <van-icon class-prefix="icon" name="yejianmoshi" size=".6rem" />
           <span>夜间模式</span>
         </li>
         <li>
-          <van-icon name="setting-o" />
+          <van-icon class-prefix="icon" name="shezhi" size=".6rem" />
           <span>设置</span>
         </li>
         <li @click="exit">
-          <van-icon name="close" />
+          <van-icon class-prefix="icon" name="tuichu1" size=".6rem" />
           <span>退出</span>
         </li>
       </ul>
@@ -102,10 +147,10 @@ export default {
   data() {
     return {
       PopupNav: [
-        { icon: "chat-o", text: "我的消息" },
-        { icon: "user-o", text: "我的好友" },
-        { icon: "photo-o", text: "个性换肤" },
-        { icon: "bullhorn-o", text: "听歌识曲" }
+        { icon: "xiaoxi", text: "我的消息" },
+        { icon: "haoyou", text: "我的好友" },
+        { icon: "gexingzhuangban", text: "个性换肤" },
+        { icon: "tinggeshiqu", text: "听歌识曲" }
       ],
       show: this.isShowPopup
     };
@@ -154,6 +199,20 @@ export default {
 </script>
 
 <style scoped>
+.iconStyle {
+  margin-right: 8px;
+  color: #323233;
+}
+.signBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  background: #ff4747;
+  color: #fff;
+  border-radius: 50px;
+  font-size: 0.3rem;
+}
 .tabbar {
   flex: 1;
   display: flex;
@@ -268,7 +327,7 @@ a {
   display: flex;
   align-content: center;
   justify-content: center;
-  background: #fff;
+  background: #969799;
   margin-left: 0.1rem;
   border-radius: 1rem;
   border-radius: 50%;

@@ -4,11 +4,11 @@
  * @Author: 戴训伟
  * @Date: 2019-08-22 20:27:27
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 16:16:55
+ * @LastEditTime: 2019-10-08 19:56:17
  -->
 <template>
   <section id="home">
-    <van-icon name="setting-o" @click="showPopup" class="left" />
+    <van-icon class-prefix="icon" name="MENU" class="left" @click="showPopup"></van-icon>
     <van-tabs swipeable v-model="active" sticky>
       <van-tab title="我的" name="me" ref="me">
         <me></me>
@@ -92,14 +92,14 @@ export default {
   top: 0.25rem;
   left: 0.3rem;
   z-index: 999;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
 }
 .rigth {
   position: fixed;
   top: 0.25rem;
   right: 0.3rem;
   z-index: 999;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
 }
 #home >>> .van-tabs {
   overflow: hidden;

@@ -1,8 +1,16 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-28 08:51:26
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 19:24:10
+ -->
 <template>
   <figure @click="submit">
     <img :src="`${vpic}?param=200y200`" />
     <div class="lookNum" v-if="lookNum">
-      <van-icon name="play-circle-o" style="margin-right: 1px;" />
+      <van-icon class-prefix="icon" name="yousanjiao" class="vanClass" />
       <span>{{vlookNum}}</span>
     </div>
     <slot></slot>
@@ -49,6 +57,10 @@ export default {
 </script>
 
 <style scoped>
+.vanClass {
+  font-size: 0.2rem;
+  margin-right: 1px;
+}
 .lookNum {
   position: absolute;
   top: 0.2rem;

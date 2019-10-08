@@ -10,7 +10,7 @@
   <section id="lyric">
     <div class="top">
       <div style="margin-right: .3rem;">
-        <van-icon name="volume-o" />
+        <van-icon class-prefix="icon" name="laba1"></van-icon>
       </div>
       <div style="flex: 1;">
         <van-slider
@@ -33,7 +33,7 @@
         >{{item.text}}</p>
       </div>
     </div>
-    <van-icon name="more-o" class="van-right" />
+    <van-icon class-prefix="icon" name="xinxipt"></van-icon>
   </section>
 </template>
 
@@ -213,9 +213,10 @@ export default {
   background: #fff;
   border-radius: 50%;
 }
-.van-right {
+.icon-xinxipt {
   position: absolute;
   bottom: 0.5rem;
   right: 0.5rem;
+  font-size: 0.65rem;
 }
 </style>

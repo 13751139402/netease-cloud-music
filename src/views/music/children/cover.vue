@@ -19,18 +19,21 @@
       </figure>
     </div>
     <article @click.stop>
-      <transition name="likeAnimat">
-        <van-icon
-          :name="playData.isLike?'like':'like-o'"
-          :class="{likeTrue:playData.isLike}"
-          @click="switchLike"
-          :key="playData.isLike"
-        />
-      </transition>
-      <van-icon name="upgrade" />
-      <van-icon name="close" />
-      <van-icon name="chat-o" @click="linkComment" :info="totalNum" />
-      <van-icon name="more-o" />
+      <van-icon
+        class-prefix="icon"
+        :name="playData.isLike?'xihuan-wangyiicon':'xihuan'"
+        @click="switchLike"
+      ></van-icon>
+      <van-icon class-prefix="icon" name="xiazaipt"></van-icon>
+      <van-icon class-prefix="icon" name="jingyunyinxiaopt-wangyiicon"></van-icon>
+      <van-icon
+        class-prefix="icon"
+        name="pinglunpt1"
+        @click="linkComment"
+        :info="totalNum"
+        class="comment"
+      />
+      <van-icon class-prefix="icon" name="xinxipt"></van-icon>
     </article>
   </section>
 </template>
@@ -132,6 +135,12 @@ export default {
 </script>
 
 <style scoped>
+.icon {
+  font-size: 0.65rem;
+}
+.icon-xihuan-wangyiicon {
+  color: red;
+}
 .likeTrue {
   color: red;
 }
@@ -156,6 +165,9 @@ export default {
     transform: scale(1);
   }
 } */
+.comment {
+  position: relative;
+}
 #cover {
   display: flex;
   flex-direction: column;
@@ -262,6 +274,7 @@ article {
 #cover .van-info {
   background: transparent;
   border: 0;
-  right: -6px;
+  right: -0.1rem;
+  top: -0.15rem;
 }
 </style>

@@ -21,15 +21,13 @@
       <van-circle
         v-model="currentRate"
         layer-color="#4d4d4d"
-        size="1rem"
+        size=".8rem"
         color="#ff3a3a"
-        text="颜色定制"
+        @click.native="control"
       >
-        <div class="playBtn" @click="control">
-          <van-icon :name="palyBtn?`success`:`cross`" />
-        </div>
+        <van-icon :name="palyBtn?`yousanjiao`:`zantingtingzhi`" class-prefix="icon" size=".45rem" />
       </van-circle>
-      <van-icon name="apps-o" style="margin: 0 0.2rem;" @click="changeRecord" />
+      <van-icon class-prefix="icon" name="caidan" @click="changeRecord" class="iconList" />
     </figure>
     <audio
       id="audio"
@@ -100,6 +98,7 @@ export default {
       this.$router.push("/music");
     },
     canplay() {
+      this.$store.commit("changePlayType", true);
       this.$store.commit("volume", this.myAudio.volume);
       this.$store.commit("duration", this.myAudio.duration);
     },
@@ -133,6 +132,23 @@ export default {
 </script>
 
 <style scoped>
+#musicBtn >>> .van-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icon-yousanjiao {
+  margin-left: 0.1rem;
+  font-size: 0.4rem;
+}
+.icon-zantingtingzhi {
+  color: red;
+}
+.iconList {
+  font-size: 1rem;
+  margin-left: .5rem;
+  font-size: 0.8rem;
+}
 .playBtn {
   font-size: 0.8rem;
   display: flex;

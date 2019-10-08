@@ -1,6 +1,10 @@
 <template>
   <section id="songComment">
-    <modHead @left="back" :title="title"></modHead>
+    <modHead @left="back" :title="title">
+      <template #right>
+        <van-icon class-prefix="icon" name="fenxiangpt" />
+      </template>
+    </modHead>
     <div id="loading" v-show="loadType">
       <van-loading color="rgb(255, 68, 68)" v-if="!isError">
         <span>努力加载中...</span>
@@ -22,7 +26,7 @@ export default {
     return {
       title: "",
       loadType: true,
-      isError: false,
+      isError: false
     };
   },
   components: {
@@ -77,5 +81,4 @@ head .van-icon {
   justify-content: center;
   box-sizing: border-box;
 }
-
 </style>

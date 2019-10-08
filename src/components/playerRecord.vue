@@ -3,7 +3,7 @@
   <van-popup v-model="show" round position="bottom" class="container" @close="closePopup">
     <head id="header">
       <div @click="changePlayType">
-        <van-icon :name="currentPlay.icon" style="margin-right: 2px;" />
+        <van-icon :name="currentPlay.icon" class-prefix="icon" style="margin-right: 2px;" />
         <span>{{currentPlay.name}}({{playList.length}})</span>
       </div>
       <div>
@@ -32,9 +32,9 @@
 import { Popup, Icon, List, Cell } from "vant";
 
 const playType = new Map([
-  [0, { name: "列表循环", icon: "close" }],
-  [1, { name: "随机播放", icon: "star-o" }],
-  [2, { name: "单曲循环", icon: "fire-o" }]
+  [0, { name: "列表循环", icon: "xunhuanbofang" }],
+  [1, { name: "随机播放", icon: "suijibofang-wangyiicon" }],
+  [2, { name: "单曲循环", icon: "danquxunhuan" }]
 ]);
 
 function shuffle(arr) {

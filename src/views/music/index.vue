@@ -14,6 +14,9 @@
         <div class="musicName">{{playData.name}}</div>
         <div class="author">{{artists}}</div>
       </div>
+      <template #right>
+        <van-icon class-prefix="icon" name="fenxiangpt" />
+      </template>
     </modHead>
     <main>
       <cover v-show="open"></cover>
@@ -37,15 +40,16 @@
         <span id="progressRight">{{duration}}</span>
       </div>
       <div id="control">
-        <van-icon :name="playTypeIcon" @click="changePlayType" />
-        <van-icon name="arrow-left" @click="last" />
+        <van-icon :name="playTypeIcon" class-prefix="icon" @click="changePlayType" />
+        <van-icon name="shangyiqu" class-prefix="icon" @click="last" />
         <van-icon
-          :name="play?'pause-circle-o':'play-circle-o'"
+          :name="play?'bofang1':'zanting'"
+          class-prefix="icon"
           @click="control"
           class="palyer"
         />
-        <van-icon name="arrow" @click="next" />
-        <van-icon name="todo-list-o" @click="changeRecord" />
+        <van-icon name="xiayiqu" class-prefix="icon" @click="next" />
+        <van-icon name="caidan" class-prefix="icon" @click="changeRecord" />
       </div>
     </footer>
   </section>
@@ -53,9 +57,9 @@
 
 <script>
 const playType = new Map([
-  [0, { name: "列表循环", icon: "close" }],
-  [1, { name: "随机播放", icon: "star-o" }],
-  [2, { name: "单曲循环", icon: "fire-o" }]
+  [0, { name: "列表循环", icon: "xunhuanbofang" }],
+  [1, { name: "随机播放", icon: "suijibofang-wangyiicon" }],
+  [2, { name: "单曲循环", icon: "danquxunhuan" }]
 ]);
 import { NavBar, Icon, Slider } from "vant";
 import cover from "./children/cover";
@@ -67,7 +71,7 @@ export default {
       progress: 0,
       isDrag: false,
       open: true,
-      playTypeIcon: "close"
+      playTypeIcon: "xunhuanbofang"
     };
   },
   computed: {
@@ -148,6 +152,9 @@ export default {
 </script>
 
 <style scoped>
+.icon {
+  font-size: 0.6rem;
+}
 #music {
   width: 100%;
   height: 100%;

@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-26 13:13:00
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 18:19:58
+ -->
 <template>
   <section id="find">
     <div id="banner" @touchstart.stop @touchend.stop @touchmove.stop>
@@ -9,12 +17,9 @@
     </div>
     <div id="navBar">
       <van-grid class="vanGrid" :border="false" :column-num="5">
-        <van-grid-item
-          v-for="(item,index) of navBar"
-          :key="index"
-          :icon="item.icon"
-          :text="item.text"
-        />
+        <van-grid-item v-for="(item,index) of navBar" :key="index" :text="item.text">
+          <van-icon class-prefix="icon" :name="item.icon" />
+        </van-grid-item>
       </van-grid>
     </div>
     <van-divider style="margin:0" />
@@ -106,7 +111,7 @@ export default {
       active: "",
       images: [],
       navBar: [
-        { icon: "chat-o", text: "每日推荐" },
+        { icon: "gedan", text: "每日推荐" },
         { icon: "user-o", text: "歌单" },
         { icon: "photo-o", text: "排行榜" },
         { icon: "bullhorn-o", text: "电台" },
@@ -200,7 +205,15 @@ export default {
   width: 100%;
   height: 100%;
   background: #fff;
-  padding-bottom: 2rem;
+  padding-bottom: 1.5rem;
+}
+#find >>> .van-grid-item__icon {
+  font-size: 0.74667rem;
+  padding: 10px;
+  border-radius: 50%;
+  background: linear-gradient(to left, #ff1d12, #ff5a4c);
+  font-size: 0.6rem;
+  color: #fff;
 }
 #banner {
   padding: 0.3rem 0.3rem 0;

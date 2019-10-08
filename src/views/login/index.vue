@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-26 10:18:19
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-08-26 10:18:19
+ -->
 <template>
   <section id="login">
     <div id="logo">

@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-10-08 08:19:51
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 08:19:51
+ -->
 <template>
   <section class="initLoading" v-show="load">
     <transition name="van-fade" v-if="!error">
@@ -36,7 +44,7 @@ export default {
   width: 100%;
   background: #fff;
   position: absolute;
-  z-index: 99;
+  z-index: 999;
   height: 100%;
   width: 100%;
 }

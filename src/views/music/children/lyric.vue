@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-30 14:54:19
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 12:36:55
+ -->
 <template>
   <section id="lyric">
     <div class="top">
@@ -148,7 +156,10 @@ export default {
       let distance = this.$refs[index][0].offsetTop - this.scrollDist;
       if (distance) {
         this.$route.meta.scrollTop = distance;
-        this.$refs.lyric.scrollTop = distance;
+        this.$refs.lyric.scrollTo({
+          top: distance,
+          behavior: "smooth"
+        });
       }
     },
     volume(to) {

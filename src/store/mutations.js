@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-23 09:47:12
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 17:18:21
+ */
 export default {
     musicId(state, data) {
         state.musicId = data;
@@ -74,5 +82,17 @@ export default {
     //-------------- search
     keywords(state, value) {
         state.keywords = value;
+    },
+
+    likeArr(state, likeArr) {
+        state.likeArr = likeArr;
+    },
+    changeLikeArr(state, id, type = true) {
+        if (type) {
+            state.likeArr.push(id);
+        } else {
+            let arr = state.likeArr;
+            arr.likeArr.splice(arr.indexOf(id), 1);
+        }
     }
 }

@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-28 14:22:38
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-08-28 14:22:38
+ -->
 <template>
   <section id="signIn">
     <van-nav-bar left-text="手机号登录" left-arrow @click-left="onClickLeft" />
@@ -40,6 +48,7 @@ export default {
           this.$store.commit("upDateUser", data);
           this.$router.push("/home");
           this.storage.set("userData", JSON.stringify(data));
+          this.$store.dispatch("selectLikeMuisc");
         })
         .catch(() => {
           Notify({ type: "danger", message: `密码错误` });

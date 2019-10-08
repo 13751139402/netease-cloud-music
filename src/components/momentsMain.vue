@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-09-16 17:11:33
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 16:15:44
+ -->
 <script>
 import Vue from "vue";
 import { ImagePreview } from "vant";
@@ -41,18 +49,20 @@ export default {
     }
     switch (Object.keys(data.moments)[1]) {
       case "video": //视频
-        let musicData = JSON.parse(this.data.json).video;
-        children.push(
-          h(video, {
-            // 组件 prop
-            props: {
-              videoId: musicData.videoId,
-              duration: musicData.durationms,
-              coverUrl: musicData.coverUrl,
-              playCount: musicData.playTime
-            }
-          })
-        );
+        (() => {
+          const musicData = JSON.parse(this.data.json).video;
+          children.push(
+            h(video, {
+              // 组件 prop
+              props: {
+                videoId: musicData.videoId,
+                duration: musicData.durationms,
+                coverUrl: musicData.coverUrl,
+                playCount: musicData.playTime
+              }
+            })
+          );
+        })();
         break;
       case "song": // 音乐
         (() => {

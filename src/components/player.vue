@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-29 20:04:18
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 17:48:06
+ -->
 <template>
   <section id="player" v-show="playData&&isRouteHome">
     <figure id="musicData" @click="linkMusic">
@@ -18,8 +26,7 @@
         text="颜色定制"
       >
         <div class="playBtn" @click="control">
-          <van-icon name="success" v-show="palyBtn" />
-          <van-icon name="cross" v-show="!palyBtn" />
+          <van-icon :name="palyBtn?`success`:`cross`" />
         </div>
       </van-circle>
       <van-icon name="apps-o" style="margin: 0 0.2rem;" @click="changeRecord" />
@@ -51,7 +58,6 @@ export default {
       return this.playTypeIndex === 2;
     },
     playData() {
-      this.$store.commit("changePlayType", true);
       return this.$store.state.playData;
     },
     palyBtn() {
@@ -139,7 +145,7 @@ export default {
   border-top: 0.02667rem solid #e6e6e6;
   position: fixed;
   bottom: 0;
-  height: 7%;
+  height: 1.3rem;
   width: 100%;
   font-size: 0.4rem;
   display: flex;
@@ -150,7 +156,6 @@ export default {
 .player_round {
   height: 1rem;
   width: 1rem;
-  background: red;
   border-radius: 50%;
   margin-right: 0.1rem;
 }

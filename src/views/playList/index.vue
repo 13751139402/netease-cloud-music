@@ -1,15 +1,26 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-09-10 16:37:36
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 16:19:43
+ -->
 <template>
 <section id="playList">
-  <img :src="`${playlist.pic}?param=200y200`" id="background" />
-  <img :src="`${playlist.pic}?param=200y200`" id="backgroundShade" />
+  <img :src="`${playlist.pic}?param=50y50`" id="background" />
+  <div id="backgroundShade" ref="backgroundShade">
+    <img :src="`${playlist.pic}?param=50y50`" class="backgroundShade_img" />
+  </div>
   <modHead title="歌单" style="color:#fff;position: fixed;z-index:999">
     <div slot="right">
       <van-icon name="search" style="margin-right:10px" />
       <van-icon name="more-o" />
     </div>
   </modHead>
-  <main id="container" ref="container">
-    <figure id="details" ref="details">
+  <main id="container" @scroll="listScroll($event.target.scrollTop)">
+    <loading-view :load="initLoading"></loading-view>
+    <figure id="details">
       <div id="details_img">
         <figure style="position: relative;">
           <img :src="`${playlist.pic}?param=200y200`" id="details_cover" />
@@ -58,20 +69,21 @@
         </div>
       </div>-->
       <div id="list_container">
-        <head id="list_title">
+        <head id="list_title" ref="list_title">
           <div style="width:.7rem">
             <van-icon name="close" />
           </div>
           <span>播放全部</span>
           <span>(共{{playlist.trackCount}}首)</span>
         </head>
-        <main id="list_main">
-          <transition name="van-fade">
-            <van-loading color="rgb(255, 68, 68)" v-show="initLoading" class="initLoading">
-              <span>努力加载中...</span>
-            </van-loading>
-          </transition>
-          <van-list v-model="loading" :finished="finished" @load="onLoad" :immediate-check="false">
+        <main id="list_main" ref="list_main">
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+            :immediate-check="false"
+          >
             <van-cell v-for="(item,index) in list" :key="item.id" @click="linkMusic(item.id)">
               <van-icon
                 name="volume-o"
@@ -97,10 +109,10 @@
 </template>
 
 <script>
+import LoadingView from "@/components/LoadingView";
 import { NavBar, Icon, Cell, CellGroup, List, Loading } from "vant";
 import modHead from "../../components/head";
 import mixins from "@/assets/mixins";
-import Palette from "@/assets/palette";
 import { referee } from "../../assets/common";
 export default {
   data() {
@@ -111,7 +123,8 @@ export default {
       finished: false,
       dataLen: 0,
       initLoading: true,
-      playlist: {}
+      playlist: {},
+      terminus: 0
     };
   },
   computed: {
@@ -132,7 +145,8 @@ export default {
     [CellGroup.name]: CellGroup,
     [List.name]: List,
     modHead,
-    [Loading.name]: Loading
+    [Loading.name]: Loading,
+    "loading-view": LoadingView
   },
   mixins: [mixins],
   methods: {
@@ -174,28 +188,26 @@ export default {
           throw new Error(error);
         });
     },
-    // scrollBottom(event) {
-    //   let el = event.target;
-    //   let percent = el.scrollTop / (el.scrollHeight - el.clientHeight);
-    //   if (percent > 0.7) {
-    //     this.$refs.details.style.opacity = 1 - percent;
-    //   } else {
-    //     this.$refs.details.style.opacity = 1;
-    //   }
-    //   if (percent >= 0.99) {
-    //     this.$refs.list.style.overflowY = "auto";
-    //     this.$refs.container.style.overflowY = "hidden";
-    //   }
-    // },
-    // scrollTop(event) {
-    //   let el = event.target;
-    //   if (el.scrollTop === 0) {
-    //     this.$refs.list.style.overflowY = "hidden";
-    //     this.$refs.container.style.overflowY = "auto";
-    //   }
-    // },
+    listScroll(scrollTop) {
+      let title = this.$refs.list_title;
+      let backgroundShade = this.$refs.backgroundShade;
+
+      if (scrollTop >= this.terminus) {
+        title.style.position = "fixed";
+        this.$refs.list_main.style.marginTop = "1rem";
+      } else {
+        title.style.position = "static";
+        this.$refs.list_main.style.marginTop = "0";
+        backgroundShade.style.filter = "blur(10px)";
+      }
+
+      if (scrollTop + 20 >= this.terminus) {
+        backgroundShade.style.filter = "blur(0px)";
+      }
+      backgroundShade.style.opacity = scrollTop / this.terminus;
+    },
     onLoad() {
-      let item = this.data;
+      let item = this.data.splice(0, 15);
       let params = item
         .reduce((target, item) => {
           target.push(item.id);
@@ -260,37 +272,34 @@ export default {
     }
   },
   mounted() {
-    // this.scrollTop = referee.debounce(this.scrollTop, 100);
+    this.scrollTop = referee.debounce(this.scrollTop, 100);
+    this.$refs.list_title.style.position = "static";
+    let title = this.$refs.list_title;
+    this.terminus =
+      title.offsetTop -
+      Number(document.documentElement.style.fontSize.slice(0, -2) * 1.2);
   },
   watch: {
-    playListId() {
-      this.selectPlayList();
+    playListId: {
+      handler() {
+        this.selectPlayList();
+      },
+      immediate: true
     }
   },
-  activated() {
-    let container = this.$refs.container,
-      detail = this.$refs.details;
-    //list = this.$refs.list;
-    if (container.style.overflowY === "hidden") {
-      container.scrollTop = container.scrollHeight - container.clientHeight;
+  beforeRouteLeave(to, from, next) {
+    if (to.fullPath === "/home") {
+
+      from.meta.keepAlive = false;
     } else {
-      detail.style.opacity = 1;
+      from.meta.keepAlive = true;
     }
+    next();
   }
 };
 </script>
 
 <style scoped>
-.initLoading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  background: #fff;
-  position: absolute;
-  z-index: 99;
-  height: 3rem;
-}
 .chooseMusic {
   background: #2a2a2a;
 }
@@ -303,22 +312,27 @@ export default {
   filter: blur(50px);
   position: fixed;
   width: 100%;
+  height: 36%;
 }
-
+.backgroundShade_img {
+  width: 100%;
+  filter: blur(50px);
+}
 #backgroundShade {
   width: 100%;
   background: no-repeat center/100% 100%;
-  filter: blur(1.33333rem);
+  /* filter: blur(1.33333rem); */
   position: fixed;
   height: 2.2rem;
-  z-index: 11;
+  z-index: 2;
+  background: gray;
   overflow: hidden;
+  opacity: 0;
 }
 #container {
-  position: fixed;
-  width: 100;
-  height: 100%;
+  position: absolute;
   width: 100%;
+  height: 100%;
   padding-top: 1.2rem;
   box-sizing: border-box;
   display: flex;
@@ -326,7 +340,6 @@ export default {
   overflow-y: auto;
 }
 #details {
-  height: 30%;
   display: flex;
   flex-direction: column;
   font-size: 0.5rem;
@@ -339,6 +352,8 @@ export default {
 }
 #details_cover {
   height: 3rem;
+  width: 3rem;
+  background: transparent;
   border-radius: 5px;
 }
 #details_title {
@@ -454,6 +469,7 @@ export default {
 #list_main {
   background: #fff;
   position: relative;
+  padding-bottom: 1.3rem;
 }
 #playCount {
   display: flex;

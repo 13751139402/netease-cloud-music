@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-30 14:50:44
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 17:10:06
+ -->
 <template>
   <section id="music">
     <img :src="`${playData.pic}?param=50y50`" id="background" />
@@ -31,8 +39,11 @@
       <div id="control">
         <van-icon :name="playTypeIcon" @click="changePlayType" />
         <van-icon name="arrow-left" @click="last" />
-        <van-icon name="pause-circle-o" v-show="play" @click="control" class="palyer" />
-        <van-icon name="play-circle-o" v-show="!play" @click="control" class="palyer" />
+        <van-icon
+          :name="play?'pause-circle-o':'play-circle-o'"
+          @click="control"
+          class="palyer"
+        />
         <van-icon name="arrow" @click="next" />
         <van-icon name="todo-list-o" @click="changeRecord" />
       </div>

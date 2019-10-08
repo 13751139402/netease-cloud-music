@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-23 09:46:14
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 12:58:53
+ */
 import Vue from 'vue'
 import Vuex from 'vuex'
 import mutations from './mutations'
@@ -27,10 +35,12 @@ const state = {
 
     showRecord: false, // 播放歌单是否显示
     scrollLyric: false, // 歌词页面的滚动条
-    playListId: "2711160546", //当前歌单id
+    playListId: 2711160546, //当前歌单id
     commentData: {}, // 评论数据
 
     keywords: "",  //搜索关键字
+
+    likeArr: [], // 喜欢音乐列表
 }
 
 export default new Vuex.Store({

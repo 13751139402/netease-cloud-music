@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-23 09:45:34
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 16:42:06
+ */
 import Vue from 'vue'
 import Router from 'vue-router'
 import VueRouter from 'vue-router'
@@ -96,7 +104,7 @@ let routes = [
     name: 'playList',
     meta: {
       keepAlive: true,
-      scrollEl: "list_main",
+      scrollEl: "container",
       scrollTop: 0,
     },
     component: () => import('../views/playList/index')

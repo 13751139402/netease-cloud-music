@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-09-24 08:43:02
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 17:47:55
+ -->
 <template>
   <section class="synthesize">
     <Cell :data="songData" type="songs" @submit="submitSongs"></Cell>
@@ -66,10 +74,8 @@ export default {
           this.songData = data.result.song;
           // 歌单
           this.playListData = data.result.playList || {};
-          console.log(this.playListData);
 
           this.playListData.playlists = this.playListData.playLists || false;
-          console.log(this.playListData);
 
           // 视频
           this.video = data.result.video;
@@ -79,14 +85,17 @@ export default {
           this.$emit("update:initLoad", false);
         })
         .catch(error => {
-          console.error(error);
+          throw new Error(error);
         });
     }
   },
   watch: {
-    keywords(to) {
-      Object.assign(this.$data, this.$options.data());
-      this.selectData(to);
+    keywords: {
+      handler(to) {
+        Object.assign(this.$data, this.$options.data());
+        this.selectData(to);
+      },
+      immediate: true
     }
   }
 };

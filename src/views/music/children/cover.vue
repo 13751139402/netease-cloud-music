@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-30 14:51:51
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 16:18:18
+ -->
 <template>
   <section id="cover" @click="linkRouter">
     <figure id="stylus" :class="{ stylusOn: play}">
@@ -11,7 +19,14 @@
       </figure>
     </div>
     <article @click.stop>
-      <van-icon name="like-o" />
+      <transition name="likeAnimat">
+        <van-icon
+          :name="playData.isLike?'like':'like-o'"
+          :class="{likeTrue:playData.isLike}"
+          @click="switchLike"
+          :key="playData.isLike"
+        />
+      </transition>
       <van-icon name="upgrade" />
       <van-icon name="close" />
       <van-icon name="chat-o" @click="linkComment" :info="totalNum" />
@@ -25,7 +40,8 @@ import { Icon } from "vant";
 export default {
   data() {
     return {
-      total: 999
+      total: 999,
+      isLike: false
     };
   },
   computed: {
@@ -55,6 +71,18 @@ export default {
     }
   },
   methods: {
+    switchLike() {
+      let type = !this.playData.isLike;
+      this.$http
+        .get(`/like?id=${this.pid}&like=${type}`)
+        .then(() => {
+          this.playData.isLike = type;
+          this.$store.commit("changeLikeArr", this.pid, type);
+        })
+        .catch(error => {
+          throw new Error(error);
+        });
+    },
     linkRouter() {
       this.$parent.open = false;
     },
@@ -89,6 +117,12 @@ export default {
   watch: {
     pid() {
       this.selectTotal();
+    },
+    playData: {
+      handler(to) {
+        this.isLike = to.isLike;
+      },
+      immediate: true
     }
   },
   created() {
@@ -98,6 +132,30 @@ export default {
 </script>
 
 <style scoped>
+.likeTrue {
+  color: red;
+}
+.likeAnimat-enter-active,
+.likeAnimat-leave-active {
+  transition: opacity 0.5s;
+}
+.likeAnimat-enter, .likeAnimat-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+/* .likeAnimat {
+  animation: likeAnimat-in 0.5s reverse;
+}
+@keyframes likeAnimat-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+} */
 #cover {
   display: flex;
   flex-direction: column;

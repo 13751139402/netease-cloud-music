@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-09-17 13:50:31
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 16:18:43
+ -->
 <template>
   <div class="container">
     <div class="player">
@@ -65,7 +73,7 @@ export default {
     return {
       playerOptions: {
         //        playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
-        autoplay: true , //如果true,浏览器准备好时开始回放。
+        autoplay: true, //如果true,浏览器准备好时开始回放。
         muted: false, // 默认情况下将会消除任何音频。
         loop: false, // 导致视频一结束就重新开始。
         preload: "auto", // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
@@ -91,7 +99,7 @@ export default {
       playBln: false, //是否处于播放状态
       durationms: this.duration,
       playBtnType: "play-circle-o",
-      ifPlayLoad:false
+      ifPlayLoad: false
     };
   },
   components: {
@@ -134,7 +142,7 @@ export default {
             this.videoType == "mv" ? data.data.url : data.urls[0].url;
         })
         .catch(error => {
-          // console.error(error);
+          throw new Error(error);
         });
     },
     onPlayer() {
@@ -146,10 +154,10 @@ export default {
           this.$refs.videoPlayer.player.play();
         }
       });
-    },
+    }
   },
   watch: {
-    ifPause(to) {
+    ifPause() {
       if (this.playBln) {
         this.$refs.videoPlayer.player.pause();
       }
@@ -224,7 +232,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
-*{
+* {
   line-height: 0;
 }
 </style>

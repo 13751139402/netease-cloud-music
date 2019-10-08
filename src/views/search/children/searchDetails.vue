@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-09-24 08:43:02
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 16:44:15
+ -->
 <template>
   <section id="searchDetails">
     <van-tabs swipeable v-model="active" sticky @change="changeTabs">
@@ -76,8 +84,6 @@ export default {
   },
   computed: {
     keywords() {
-      console.log(this.$store.state.keywords);
-
       return this.$store.state.keywords;
     }
   },
@@ -93,7 +99,7 @@ export default {
           return data.result;
         })
         .catch(error => {
-          console.error(error);
+          throw new Error(error);
         });
     },
     submitSongs(id) {
@@ -119,9 +125,6 @@ export default {
           }
           Object.assign(item, { title, label });
         });
-      return data;
-    },
-    handleVideos(data) {
       return data;
     },
     handleVideos(data) {
@@ -158,8 +161,12 @@ export default {
     }
   },
   watch: {
-    keywords(to) {
-      Object.assign(this.$data, this.$options.data());
+    keywords: {
+      handler(to) {
+        this.$parent.keywords = to;
+        Object.assign(this.$data, this.$options.data());
+      },
+      immediate: true
     }
   }
 };

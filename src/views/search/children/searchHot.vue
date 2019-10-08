@@ -1,6 +1,14 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-09-24 08:43:02
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 16:29:41
+ -->
 <template>
 <section id="searchHot">
-  <figure id="history">
+  <figure id="history" v-if="history.length">
     <head class="history_head">
       <span class="history_title">历史记录</span>
       <van-icon name="delete" color="#999999" style="font-size:.5rem" />

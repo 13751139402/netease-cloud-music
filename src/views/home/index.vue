@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-22 20:27:27
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 16:16:55
+ -->
 <template>
   <section id="home">
     <van-icon name="setting-o" @click="showPopup" class="left" />

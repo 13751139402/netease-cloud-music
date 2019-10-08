@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-09-24 08:43:02
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 16:37:16
+ -->
 <template>
 <section id="search">
   <head>
@@ -10,7 +18,6 @@
           :placeholder="defaultKeyWord"
           v-model="keywords"
           left-icon
-          :learable="false"
           :clearable="false"
           @input="changeValue"
           @search="searchData"
@@ -78,7 +85,7 @@ export default {
           this.defaultKeyWord = response.data.data.showKeyword;
         })
         .catch(error => {
-          console.error(error);
+          throw new Error(error)
         });
     },
     changeValue(value) {
@@ -94,7 +101,7 @@ export default {
           this.suggest = response.data.result.allMatch;
         })
         .catch(error => {
-          console.error(error);
+          throw new Error(error)
         });
     },
     searchData(value) {
@@ -102,20 +109,19 @@ export default {
         value = this.defaultKeyWord;
       }
       this.$store.commit("keywords", value);
-
+      this.showSuggest = false;
+      this.$router.push("details");
+    }
+  },
+  watch: {
+    vuexKeyWords(value) {
+      this.keywords = value;
       let valueIndex = this.history.indexOf(value);
       if (valueIndex !== -1) {
         this.history.splice(valueIndex, 1);
       }
       this.history.unshift(value);
       cookie.setCookie("keywordsHistory", JSON.stringify(this.history));
-      this.showSuggest = false;
-      this.$router.push("details");
-    }
-  },
-  watch: {
-    vuexKeyWords(to) {
-      this.keywords = to;
     }
   },
   created() {

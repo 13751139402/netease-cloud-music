@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-09-24 08:43:02
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 16:18:01
+ -->
 <template>
   <section class="searchCell" v-if="cellData">
     <van-cell-group :title="typeName" :border="false">
@@ -140,7 +148,7 @@ export default {
     submit(id) {
       this.$emit("submit", id);
     },
-    moreSubmit() {
+    moreSubmit(id) {
       this.$emit("moreSubmit", id);
     }
   },
@@ -158,8 +166,6 @@ export default {
       return this.data.moreText;
     },
     ifSynthesize() {
-      console.log(this.moreText);
-      
       return this.moreText ? false : "没有更多了";
     }
   },

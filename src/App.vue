@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-22 20:25:05
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-08 17:48:50
+ -->
 <template>
   <div id="app">
     <transition name="shade-hide" v-if="showShade">
@@ -10,7 +18,6 @@
       </section>
     </transition>
     <keep-alive>
-      <!--使用keep-alive会将页面缓存-->
       <router-view v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
     <router-view v-if="!$route.meta.keepAlive"></router-view>
@@ -47,6 +54,7 @@ export default {
         //this.$router.push("/home");
       } else {
         this.$store.commit("upDateUser", userData);
+        this.$store.dispatch("selectLikeMuisc");
         //this.$router.push("/home");
       }
     }

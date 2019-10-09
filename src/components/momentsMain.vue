@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-09-16 17:11:33
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 16:15:44
+ * @LastEditTime: 2019-10-09 09:55:57
  -->
 <script>
 import Vue from "vue";
@@ -57,7 +57,7 @@ export default {
               props: {
                 videoId: musicData.videoId,
                 duration: musicData.durationms,
-                coverUrl: musicData.coverUrl,
+                coverUrl: musicData.coverUrl ,
                 playCount: musicData.playTime
               }
             })

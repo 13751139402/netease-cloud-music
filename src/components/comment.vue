@@ -1,43 +1,53 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-09-06 13:36:10
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-09-06 13:36:10
+ -->
 <template>
-<section>
-  <head :class="{height:title1}">
-    <slot name="title">
-      <span>{{title1}}</span>
-    </slot>
-  </head>
-  <main>
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      @load="onLoad"
-      finished-text="没有更多了"
-      :immediate-check="false"
-      :error.sync="error"
-      error-text="请求失败，点击重新加载"
-    >
-      <figure class="commItem" v-for="(item,index) in data1" :key="item.commentId">
-        <head class="commImgContainer">
-          <img :src="`${item.user.avatarUrl}?param=50y50`" class="commImg" />
-        </head>
-        <main class="commMain">
-          <div class="commHead">
-            <figcaption class="commTitle">
-              <span class="commName">{{item.user.nickname}}</span>
-              <span class="commTime" v-time="item.time"></span>
-            </figcaption>
-            <div class="commLike" @click="like(index)" :class="{color:item.liked}">
-              <span class="commLikeNum" v-if="item.likedCountMap">{{item.likedCountMap}}</span>
-              <van-icon name="good-job" v-if="item.liked" />
-              <van-icon name="good-job-o" v-else />
+<transition appear name="van-fade">
+  <section>
+    <head :class="{height:title1}">
+      <slot name="title">
+        <span>{{title1}}</span>
+      </slot>
+    </head>
+    <main>
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        @load="onLoad"
+        finished-text="没有更多了"
+        :immediate-check="false"
+        :error.sync="error"
+        error-text="请求失败，点击重新加载"
+      >
+        <figure class="commItem" v-for="(item,index) in data1" :key="item.commentId">
+          <head class="commImgContainer">
+            <img :src="`${item.user.avatarUrl}?param=50y50`" class="commImg" />
+          </head>
+          <main class="commMain">
+            <div class="commHead">
+              <figcaption class="commTitle">
+                <span class="commName">{{item.user.nickname}}</span>
+                <span class="commTime" v-time="item.time"></span>
+              </figcaption>
+              <div class="commLike" @click="like(index)" :class="{color:item.liked}">
+                <span class="commLikeNum" v-if="item.likedCountMap">{{item.likedCountMap}}</span>
+                <van-icon name="good-job" v-if="item.liked" />
+                <van-icon name="good-job-o" v-else />
+              </div>
             </div>
-          </div>
-          <div class="text" v-html="item.content"></div>
-        </main>
-      </figure>
-      <slot name="foot" slot="loading"></slot>
-    </van-list>
-  </main>
-</section>
+            <div class="text" v-html="item.content"></div>
+          </main>
+        </figure>
+        <slot name="foot" slot="loading"></slot>
+      </van-list>
+    </main>
+  </section>
+</transition>
 </template>
 
 <script>

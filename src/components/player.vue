@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-08-29 20:04:18
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 17:48:06
+ * @LastEditTime: 2019-10-09 19:58:49
  -->
 <template>
   <section id="player" v-show="playData&&isRouteHome">
@@ -13,19 +13,20 @@
         <van-image round width="1rem" height="1rem" :src="`${playData.pic}?param=50y50`" />
       </div>
       <div class="player_1">
-        <span>{{playData.name}}</span>
-        <span style="font-size: 0.05rem;color: #9e9e9e;">横滑可以切换上下首哦</span>
+        <div>{{playData.name}}</div>
+        <div style="font-size: 0.05rem;color: #9e9e9e;">横滑可以切换上下首哦</div>
       </div>
     </figure>
     <figure id="musicBtn">
       <van-circle
         v-model="currentRate"
-        layer-color="#4d4d4d"
+        :rate="circleRate"
+        :layer-color="palyBtn?`#f5f5f5`:`#d4d4d4`"
         size=".8rem"
         color="#ff3a3a"
         @click.native="control"
       >
-        <van-icon :name="palyBtn?`yousanjiao`:`zantingtingzhi`" class-prefix="icon" size=".45rem" />
+        <van-icon :name="palyBtn?`zanting2`:`yousanjiao`" class-prefix="icon" size=".45rem" />
       </van-circle>
       <van-icon class-prefix="icon" name="caidan" @click="changeRecord" class="iconList" />
     </figure>
@@ -48,10 +49,14 @@ export default {
   data() {
     return {
       currentRate: 0,
+      circleRate: 0,
       myAudio: {}
     };
   },
   computed: {
+    videoId() {
+      return this.$store.state.videoId;
+    },
     loopType() {
       return this.playTypeIndex === 2;
     },
@@ -91,6 +96,7 @@ export default {
     timeupData(event) {
       let target = event.target;
       this.currentRate = (target.currentTime / target.duration) * 100;
+
       this.$store.commit("currentTime", target.currentTime);
       this.$store.commit("changePlayTime", this.currentRate);
     },
@@ -112,6 +118,7 @@ export default {
   watch: {
     palyBtn(to) {
       if (to) {
+        this.$store.commit("videoId", "");
         this.myAudio.play();
       } else {
         this.myAudio.pause();
@@ -123,6 +130,12 @@ export default {
     },
     volume(to) {
       this.myAudio.volume = to;
+    },
+    videoId(to) {
+      if (to === "") {
+        return;
+      }
+      this.$store.commit("changePlayType", false);
     }
   },
   mounted() {
@@ -141,12 +154,12 @@ export default {
   margin-left: 0.1rem;
   font-size: 0.4rem;
 }
-.icon-zantingtingzhi {
-  color: red;
+.icon-zanting2 {
+  color: #ff3a3a;
 }
 .iconList {
   font-size: 1rem;
-  margin-left: .5rem;
+  margin-left: 0.5rem;
   font-size: 0.8rem;
 }
 .playBtn {
@@ -188,10 +201,10 @@ export default {
 .player_1 {
   display: flex;
   flex-direction: column;
-  align-content: center;
-  justify-content: space-evenly;
-  height: 100%;
   width: 5rem;
+}
+.player_1 > div {
+  margin: 2px 0;
 }
 #musicBtn {
   height: 100%;

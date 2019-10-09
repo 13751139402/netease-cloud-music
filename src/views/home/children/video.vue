@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-08-26 13:13:24
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 17:03:31
+ * @LastEditTime: 2019-10-09 11:41:20
  -->
 <template>
   <div>
@@ -16,40 +16,41 @@
       :error.sync="error"
       error-text="请求失败，点击重新加载"
     >
-      <figure v-for="item in videoList" :key="item.id" class="list_item">
-        <div class="list_item_main">
-          <video-components
-            :videoId="item.id"
-            :duration="item.duration"
-            :coverUrl="item.cover"
-            :playCount="item.playCount"
-            videoType="mv"
-            class="video-components"
-          ></video-components>
-        </div>
-        <div class="list_item_titleContainer">
-          <span class="list_item_titleContainer_title">{{item.name}}</span>
-        </div>
-        <footer class="info">
-          <div class="info_1">
-            <div>
-              <van-icon name="bar-chart-o" />
-              <span>20</span>
-            </div>
-            <div>
-              <van-icon name="comment-o" />
-              <span>30</span>
-            </div>
-            <div>
-              <van-icon name="good-job-o" />
-              <span>500</span>
-            </div>
+      <transition-group appear name="van-fade">
+        <figure v-for="item in videoList" :key="item.id" class="list_item">
+          <div class="list_item_main">
+            <video-components
+              :videoId="item.id"
+              :duration="item.duration"
+              :coverUrl="item.cover"
+              :playCount="item.playCount"
+              videoType="mv"
+              class="video-components"
+            ></video-components>
           </div>
-          <div>
-            <van-icon name="more-o" />
+          <div class="list_item_titleContainer">
+            <span class="list_item_titleContainer_title">{{item.name}}</span>
           </div>
-        </footer>
-      </figure>
+          <footer class="info">
+            <div>
+              <div style="font-size: 0.4rem;">{{item.artistName}}</div>
+            </div>
+            <div class="btnContainer">
+              <div>
+                <van-icon name="good-job-o" />
+                <span class="commit">500</span>
+              </div>
+              <div>
+                <van-icon class-prefix="icon" name="pinglunpt1" />
+                <span class="commit">20</span>
+              </div>
+              <div>
+                <van-icon class-prefix="icon" name="caidan-dian" />
+              </div>
+            </div>
+          </footer>
+        </figure>
+      </transition-group>
     </van-list>
   </div>
 </template>
@@ -98,12 +99,26 @@ export default {
 </script>
 
 <style scoped>
+.btnContainer {
+  justify-content: inherit;
+  padding-left: 35%;
+}
+.info > div {
+  flex: 1;
+}
+.commit {
+  position: absolute;
+  top: -0.13333rem;
+  left: 74%;
+  font-size: 0.2rem !important;
+}
 .list_item {
   display: flex;
   justify-content: center;
   flex-direction: column;
   border-bottom: 0.2rem solid #e6e6e6;
   padding: 0.3rem;
+  height: 7rem;
 }
 .list_item_main {
   display: flex;
@@ -149,5 +164,6 @@ export default {
 .info div {
   display: flex;
   align-items: center;
+  position: relative;
 }
 </style>

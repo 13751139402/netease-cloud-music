@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-08-26 13:12:55
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 19:53:13
+ * @LastEditTime: 2019-10-09 13:37:46
  -->
 <template>
   <section id="me">
@@ -56,55 +56,61 @@
       </van-cell-group>
     </figure>
     <figure id="list">
-      <van-collapse v-model="activeNames">
-        <van-collapse-item name="1">
-          <p slot="title" class="listTitle">
-            <span class="bold">创建的歌单</span>
-            <span class="cellNum">({{subCount.createdPlaylistCount}})</span>
-          </p>
-          <div slot="value" class="listValue">
-            <van-icon name="plus" style="margin-right:5px" />
-            <van-icon name="more-o" />
-          </div>
-          <van-cell
-            icon="shop-o"
-            v-for="{id,coverImgUrl,name,trackCount} in createdPlaylist"
-            :key="id"
-            :border="false"
-            @click="linkPlayList(id)"
-          >
-            <img :src="`${coverImgUrl}?param=100y100`" slot="icon" class="listImg" />
-            <p slot="title" class="iconTitle">
-              <span class="iconTitleName">{{name}}</span>
-              <span class="iconDes">{{trackCount}}首</span>
+      <transition appear name="fade">
+        <van-collapse v-model="activeNames">
+          <van-collapse-item name="1">
+            <p slot="title" class="listTitle">
+              <span class="bold">创建的歌单</span>
+              <span class="cellNum">({{subCount.createdPlaylistCount}})</span>
             </p>
-            <van-icon slot="right-icon" name="more-o" />
-          </van-cell>
-        </van-collapse-item>
-        <van-collapse-item name="2">
-          <p slot="title" class="listTitle">
-            <span class="bold">收藏的歌单</span>
-            <span class="cellNum">({{subCount.subPlaylistCount}})</span>
-          </p>
-          <div slot="value" class="listValue">
-            <van-icon name="more-o" />
-          </div>
-          <van-cell
-            icon="shop-o"
-            v-for="{id,coverImgUrl,name,trackCount} in subPlaylist"
-            :key="id"
-            :border="false"
-            @click="linkPlayList(id)"
-          >
-            <img :src="`${coverImgUrl}?param=100y100`" slot="icon" class="listImg" />
-            <p slot="title" class="iconTitle">
-              <span class="iconTitleName">{{name}}</span>
-              <span class="iconDes">{{trackCount}}首</span>
+            <div slot="value" class="listValue">
+              <van-icon name="plus" style="margin-right:5px" />
+              <van-icon class-prefix="icon" name="caidan-dian" color="#323233" />
+            </div>
+            <van-cell
+              icon="shop-o"
+              v-for="{id,coverImgUrl,name,trackCount} in createdPlaylist"
+              :key="id"
+              :border="false"
+              @click="linkPlayList(id)"
+            >
+              <img :src="`${coverImgUrl}?param=100y100`" slot="icon" class="listImg" />
+              <p slot="title" class="iconTitle">
+                <span class="iconTitleName">{{name}}</span>
+                <span class="iconDes">{{trackCount}}首</span>
+              </p>
+              <template #right-icon>
+                <van-icon class-prefix="icon" name="caidan-dian" />
+              </template>
+            </van-cell>
+          </van-collapse-item>
+          <van-collapse-item name="2">
+            <p slot="title" class="listTitle">
+              <span class="bold">收藏的歌单</span>
+              <span class="cellNum">({{subCount.subPlaylistCount}})</span>
             </p>
-            <van-icon slot="right-icon" name="more-o" />
-          </van-cell>
-        </van-collapse-item>
-      </van-collapse>
+            <div slot="value" class="listValue">
+              <van-icon class-prefix="icon" name="caidan-dian" color="#323233" />
+            </div>
+            <van-cell
+              icon="shop-o"
+              v-for="{id,coverImgUrl,name,trackCount} in subPlaylist"
+              :key="id"
+              :border="false"
+              @click="linkPlayList(id)"
+            >
+              <img :src="`${coverImgUrl}?param=100y100`" slot="icon" class="listImg" />
+              <p slot="title" class="iconTitle">
+                <span class="iconTitleName">{{name}}</span>
+                <span class="iconDes">{{trackCount}}首</span>
+              </p>
+              <template #right-icon>
+                <van-icon class-prefix="icon" name="caidan-dian" />
+              </template>
+            </van-cell>
+          </van-collapse-item>
+        </van-collapse>
+      </transition>
     </figure>
   </section>
 </template>
@@ -187,13 +193,29 @@ export default {
       this.$router.push("/playList");
     }
   },
-  mounted() {
-    this.user && this.selectSubCount();
+  watch: {
+    user: {
+      handler() {
+        this.user && this.selectSubCount();
+      },
+      immediate: true
+    }
   }
 };
 </script>
 
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.icon-caidan-dian {
+  font-size: 0.4rem;
+  color: #999;
+}
 .iconStyle {
   font-size: 0.6rem;
   margin-right: 10px;

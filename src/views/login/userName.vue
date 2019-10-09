@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-28 14:22:00
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-09 20:06:34
+ -->
 <template>
   <section id="userName">
     <van-nav-bar left-text="手机号登录" left-arrow @click-left="onClickLeft" maxlength="11" />
@@ -13,14 +21,6 @@
         ref="userName"
       />
       <button class="submit" @touchstart="submit">下一步</button>
-      <van-number-keyboard
-        v-model="username"
-        :show="show"
-        theme="custom"
-        extra-key="."
-        close-button-text="完成"
-        @close="submit"
-      />
     </article>
   </section>
 </template>
@@ -61,7 +61,7 @@ export default {
                 query: { phone: this.username }
               });
             } else {
-                throw new Error();
+              throw new Error();
             }
           })
           .catch(() => {
@@ -106,6 +106,7 @@ export default {
 }
 #userName {
   overflow: hidden;
+  height: 100%;
 }
 </style>
 <style>

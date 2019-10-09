@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-22 20:50:47
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-09 12:54:05
+ */
 const autoprefixer = require('autoprefixer');
 const pxtorem = require('postcss-pxtorem');
 const path = require('path');
@@ -6,7 +14,7 @@ function resolve(dir) {
 }
 module.exports = {
   outputDir: 'docs',
-  publicPath: process.env.NODE_ENV === 'production' ? '/vant-demo/' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
   css: {
     loaderOptions: {
       postcss: {
@@ -29,5 +37,5 @@ module.exports = {
     config.resolve.alias
       .set('imgs', resolve('src/assets/images'))
       .set('@', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
-  }
+  },
 };

@@ -4,61 +4,65 @@
  * @Author: 戴训伟
  * @Date: 2019-09-10 16:37:36
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 16:19:43
+ * @LastEditTime: 2019-10-09 19:48:49
  -->
 <template>
-<section id="playList">
-  <img :src="`${playlist.pic}?param=50y50`" id="background" />
-  <div id="backgroundShade" ref="backgroundShade">
-    <img :src="`${playlist.pic}?param=50y50`" class="backgroundShade_img" />
-  </div>
-  <modHead title="歌单" style="color:#fff;position: fixed;z-index:999">
-    <div slot="right">
-      <van-icon name="search" style="margin-right:10px" />
-      <van-icon name="more-o" />
+  <section id="playList">
+    <img :src="`${playlist.pic}?param=50y50`" id="background" />
+    <div id="backgroundShade" ref="backgroundShade">
+      <img :src="`${playlist.pic}?param=50y50`" class="backgroundShade_img" />
     </div>
-  </modHead>
-  <main id="container" @scroll="listScroll($event.target.scrollTop)">
-    <loading-view :load="initLoading"></loading-view>
-    <figure id="details">
-      <div id="details_img">
-        <figure style="position: relative;">
-          <img :src="`${playlist.pic}?param=200y200`" id="details_cover" />
-          <div id="playCount">
-            <van-icon name="play-circle-o" style="margin-right: 2px;" />
-            <span>{{playlist.playCount}}</span>
-          </div>
-        </figure>
-        <div id="details_title">
-          <span style="font-weight: bold;">{{playlist.name}}</span>
-          <figure id="details_title_1">
-            <img :src="playlist.nickname&&playlist.nickname.pic" id="details_title_head" />
-            <span>{{playlist.nickname&&playlist.nickname.name}}</span>
-            <van-icon name="arrow" />
-          </figure>
-        </div>
+    <modHead title="歌单" style="color:#fff;position: fixed;z-index:999">
+      <div slot="right">
+        <van-icon name="search" />
       </div>
-      <ul id="control">
-        <li @click="linkComm">
-          <van-icon name="close" />
-          <span>评论</span>
-        </li>
-        <li>
-          <van-icon name="close" />
-          <span>分享</span>
-        </li>
-        <li>
-          <van-icon name="close" />
-          <span>下载</span>
-        </li>
-        <li>
-          <van-icon name="close" />
-          <span>多选</span>
-        </li>
-      </ul>
-    </figure>
-    <figure id="list">
-      <!-- <div id="vipWarn">
+    </modHead>
+    <main id="container" @scroll="listScroll($event.target.scrollTop)">
+      <loading-view :load="initLoading"></loading-view>
+      <figure id="details">
+        <div id="details_img">
+          <figure style="position: relative;">
+            <img :src="`${playlist.pic}?param=100y100`" id="details_cover" />
+            <div id="playCount">
+              <van-icon
+                name="yousanjiao"
+                style="margin-right: 2px;"
+                class-prefix="icon"
+                size=".3rem"
+              />
+              <span>{{playlist.playCount}}</span>
+            </div>
+          </figure>
+          <div id="details_title">
+            <span style="font-weight: bold;">{{playlist.name}}</span>
+            <figure id="details_title_1">
+              <img :src="playlist.nickname&&playlist.nickname.pic" id="details_title_head" />
+              <span>{{playlist.nickname&&playlist.nickname.name}}</span>
+              <van-icon name="arrow" />
+            </figure>
+          </div>
+        </div>
+        <ul id="control">
+          <li @click="linkComm">
+            <van-icon name="pinglunpt" class-prefix="icon" />
+            <span>评论</span>
+          </li>
+          <li>
+            <van-icon name="fenxiangpt" class-prefix="icon" />
+            <span>分享</span>
+          </li>
+          <li>
+            <van-icon name="xiazaipt" class-prefix="icon" />
+            <span>下载</span>
+          </li>
+          <li>
+            <van-icon name="yousanjiao" class-prefix="icon" />
+            <span>多选</span>
+          </li>
+        </ul>
+      </figure>
+      <figure id="list">
+        <!-- <div id="vipWarn">
         <div id="vipWarn_display">
           <van-icon name="close" style="width: 0.7rem;" />
           <span>含7首VIP专享歌曲</span>
@@ -67,45 +71,43 @@
           <span id="vipWarn_2">开通VIP畅想海量曲...</span>
           <van-icon name="close" />
         </div>
-      </div>-->
-      <div id="list_container">
-        <head id="list_title" ref="list_title">
-          <div style="width:.7rem">
-            <van-icon name="close" />
+        </div>-->
+        <div id="list_container">
+          <div id="list_title" ref="list_title">
+            <van-icon class-prefix="icon" name="zanting" size=".65rem" />
+            <span>播放全部</span>
+            <span>(共{{playlist.trackCount}}首)</span>
           </div>
-          <span>播放全部</span>
-          <span>(共{{playlist.trackCount}}首)</span>
-        </head>
-        <main id="list_main" ref="list_main">
-          <van-list
-            v-model="loading"
-            :finished="finished"
-            finished-text="没有更多了"
-            @load="onLoad"
-            :immediate-check="false"
-          >
-            <van-cell v-for="(item,index) in list" :key="item.id" @click="linkMusic(item.id)">
-              <van-icon
-                name="volume-o"
-                v-if="musicId===item.id"
-                slot="icon"
-                class="listNum"
-                color="red"
-              />
-              <div slot="icon" class="listNum" v-else>{{index+1}}</div>
-              <div slot="title" class="listTtitle">{{item.name}}</div>
-              <div slot="label" class="listLabel">{{item.details}}</div>
-              <div slot="default" class="listValue">
-                <van-icon name="close" style="margin-right:.1rem" />
-                <van-icon name="close" />
-              </div>
-            </van-cell>
-          </van-list>
-        </main>
-      </div>
-    </figure>
-  </main>
-</section>
+          <main id="list_main" ref="list_main">
+            <van-list
+              v-model="loading"
+              :finished="finished"
+              finished-text="没有更多了"
+              @load="onLoad"
+              :immediate-check="false"
+            >
+              <van-cell v-for="(item,index) in list" :key="item.id" @click="linkMusic(item.id)">
+                <van-icon
+                  name="laba1"
+                  class-prefix="icon"
+                  v-if="musicId===item.id"
+                  slot="icon"
+                  class="listNum"
+                  color="red"
+                />
+                <div slot="icon" class="listNum" v-else>{{index+1}}</div>
+                <div slot="title" class="listTtitle">{{item.name}}</div>
+                <div slot="label" class="listLabel">{{item.details}}</div>
+                <div slot="default" class="listValue">
+                  <van-icon class-prefix="icon" name="caidan-dian" />
+                </div>
+              </van-cell>
+            </van-list>
+          </main>
+        </div>
+      </figure>
+    </main>
+  </section>
 </template>
 
 <script>
@@ -196,7 +198,7 @@ export default {
         title.style.position = "fixed";
         this.$refs.list_main.style.marginTop = "1rem";
       } else {
-        title.style.position = "static";
+        title.style.position = "";
         this.$refs.list_main.style.marginTop = "0";
         backgroundShade.style.filter = "blur(10px)";
       }
@@ -272,7 +274,7 @@ export default {
     }
   },
   mounted() {
-    this.scrollTop = referee.debounce(this.scrollTop, 100);
+    //this.scrollTop = referee.debounce(this.scrollTop, 100);
     this.$refs.list_title.style.position = "static";
     let title = this.$refs.list_title;
     this.terminus =
@@ -289,7 +291,6 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     if (to.fullPath === "/home") {
-
       from.meta.keepAlive = false;
     } else {
       from.meta.keepAlive = true;
@@ -300,6 +301,13 @@ export default {
 </script>
 
 <style scoped>
+.icon {
+  font-size: 0.5rem;
+  vertical-align: middle;
+}
+.caidan-dian {
+  font-size: 0.8rem;
+}
 .chooseMusic {
   background: #2a2a2a;
 }
@@ -392,9 +400,9 @@ export default {
   background: #fff;
   border-radius: 20px 20px 0 0;
   font-size: 0.5rem;
-  background: #d6d6d5;
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 .listNum {
   display: flex;
@@ -448,9 +456,9 @@ export default {
 }
 #list_title {
   border-radius: 0.53333rem 0.53333rem 0 0;
-  padding: 0.3rem 0.42667rem;
-  display: flex;
-  align-items: center;
+  padding: 0 0.3rem;
+  line-height: 1rem;
+  border: 0;
   background: #fff;
   height: 1rem;
   box-sizing: border-box;

@@ -1,7 +1,15 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-09-09 13:53:07
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-09-09 13:53:07
+ -->
 <template>
   <main id="scroll">
     <figure class="title" @click="back">
-      <img :src="`${commentData.pic}?param=150y150`" class="titleImg" />
+      <img :src="`${commentData.pic}?param=80y80`" class="titleImg" />
       <p class="titileMain">
         <span>{{commentData.name}}</span>
         <router-link to>{{artists}}</router-link>

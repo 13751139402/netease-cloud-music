@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-09-16 10:20:55
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-09 09:01:32
+ -->
 <template>
 <section class="moments">
   <figure class="authorImg">
@@ -17,20 +25,20 @@
   <footer class="info">
     <div class="info_1">
       <div>
-        <van-icon name="bar-chart-o" />
+        <van-icon class-prefix="icon" name="zhuanfa" />
         <span>{{info.shareCount}}</span>
       </div>
       <div>
-        <van-icon name="comment-o" />
+        <van-icon class-prefix="icon" name="pinglunpt" />
         <span>{{info.commentCount}}</span>
       </div>
       <div>
-        <van-icon :name="info.liked?'good-job':'good-job-o'" />
+        <van-icon name="good-job-o" />
         <span>{{info.likedCount}}</span>
       </div>
     </div>
     <div>
-      <van-icon name="more-o" />
+      <van-icon class-prefix="icon" name="caidan-dian" />
     </div>
   </footer>
 </section>

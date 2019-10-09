@@ -4,11 +4,11 @@
  * @Author: 戴训伟
  * @Date: 2019-08-28 08:51:26
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 19:24:10
+ * @LastEditTime: 2019-10-09 09:54:36
  -->
 <template>
   <figure @click="submit">
-    <img :src="`${vpic}?param=200y200`" />
+    <img :src="`${vpic}?param=100y100`" />
     <div class="lookNum" v-if="lookNum">
       <van-icon class-prefix="icon" name="yousanjiao" class="vanClass" />
       <span>{{vlookNum}}</span>

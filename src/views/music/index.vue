@@ -4,11 +4,11 @@
  * @Author: 戴训伟
  * @Date: 2019-08-30 14:50:44
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 17:10:06
+ * @LastEditTime: 2019-10-09 19:06:56
  -->
 <template>
   <section id="music">
-    <img :src="`${playData.pic}?param=50y50`" id="background" />
+    <img :src="`${playData.pic}?param=10y10`" id="background" />
     <modHead>
       <div class="musicTitle_1" slot="title">
         <div class="musicName">{{playData.name}}</div>
@@ -61,7 +61,7 @@ const playType = new Map([
   [1, { name: "随机播放", icon: "suijibofang-wangyiicon" }],
   [2, { name: "单曲循环", icon: "danquxunhuan" }]
 ]);
-import { NavBar, Icon, Slider } from "vant";
+import { NavBar, Icon, Slider, Toast } from "vant";
 import cover from "./children/cover";
 import lyric from "./children/lyric";
 import modHead from "../../components/head";
@@ -145,6 +145,11 @@ export default {
       this.progress = to;
     },
     playTypeIndex(to) {
+      Toast({
+        position: "bottom",
+        message: playType.get(to).name,
+        duration: 1000
+      });
       this.playTypeIcon = playType.get(to).icon;
     }
   }
@@ -152,9 +157,9 @@ export default {
 </script>
 
 <style scoped>
-.icon {
+/* #control .icon {
   font-size: 0.6rem;
-}
+} */
 #music {
   width: 100%;
   height: 100%;
@@ -166,7 +171,7 @@ export default {
   filter: blur(2rem);
   height: 100%;
   width: 100%;
-  background: url(https://p2.music.126.net/atLK4sprSmuk8EYpargkvA==/109951164305491244.jpg?param=200y200);
+  background: url(https://p2.music.126.net/atLK4sprSmuk8EYpargkvA==/109951164305491244.jpg?param=100y100);
   background-repeat: no-repeat;
   background-size: auto 100%;
   background-position: center;
@@ -262,7 +267,7 @@ footer {
   opacity: 0.8;
 }
 .palyer {
-  font-size: 1.3rem;
+  font-size: 1.3rem !important;
   opacity: 1 !important;
 }
 head .van-icon {

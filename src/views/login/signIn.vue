@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-08-28 14:22:38
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-08-28 14:22:38
+ * @LastEditTime: 2019-10-09 11:04:21
  -->
 <template>
   <section id="signIn">
@@ -67,6 +67,7 @@ export default {
 <style scoped>
 #signIn {
   overflow: hidden;
+  height: 100%;
 }
 .submit {
   font-size: 0.4rem;

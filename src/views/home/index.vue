@@ -4,23 +4,31 @@
  * @Author: 戴训伟
  * @Date: 2019-08-22 20:27:27
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 19:56:17
+ * @LastEditTime: 2019-10-09 20:22:32
  -->
 <template>
   <section id="home">
     <van-icon class-prefix="icon" name="MENU" class="left" @click="showPopup"></van-icon>
     <van-tabs swipeable v-model="active" sticky>
       <van-tab title="我的" name="me" ref="me">
-        <me></me>
+        <transition appear name="van-fade">
+          <me></me>
+        </transition>
       </van-tab>
       <van-tab title="发现" name="find" ref="find">
-        <find></find>
+        <transition appear name="van-fade">
+          <find></find>
+        </transition>
       </van-tab>
       <van-tab title="云村" name="burg" v-if="userData" ref="burg">
-        <burg></burg>
+        <transition appear name="van-fade">
+          <burg></burg>
+        </transition>
       </van-tab>
       <van-tab title="视频" name="video" ref="video">
-        <view-video></view-video>
+        <transition appear name="van-fade">
+          <view-video></view-video>
+        </transition>
       </van-tab>
     </van-tabs>
     <van-icon name="search" class="rigth" @click="linkSearch" />
@@ -80,6 +88,9 @@ export default {
 };
 </script>
 <style scoped>
+#home >>> .van-tabs__content {
+  min-height: calc(100vh - 1.17333rem);
+}
 #home >>> .van-sticky--fixed {
   background: #fff;
 }

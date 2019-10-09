@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-08-30 14:51:51
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 16:18:18
+ * @LastEditTime: 2019-10-09 11:41:10
  -->
 <template>
   <section id="cover" @click="linkRouter">
@@ -13,15 +13,15 @@
       <div id="stylus_2"></div>
     </figure>
     <div id="coverContent">
-      <figure id="coverContainer" :class="{coverOn : play}">
-        <img :src="`${pic}?param=150y150`" id="coverPic" v-if="pic" />
+      <figure id="coverContainer" :class="{coverOn : play}" v-show="cdShow">
+        <img :src="`${pic}?param=150y150`" id="coverPic" @load="cdShow=true" />
         <div id="CD"></div>
       </figure>
     </div>
     <article @click.stop>
       <van-icon
         class-prefix="icon"
-        :name="playData.isLike?'xihuan-wangyiicon':'xihuan'"
+        :name="playData.isLike?'xihuan-wangyiicon':'xihuan-kongpt-wangyiicon'"
         @click="switchLike"
       ></van-icon>
       <van-icon class-prefix="icon" name="xiazaipt"></van-icon>
@@ -44,7 +44,8 @@ export default {
   data() {
     return {
       total: 999,
-      isLike: false
+      isLike: false,
+      cdShow: true
     };
   },
   computed: {
@@ -119,6 +120,7 @@ export default {
   },
   watch: {
     pid() {
+      this.cdShow = false;
       this.selectTotal();
     },
     playData: {
@@ -126,7 +128,7 @@ export default {
         this.isLike = to.isLike;
       },
       immediate: true
-    }
+    },
   },
   created() {
     this.selectTotal();

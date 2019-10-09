@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-08-29 16:58:00
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 20:26:44
+ * @LastEditTime: 2019-10-09 09:52:41
  -->
 <template>
   <van-popup v-model="show" position="left" class="Popup" @close="closePopup">
@@ -21,7 +21,7 @@
               round
               width="1.5rem"
               height="1.5rem"
-              :src="`${userData.avatarUrl}?param=200y200`"
+              :src="`${userData.avatarUrl}?param=100y100`"
             />
             <div
               style="margin: 0.25rem 0px;display: flex;align-items: center;justify-content: space-between;"

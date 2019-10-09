@@ -4,17 +4,20 @@
  * @Author: 戴训伟
  * @Date: 2019-08-23 09:45:34
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 16:42:06
+ * @LastEditTime: 2019-10-09 13:16:59
  */
 import Vue from 'vue'
 import Router from 'vue-router'
 import VueRouter from 'vue-router'
+import home from "@/views/home";
+import playList from "@/views/playList";
+import music from "@/views/music/index";
 Vue.use(Router)
 
 let routes = [
   {
     path: '/',
-    redirect: "home"
+    redirect: "login"
   },
   {
     path: '/video',
@@ -31,7 +34,7 @@ let routes = [
       },
       {
         path: 'hot',
-  
+
         component: () => import('../views/search/children/searchHot'),
       },
       {
@@ -44,24 +47,24 @@ let routes = [
   },
   {
     path: '/login',
-    name: 'login',
+    name: 'login', meta: { keepAlive: true },
     component: () => import('../views/login/index'),
   },
   {
     path: '/userName',
-    name: 'userName',
+    name: 'userName', meta: { keepAlive: true },
     component: () => import('../views/login/userName')
   },
   {
     path: '/signIn',
-    name: 'signIn',
+    name: 'signIn', meta: { keepAlive: true },
     component: () => import('../views/login/signIn')
   },
   {
     path: '/home',
     name: 'home',
-    meta: { transitionType: 'hideDown', keepAlive: true },
-    component: () => import('../views/home/index'),
+    meta: { keepAlive: true },
+    component: home,
   },
   {
     path: '/music',
@@ -69,7 +72,7 @@ let routes = [
     meta: {
       keepAlive: true,
     },
-    component: () => import('../views/music/index')
+    component: music
   },
   {
     path: '/comment',
@@ -107,7 +110,7 @@ let routes = [
       scrollEl: "container",
       scrollTop: 0,
     },
-    component: () => import('../views/playList/index')
+    component: playList
   }
 ]
 
@@ -119,6 +122,7 @@ let router = new VueRouter({
     if (to.meta.keepAlive && to.meta.scrollEl) {
       const $content = document.querySelector(`#${to.meta.scrollEl}`);
       $content.scrollTop = to.meta.scrollTop;
+
     }
   }
 })

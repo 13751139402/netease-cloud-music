@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-08-22 20:25:05
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 19:55:20
+ * @LastEditTime: 2019-10-09 20:11:00
  -->
 <template>
   <div id="app">
@@ -34,7 +34,7 @@ import palyRecord from "./components/playerRecord";
 export default {
   data() {
     return {
-      showShade: false,
+      showShade: true,
       transitionName: ""
     };
   },
@@ -44,29 +44,28 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      //this.showShade = false;
+      this.showShade = false;
     }, 1000);
     let userData = this.storage.get("userData");
 
-    //let cookie =this.storage.getCookie("MUSIC_U");
-    if (userData !== "undefined") {
+    let cookie = document.cookie !== "";
+    if (userData) {
       if (userData === "experience") {
-        //this.$router.push("/home");
+        this.$router.push("/home");
       } else {
         this.$store.commit("upDateUser", userData);
         this.$store.dispatch("selectLikeMuisc");
-        //this.$router.push("/home");
+        this.$router.push("/home");
       }
     }
   },
   watch: {
     $route(to) {
-      if (!to.meta.transitionType) {
-        this.transitionName = "";
+      if (to.meta.transitionType === undefined) {
+        this.transitionName = "van-fade";
         return;
       }
-      let type = to.meta.transitionType == "hideDown";
-      this.transitionName = type && "hideDown";
+      this.transitionName = to.meta.transitionType;
     }
   }
 };
@@ -110,7 +109,7 @@ body {
   height: 100%;
 }
 #shade {
-  position: absolute;
+  position: fixed;
   height: 100%;
   box-sizing: border-box;
   width: 100%;
@@ -121,6 +120,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   z-index: 3000;
+  align-items: center;
 }
 .titleD {
   display: block;

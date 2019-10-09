@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: learning
+ * @version: learning
+ * @Author: 戴训伟
+ * @Date: 2019-08-30 10:44:25
+ * @LastEditors: 戴训伟
+ * @LastEditTime: 2019-10-09 19:08:28
+ -->
 <template>
 <section id="Record">
   <van-popup v-model="show" round position="bottom" class="container" @close="closePopup">
@@ -5,10 +13,6 @@
       <div @click="changePlayType">
         <van-icon :name="currentPlay.icon" class-prefix="icon" style="margin-right: 2px;" />
         <span>{{currentPlay.name}}({{playList.length}})</span>
-      </div>
-      <div>
-        <van-icon name="close" />收藏全部
-        <van-icon name="close" />
       </div>
     </head>
     <van-list :finished="true" finished-text="没有更多了" style="margin-top:1rem">
@@ -20,7 +24,7 @@
         @click="changePlayIndex(index)"
       >
         <span slot="label">{{item.details}}</span>
-        <van-icon name="volume-o" v-show="currentMusic===item.id" slot="icon" />
+        <van-icon name="laba1" class-prefix="icon" v-show="currentMusic===item.id" slot="icon" />
         <van-icon slot="right-icon" name="cross" style="line-height: inherit;" />
       </van-cell>
     </van-list>

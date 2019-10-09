@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-08-26 13:13:00
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 19:23:13
+ * @LastEditTime: 2019-10-09 13:26:03
  -->
 <template>
   <section id="find">
@@ -23,7 +23,8 @@
       </van-grid>
     </div>
     <van-divider style="margin:0" />
-    <article style="padding:0 .3rem" id="content">
+
+    <article style="padding:0 .3rem;" id="content">
       <section id="recommendMusicList">
         <title>
           <h1>推荐歌单</h1>
@@ -45,17 +46,6 @@
       </section>
       <section id="newMusic">
         <van-tabs v-model="active" animated>
-          <van-tab title="新碟">
-            <musicContainer>
-              <musicCover
-                v-for="item in newdisk"
-                :key="item.id"
-                :id="item.id"
-                :pic="item.blurPicUrl"
-                :title="item.name"
-              ></musicCover>
-            </musicContainer>
-          </van-tab>
           <van-tab title="新歌">
             <musicContainer>
               <musicCover
@@ -68,6 +58,17 @@
               >
                 <van-icon name="play-circle-o" class="playMusic" />
               </musicCover>
+            </musicContainer>
+          </van-tab>
+          <van-tab title="新碟">
+            <musicContainer>
+              <musicCover
+                v-for="item in newdisk"
+                :key="item.id"
+                :id="item.id"
+                :pic="item.blurPicUrl"
+                :title="item.name"
+              ></musicCover>
             </musicContainer>
           </van-tab>
         </van-tabs>
@@ -217,6 +218,7 @@ export default {
 }
 #banner {
   padding: 0.3rem 0.3rem 0;
+  min-height: 131.59px;
 }
 .vanGrid {
   color: #ff4747;
@@ -262,6 +264,7 @@ title {
 }
 #recommendMusicList {
   margin-bottom: 0.5rem;
+  min-height: 8rem;
 }
 .playMusic {
   position: absolute;

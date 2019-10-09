@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-08-30 14:54:19
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 12:36:55
+ * @LastEditTime: 2019-10-09 13:20:54
  -->
 <template>
   <section id="lyric">
@@ -42,7 +42,12 @@ import { Icon, Slider } from "vant";
 export default {
   data() {
     return {
-      lyricData: false,
+      lyricData: [
+        {
+          id: 1,
+          text: "暂无歌词"
+        }
+      ],
       currLyric: 0,
       volumeProg: this.$store.state.audio.volume * 100
     };
@@ -143,9 +148,12 @@ export default {
     }
   },
   watch: {
-    muiscId(to) {
-      this.currLyric = 0;
-      this.selectLyric(to);
+    muiscId: {
+      handler(to) {
+        this.currLyric = 0;
+        this.selectLyric(to);
+      },
+      immediate: true
     },
     progress(to) {
       if (this.lyricData) {

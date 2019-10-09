@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-09-17 13:50:31
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-08 16:18:43
+ * @LastEditTime: 2019-10-09 13:14:58
  -->
 <template>
   <div class="container">
@@ -23,18 +23,18 @@
       <img :src="coverUrl" style="width: 100%;" v-else />
       <figure @click="onPlayer" class="playbln">
         <div class="playBtn" v-show="!playBln">
-          <van-icon :name="playBtnType" />
+          <van-icon :name="playBtnType" class-prefix="icon" />
         </div>
       </figure>
       <figure class="control">
         <div class="control_left">
           <div v-show="!playBln" class="display: flex;" @click="onPlayer">
-            <van-icon name="play-circle-o" />
-            <span class="control_text">{{playCount}}</span>
+            <van-icon name="yousanjiao" class-prefix="icon" />
+            <span class="control_text">{{playCount|lookNumAbbr}}</span>
           </div>
         </div>
         <div class="control_right">
-          <van-icon name="bar-chart-o" />
+          <van-icon class-prefix="icon" name="paihangbang" />
           <span class="control_text">{{durationms|switchSec}}</span>
         </div>
       </figure>
@@ -45,8 +45,9 @@
 <script>
 import { Icon } from "vant";
 import { videoPlayer } from "vue-video-player";
-
+import mixins from "@/assets/mixins.js";
 export default {
+  mixins: [mixins],
   props: {
     videoId: {
       // id
@@ -98,7 +99,7 @@ export default {
       },
       playBln: false, //是否处于播放状态
       durationms: this.duration,
-      playBtnType: "play-circle-o",
+      playBtnType: "ttpodicon",
       ifPlayLoad: false
     };
   },
@@ -119,15 +120,18 @@ export default {
   },
   methods: {
     onPlayerTimeupDate(player) {
-      this.durationms = player.remainingTime() * 1000;
+      let sec = player.remainingTime();
+      if (sec) {
+        this.durationms = sec * 1000;
+      }
     },
     onPlayEnded() {
-      this.playBtnType = "replay";
+      this.playBtnType = "-lbxh";
       this.playBln = false;
       this.durationms = this.duration;
     },
     onPlayPause() {
-      this.playBtnType = "play-circle-o";
+      this.playBtnType = "ttpodicon";
       this.playBln = !this.playBln;
     },
     onPlay() {

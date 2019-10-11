@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-08-22 20:25:05
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-09 20:11:00
+ * @LastEditTime: 2019-10-11 13:09:18
  -->
 <template>
   <div id="app">
@@ -47,15 +47,20 @@ export default {
       this.showShade = false;
     }, 1000);
     let userData = this.storage.get("userData");
-
-    let cookie = document.cookie !== "";
     if (userData) {
       if (userData === "experience") {
         this.$router.push("/home");
       } else {
-        this.$store.commit("upDateUser", userData);
-        this.$store.dispatch("selectLikeMuisc");
-        this.$router.push("/home");
+        this.$http
+          .get(`recommend/songs?timestamp=1503019930000`)
+          .then(() => {
+            this.$store.commit("upDateUser", userData);
+            this.$store.dispatch("selectLikeMuisc");
+            this.$router.push("/home");
+          })
+          .catch(() => {
+            this.$router.push("/login");
+          });
       }
     }
   },

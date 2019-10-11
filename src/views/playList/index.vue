@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-09-10 16:37:36
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-09 19:48:49
+ * @LastEditTime: 2019-10-11 11:32:21
  -->
 <template>
   <section id="playList">
@@ -115,7 +115,6 @@ import LoadingView from "@/components/LoadingView";
 import { NavBar, Icon, Cell, CellGroup, List, Loading } from "vant";
 import modHead from "../../components/head";
 import mixins from "@/assets/mixins";
-import { referee } from "../../assets/common";
 export default {
   data() {
     return {

@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-08-26 13:12:55
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-09 13:37:46
+ * @LastEditTime: 2019-10-11 12:04:22
  -->
 <template>
   <section id="me">
@@ -258,7 +258,7 @@ ul > li {
   justify-content: center;
 }
 li > span {
-  font-size: 0.1rem;
+  font-size: 0.3rem;
   margin-top: 0.1rem;
   color: #999;
 }
@@ -299,7 +299,7 @@ figure > div {
   font-size: 0.4rem;
 }
 .iconDes {
-  font-size: 0.2rem;
+  font-size: 0.3rem;
   color: #808080;
 }
 .iconTitleName {

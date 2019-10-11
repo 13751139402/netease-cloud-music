@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-08-23 09:45:34
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-09 13:16:59
+ * @LastEditTime: 2019-10-11 10:38:27
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -12,6 +12,7 @@ import VueRouter from 'vue-router'
 import home from "@/views/home";
 import playList from "@/views/playList";
 import music from "@/views/music/index";
+import video from "@/components/video.vue";
 Vue.use(Router)
 
 let routes = [
@@ -22,7 +23,7 @@ let routes = [
   {
     path: '/video',
     name: 'video',
-    component: () => import('../components/video.vue'),
+    component: video,
   },
   {
     path: '/search',

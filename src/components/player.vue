@@ -4,7 +4,7 @@
  * @Author: 戴训伟
  * @Date: 2019-08-29 20:04:18
  * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-09 19:58:49
+ * @LastEditTime: 2019-10-11 13:59:31
  -->
 <template>
   <section id="player" v-show="playData&&isRouteHome">
@@ -32,11 +32,11 @@
     </figure>
     <audio
       id="audio"
-      autoplay
       :src="playData.music"
       @timeupdate="timeupData"
       ref="audio"
       :loop="loopType"
+      @play="onPlay"
       @canplay="canplay"
       @ended="ended"
     >播放器失败</audio>
@@ -97,16 +97,22 @@ export default {
       let target = event.target;
       this.currentRate = (target.currentTime / target.duration) * 100;
 
+      this.$store.commit("volume", this.myAudio.volume);
+      this.$store.commit(
+        "duration",
+        this.myAudio.duration ? this.myAudio.duration : 0
+      );
       this.$store.commit("currentTime", target.currentTime);
       this.$store.commit("changePlayTime", this.currentRate);
     },
     linkMusic() {
       this.$router.push("/music");
     },
-    canplay() {
+    onPlay() {
       this.$store.commit("changePlayType", true);
-      this.$store.commit("volume", this.myAudio.volume);
-      this.$store.commit("duration", this.myAudio.duration);
+    },
+    canplay() {
+      this.myAudio.play();
     },
     ended() {
       if (!this.loopType) {

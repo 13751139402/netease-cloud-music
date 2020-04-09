@@ -3,8 +3,8 @@
  * @version: learning
  * @Author: 戴训伟
  * @Date: 2019-08-26 10:18:19
- * @LastEditors: 戴训伟
- * @LastEditTime: 2019-08-26 10:18:19
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-04-09 16:15:52
  -->
 <template>
   <section id="login">
@@ -127,7 +127,7 @@ export default {
 <style scoped>
 #login {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: #db2c1f;
   display: flex;
   flex-direction: column;

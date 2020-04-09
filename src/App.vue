@@ -3,8 +3,8 @@
  * @version: learning
  * @Author: 戴训伟
  * @Date: 2019-08-22 20:25:05
- * @LastEditors: 戴训伟
- * @LastEditTime: 2019-10-11 13:09:18
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-04-09 16:16:25
  -->
 <template>
   <div id="app">
@@ -23,6 +23,7 @@
     <router-view v-if="!$route.meta.keepAlive"></router-view>
     <footer>
       <player v-if="this.$store.state.playData"></player>
+      <div class="footer_text">粤ICP备19034833号</div>
     </footer>
     <palyRecord ref="record"></palyRecord>
   </div>
@@ -111,7 +112,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  height: 100%;
 }
 #shade {
   position: fixed;
@@ -138,5 +138,15 @@ body {
 }
 .figure {
   margin: 0;
+}
+.footer_text {
+  width: 100%;
+  height: 100%;
+  background: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5vh;
+  bottom: 0;
 }
 </style>
